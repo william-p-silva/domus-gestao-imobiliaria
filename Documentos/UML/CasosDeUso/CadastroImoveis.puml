@@ -1,0 +1,45 @@
+@startuml
+' O locador pode cadastrar seus imoveis, para isso ele precisa enviar algumas informações, Endereço, algumas fotos e um comprovante de residencia de até 3 meses, o sistema deve validar o comprovante de residencia, e caso seja aprovado o imovel fica disponivel para os locatarios visualizarem, o locador pode excluir ou editar as informações do imovel, o administrador tem acesso a todas as funcionalidades do locador e pode aprovar ou reprovar os imoveis cadastrados pelos locadores, caso um imovel seja reprovado ele não fica disponivel para os locatarios visualizarem, e o locador recebe uma notificação informando o motivo da reprovação do imovel.
+left to right direction
+
+actor "Administrador" as admin
+actor "Usuário" as user
+actor "Locador" as locador
+actor "Locatário" as locatario
+
+locador --|> user
+locatario --|> user
+admin --|> locador
+
+rectangle "Sistema de Gestão Imobiliária" {
+
+    usecase "Cadastrar Imóvel" as UC1
+    usecase "Enviar Comprovante\nde Residência" as UC2
+    usecase "Enviar Fotos do Imóvel" as UC3
+
+    usecase "Editar Imóvel" as UC4
+    usecase "Excluir Imóvel" as UC5
+    usecase "Visualizar Imóveis" as UC6
+
+    usecase "Validar Comprovante" as UC7
+    usecase "Aprovar Imóvel" as UC8
+    usecase "Reprovar Imóvel" as UC9
+    usecase "Notificar Reprovação" as UC10
+
+    UC1 .> UC2 : <<include>>
+    UC1 .> UC3 : <<include>>
+
+    UC8 .> UC7 : <<include>>
+    UC9 .> UC10 : <<include>>
+}
+
+admin --> UC8
+admin --> UC9
+
+locador --> UC1
+locador --> UC4
+locador --> UC5
+
+locatario --> UC6
+
+@enduml

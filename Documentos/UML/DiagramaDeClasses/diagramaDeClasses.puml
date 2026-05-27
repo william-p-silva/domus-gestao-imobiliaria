@@ -1,0 +1,172 @@
+@startuml
+
+class Notificacao {
+    - Titulo: String
+    - Mensagem: String
+    - Lida: Boolean
+    - DataEnvio: DateTime
+
+    + EditarDados()
+    + MarcarComoLida(): Notificacao
+}
+
+class Usuario {
+    - nome: String
+    - email: String
+    - senha: String
+
+    + AlterarNome(): Usuario
+    + AlterarEmail(): Usuario
+    + AlterarSenha(): Usuario
+}
+
+class Funcao {
+    - nome: String
+}
+
+class Endereco {
+    - CEP: String
+    - UF: String
+    - Cidade: String
+    - Bairro: String
+    - Rua: String
+    - Numero: String
+    - Complemento: String
+
+    + EditarDados()
+}
+
+class Avaliacao {
+    - Titulo: String
+    - Nota: Integer
+    - Descricao: String
+    - PublicadoEm: DateTime
+
+    + AlterarNota(): Avaliacao
+    + AlterarDescricao(): Avaliacao
+    + AlterarTitulo(): Avaliacao
+    + AtualizarDataPublicacao(): Avaliacao
+}
+
+class Reclamacao {
+    - Titulo: String
+    - Descricao: String
+    - DataInicio: DateTime
+    - DataTermino: DateTime
+    - Status: String
+
+    + EditarDados()
+    + FinalizarReclamacao(): Reclamacao
+    + ReabrirReclamacao(): Reclamacao
+}
+
+class MensagemReclamacao {
+    - Texto: String
+}
+
+class Imovel {
+    - Titulo: String
+    - Descricao: String
+    - Comodos: Integer
+    - Status: Boolean
+    - ValorAluguel: Decimal
+
+    + Disponibilizar(): Imovel
+    + Indisponibilizar(): Imovel
+    + Alugar(): Imovel
+    + MarcarComoAlugado(): Imovel
+    + AdicionarFotos(): Imovel
+    + RemoverImovel(): void
+    + EditarDados()
+}
+
+class ImovelFoto {
+    - Titulo: String
+    - UrlImagemImovel: String
+
+    + EditarDados()
+}
+
+class Contrato {
+    - Titulo: String
+    - Descricao: String
+    - Tipo: String
+    - UrlContratoPdf: String
+    - DataInicio: DateTime
+    - DataTermino: DateTime
+    - Status: String
+
+    + EditarDados()
+    + FinalizarContrato(): Contrato
+    + RenovarContrato(): Contrato
+}
+
+class ParcelaAluguel {
+    - ValorParcela: Decimal
+    - DataPagamento: DateTime
+    - DataVencimento: DateTime
+    - StatusPagemento: String
+    - UrlParcela: String
+    - PixCopiaCola: String
+
+    + EditarDados()
+    + GerarParcela(): ParcelaAluguel
+    + GerarPixCopiaCola(): ParcelaAluguel
+    + MarcarComoPago(): ParcelaAluguel
+}
+
+class ReciboPagamento {
+    - ValorPago: Decimal
+    - UrlRecibo: String
+    - DataPagamento: DateTime
+    - StatusPagamento: String
+
+    + EditarDados()
+    + AprovarPagamento(): ReciboPagamento
+    + ReprovarPagamento(): ReciboPagamento
+}
+
+class MensagemChat {
+    - Texto: String
+    - DataEnvio: DateTime
+
+    + ApagarMensagem(): MensagemChat
+    + EditarDados()
+}
+
+class Chat {
+    - criadoEm: DateTime
+
+    + encerrarChat()
+}
+
+' Relacionamentos
+' Usuário
+Usuario "1" -- "N" Notificacao : possui
+Usuario "N" -- "N" Funcao : possui
+Usuario "1" -- "N" Imovel : possui
+Usuario "1" -- "1" Endereco : possui
+Usuario "1" -- "N" Avaliacao : possui
+Usuario "1" -- "N" Reclamacao : possui
+Usuario "1" -- "N" Contrato : locatario
+Usuario "1" -- "N" Contrato : locador
+' Chat
+MensagemChat --> Usuario : emissor
+MensagemChat --> Usuario : receptor
+MensagemChat --> Chat : pertence
+Usuario "N" -- "N" Chat : participa
+' Imovel
+Imovel "1" -- "N" Reclamacao : possui
+Imovel "1" -- "N" Avaliacao : possui
+Imovel "1" -- "1" Endereco : possui
+Imovel "1" -- "N" ImovelFoto : possui
+Imovel "1" -- "N" Contrato : pertence
+' Reclameção
+Reclamacao "1" -- "N" MensagemReclamacao : possui
+' Contrato
+Contrato "1" -- "N" ParcelaAluguel : possui
+' ParcelaAluguel
+ParcelaAluguel "1" -- "1" ReciboPagamento : possui
+
+
+@enduml

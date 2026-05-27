@@ -1,0 +1,35 @@
+@startuml
+' O user pode efetuar o cadastro na plataforma, o sistema vai enviar um email para confirmar a identidade do user, o user precisa clicar no link do email para confirmar o cadastro, depois disso ele pode autenticar na plataforma, caso ele esqueça a senha ele pode solicitar a recuperação de senha, o administrador tem acesso a todas as funcionalidades do user e pode cadastrar outros administradores, o sistema deve validar o email do user para evitar cadastros falsos, e o administrador deve ser o único responsável por cadastrar outros administradores para garantir a segurança da plataforma.
+left to right direction
+
+actor "Usuário" as user
+actor "Administrador" as admin
+actor "Usuário" as user
+actor "Locador" as locador
+actor "Locatário" as locatario
+
+locador --|> user
+locatario --|> user
+admin --|> user
+
+rectangle "Sistema de Gestão Imobiliária" {
+
+    usecase "Cadastrar Usuário" as UC1
+    usecase "Enviar E-mail de Confirmação" as UC2
+    usecase "Confirmar E-mail" as UC3
+    usecase "Autenticar Usuário" as UC4
+    usecase "Recuperar Senha" as UC5
+    usecase "Cadastrar Administrador" as UC6
+
+    UC1 .> UC2 : <<include>>
+
+}
+
+user --> UC1
+user --> UC3
+user --> UC4
+user --> UC5
+
+admin --> UC6
+
+@enduml

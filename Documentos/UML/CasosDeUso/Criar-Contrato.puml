@@ -1,0 +1,62 @@
+@startuml
+
+' Após o locatário escolher um imóvel, ele pode solicitar a locação do imóvel, o locador recebe a solicitação e pode aprovar ou reprovar a solicitação, caso a solicitação seja aprovada o sistema gera um contrato de locação entre o locador e o locatário, o contrato deve conter as informações do imóvel, as condições de pagamento, o prazo de locação e as responsabilidades de ambas as partes, o contrato deve ser assinado digitalmente por ambas as partes para garantir a validade jurídica do contrato, o sistema deve armazenar uma cópia do contrato para futuras consultas e o administrador tem acesso a todas as funcionalidades do contrato para garantir a segurança da plataforma.
+' O locador pode criar um modelo de contrato ou usar um modelo pronto da plataforma, o locatário pode visualizar o contrato antes de assinar, o sistema deve validar as informações do contrato para garantir que estejam corretas e completas, caso haja alguma inconsistência o sistema deve notificar o locador para corrigir as informações do contrato, o contrato deve ser gerado em formato PDF para facilitar a assinatura digital e o armazenamento do contrato.
+
+
+left to right direction
+
+
+actor "Locatário"   as locatario
+actor "Locador"     as locador
+actor "Administrador" as admin
+
+rectangle "Sistema Domus – Módulo de Contratos" {
+
+  usecase "Solicitar locação"          as UC1
+  usecase "Aprovar solicitação"        as UC2
+  usecase "Reprovar solicitação"       as UC3
+
+  usecase "Selecionar modelo\nde contrato" as UC4
+  usecase "Usar template\nda plataforma"   as UC4a
+  usecase "Upload de\nminuta própria"      as UC4b
+
+  usecase "Gerar contrato (PDF)"       as UC5
+  usecase "Notificar inconsistência"   as UC5n
+
+  usecase "Visualizar contrato"        as UC6
+  usecase "Assinar digitalmente"       as UC7
+  usecase "Armazenar contrato"         as UC8
+
+  ' ── fluxo principal ──────────────────────
+  UC2    .> UC4  : <<include>>
+  UC4    .> UC5  : <<include>>
+  UC7    .> UC8  : <<include>>
+
+  ' ── alternativas ao selecionar modelo ───
+  UC4a  .> UC4  : <<extend>>
+  UC4b  .> UC4  : <<extend>>
+
+  ' ── extensão condicional de validação ───
+  UC5n  .> UC5  : <<extend>>
+}
+
+' ── associações: Locatário ───────────────
+locatario --> UC1
+locatario --> UC6
+locatario --> UC7
+
+' ── associações: Locador ─────────────────
+locador --> UC2
+locador --> UC3
+locador --> UC4a
+locador --> UC4b
+locador --> UC6
+locador --> UC7
+
+' ── associações: Administrador ───────────
+admin --> UC5
+admin --> UC8
+admin --|> locador
+
+@enduml

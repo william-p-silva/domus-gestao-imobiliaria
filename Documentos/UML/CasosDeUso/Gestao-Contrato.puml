@@ -1,0 +1,51 @@
+@startuml
+
+left to right direction
+
+actor "Administrador" as admin
+actor "Locador" as locador
+actor "Locatário" as locatario
+
+rectangle "Sistema Domus – Gestão Contratual" {
+
+    ' ───────────── Contrato ─────────────
+    usecase "Renovar Contrato" as UC1
+    usecase "Encerrar Contrato" as UC2
+    usecase "Atualizar Status\ndo Imóvel" as UC3
+
+    usecase "Gerenciar Status\nContratual" as UC4
+
+    ' ───────────── Parcelas ─────────────
+    usecase "Gerar Parcelas" as UC5
+    usecase "Gerenciar Parcelas" as UC6
+    usecase "Visualizar Histórico\nFinanceiro" as UC7
+
+    usecase "Calcular Multas\ne Juros" as UC8
+
+    ' ───────────── Notificações ─────────
+    usecase "Enviar Notificações" as UC9
+    usecase "Notificar Vencimento" as UC10
+    usecase "Notificar Inadimplência" as UC11
+    usecase "Notificar Encerramento\nPróximo" as UC12
+
+    ' ───────────── Auditoria ────────────
+    usecase "Registrar Histórico\ndo Contrato" as UC13
+
+}
+
+' ───────────── Locador ─────────────
+locador --> UC1
+locador --> UC2
+locador --> UC6
+locador --> UC7
+
+' ───────────── Locatário ───────────
+locatario --> UC1
+locatario --> UC7
+
+' ───────────── Administrador ───────
+admin --> UC4
+admin --> UC6
+admin --> UC13
+
+@enduml
