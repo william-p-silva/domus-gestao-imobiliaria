@@ -3,9 +3,10 @@ namespace Domus.Domain.Enums;
 
 public enum StatusContrato
 {
-    Ativo = 1,
-    Inativo = 2,
-    Pendente = 3,
+    Rascunho = 0,
+    Pendente = 1,
+    Ativo = 2,
+    Inativo = 3,
     Cancelado = 4,
     Concluido = 5
 }

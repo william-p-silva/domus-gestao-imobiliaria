@@ -1,4 +1,6 @@
 ﻿
+using Domus.Domain.Enums;
+
 namespace Domus.Domain.Entity;
 
 public class ParcelaAluguel
@@ -14,5 +16,33 @@ public class ParcelaAluguel
 
     //Relacionamentos
     public Contrato Contrato { get; private set; }
-    public ReciboPagamento RecibosPagamentos { get; private set; }
+    public ICollection<ReciboPagamento> RecibosPagamento { get; private set; } = new List<ReciboPagamento>();
+
+    /// <summary>
+    /// Construtor privado/protegido exigido pelo Entity Framework Core.
+    /// O EF usa este construtor e preenche as propriedades via reflection.
+    /// </summary>
+    protected ParcelaAluguel() { }
+
+    public ParcelaAluguel(Guid contratoId, decimal valorParcela, string pixCopiaCola, 
+        string urlParcelaAluguel, DateTime dataVencimento)
+    {
+        if (contratoId == Guid.Empty)
+            throw new ArgumentException("O ID do contrato não pode ser vazio.", nameof(contratoId));
+        if (valorParcela <= 0)
+            throw new ArgumentException("O valor da parcela deve ser maior que zero.", nameof(valorParcela));
+        if (string.IsNullOrWhiteSpace(pixCopiaCola))
+            throw new ArgumentException("O Pix cópia e cola não pode ser vazio.", nameof(pixCopiaCola));
+        if (string.IsNullOrWhiteSpace(urlParcelaAluguel))
+            throw new ArgumentException("A URL da parcela de aluguel não pode ser vazia.", nameof(urlParcelaAluguel));
+        if (dataVencimento <= DateTime.UtcNow)
+            throw new ArgumentException("A data de vencimento deve ser futura.", nameof(dataVencimento));
+
+        ParcelaAluguel_ID = Guid.NewGuid();
+        Contrato_ID = contratoId;
+        ValorParcela = valorParcela;
+        PixCopiaCola = pixCopiaCola;
+        UrlParcelaAluguel = urlParcelaAluguel;
+        DataVencimento = dataVencimento;
+    }
 }

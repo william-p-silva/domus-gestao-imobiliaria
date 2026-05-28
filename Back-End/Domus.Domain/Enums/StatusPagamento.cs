@@ -1,4 +1,4 @@
-﻿namespace Domus.Domain;
+﻿namespace Domus.Domain.Enums;
 
 public enum StatusPagamento
 {

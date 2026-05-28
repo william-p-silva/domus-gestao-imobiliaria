@@ -1,10 +1,9 @@
-﻿namespace Domus.Domain
+﻿namespace Domus.Domain.Enums;
+
+public enum StatusRecibo
 {
-    public enum StatusRecibo
-    {
-        Emitido = 1,
-        Cancelado = 2,
-        Rejeitado = 3,
-        AguardandoEmissao = 4
-    }
+    Emitido = 1,
+    Cancelado = 2,
+    Rejeitado = 3,
+    Aprovado = 4
 }
