@@ -7,6 +7,7 @@ public class ParcelaAluguel
 {
     public Guid ParcelaAluguel_ID { get; private set; }
     public Guid Contrato_ID { get; private set; }
+    public string Descricao { get; private set; }
     public decimal ValorParcela { get; private set; }
     public StatusPagamento StatusPagamento { get; private set; } = StatusPagamento.Pendente;
     public string PixCopiaCola { get; private set; }
@@ -24,8 +25,8 @@ public class ParcelaAluguel
     /// </summary>
     protected ParcelaAluguel() { }
 
-    public ParcelaAluguel(Guid contratoId, decimal valorParcela, string pixCopiaCola, 
-        string urlParcelaAluguel, DateTime dataVencimento)
+    public ParcelaAluguel(Guid contratoId, decimal valorParcela, string urlParcelaAluguel,
+        DateTime dataVencimento, string descricao, string pixCopiaCola)
     {
         if (contratoId == Guid.Empty)
             throw new ArgumentException("O ID do contrato não pode ser vazio.", nameof(contratoId));
@@ -37,6 +38,8 @@ public class ParcelaAluguel
             throw new ArgumentException("A URL da parcela de aluguel não pode ser vazia.", nameof(urlParcelaAluguel));
         if (dataVencimento <= DateTime.UtcNow)
             throw new ArgumentException("A data de vencimento deve ser futura.", nameof(dataVencimento));
+        if (string.IsNullOrWhiteSpace(descricao))
+            throw new ArgumentException("A descrição da parcela de aluguel não pode ser vazia.", nameof(descricao));
 
         ParcelaAluguel_ID = Guid.NewGuid();
         Contrato_ID = contratoId;
@@ -44,5 +47,6 @@ public class ParcelaAluguel
         PixCopiaCola = pixCopiaCola;
         UrlParcelaAluguel = urlParcelaAluguel;
         DataVencimento = dataVencimento;
+        Descricao = descricao;
     }
 }

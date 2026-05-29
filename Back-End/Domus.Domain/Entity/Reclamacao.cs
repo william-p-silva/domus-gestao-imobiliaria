@@ -18,7 +18,7 @@ public class Reclamacao
     //Relacionamentos
     public Usuario Usuario { get; private set; }
     public Imovel Imovel { get; private set; }
-    public ICollection<MensagemReclamacao> MensagemReclamacoes { get; private set; } = new List<MensagemReclamacao>();
+    public ICollection<MensagemReclamacao> MensagensReclamacao { get; private set; } = new List<MensagemReclamacao>();
 
     /// <summary>
     /// Construtor privado/protegido exigido pelo Entity Framework Core.

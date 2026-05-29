@@ -1,7 +1,7 @@
 ﻿using Domus.Domain.Entity;
 using Domus.Domain.Enums;
 
-namespace Domus.Domain;
+namespace Domus.Domain.Entity;
 
 public class ReciboPagamento
 {

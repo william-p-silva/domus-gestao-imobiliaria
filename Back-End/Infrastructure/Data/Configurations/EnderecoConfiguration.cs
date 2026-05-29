@@ -20,7 +20,7 @@ public class EnderecoConfiguration : IEntityTypeConfiguration<Endereco>
 
         builder.Property(e => e.UF)
             .IsRequired()
-            .HasMaxLength(2);
+            .HasColumnType("char(2)");
 
         builder.Property(e => e.Cidade)
             .IsRequired()

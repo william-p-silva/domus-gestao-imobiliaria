@@ -23,7 +23,9 @@ public class Usuario
     public ICollection<Contrato> ContratosComoLocador { get; private set; }
     public ICollection<Contrato> ContratosComoLocatario { get; private set; }
 
+    public ICollection<MensagemReclamacao> MensagensReclamacao { get; private set; } = new List<MensagemReclamacao>();
     public ICollection<Reclamacao> Reclamacoes { get; private set; } = new List<Reclamacao>();
+
     public Endereco EnderecoUsuario { get; private set; }
 
     /// <summary>
