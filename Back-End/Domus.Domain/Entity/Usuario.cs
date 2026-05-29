@@ -24,7 +24,7 @@ public class Usuario
     public ICollection<Contrato> ContratosComoLocatario { get; private set; }
 
     public ICollection<Reclamacao> Reclamacoes { get; private set; } = new List<Reclamacao>();
-    public Endereco Endereco { get; private set; }
+    public Endereco EnderecoUsuario { get; private set; }
 
     /// <summary>
     /// Construtor privado/protegido exigido pelo Entity Framework Core.
