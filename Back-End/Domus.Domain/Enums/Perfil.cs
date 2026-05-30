@@ -1,6 +1,6 @@
 ﻿namespace Domus.Domain.Enums;
 
-public enum Perfil
+public enum FuncaoUser
 {
     Administrador = 1,
     Locador = 2,

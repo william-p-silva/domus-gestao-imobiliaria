@@ -5,7 +5,7 @@ namespace Domus.Domain.Entity;
 public class Funcao
 {
     public Guid Funcao_ID { get; private set; }
-    public Perfil Nome { get; private set; }
+    public FuncaoUser Nome { get; private set; }
 
     //Relacionamentos
     public ICollection<UsuarioFuncao> UsuarioFuncao { get; private set; } = new List<UsuarioFuncao>();
@@ -16,11 +16,21 @@ public class Funcao
     /// </summary>
     protected Funcao() { }
 
-    public Funcao(Perfil perfil)
+    public Funcao(FuncaoUser perfil)
     {
-        if (!Enum.IsDefined(typeof(Perfil), perfil))
+        if (!Enum.IsDefined(typeof(FuncaoUser), perfil))
             throw new ArgumentException("Perfil inválido.", nameof(perfil));
         Funcao_ID = Guid.NewGuid();
+        Nome = perfil;
+    }
+
+    // NOVO: Construtor para Seeds / Dados Estáticos (IDs fixos)
+    public Funcao(Guid id, FuncaoUser perfil)
+    {
+        if (!Enum.IsDefined(typeof(FuncaoUser), perfil))
+            throw new ArgumentException("Perfil inválido.", nameof(perfil));
+
+        Funcao_ID = id;
         Nome = perfil;
     }
 }

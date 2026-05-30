@@ -1,5 +1,4 @@
-﻿using Domus.Domain.Entity;
-using Domus.Domain.Enums;
+﻿using Domus.Domain.Enums;
 
 namespace Domus.Domain.Entity;
 

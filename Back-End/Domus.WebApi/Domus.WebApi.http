@@ -1,0 +1,6 @@
+@Domus.WebApi_HostAddress = http://localhost:5038
+
+GET {{Domus.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
