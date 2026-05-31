@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Repositories\" />
     <Folder Include="Data\Security\" />
   </ItemGroup>
 
@@ -24,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Domus.Application\Domus.Application.csproj" />
     <ProjectReference Include="..\Domus.Domain\Domus.Domain.csproj" />
   </ItemGroup>
 

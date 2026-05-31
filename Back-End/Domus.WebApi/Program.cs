@@ -45,6 +45,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+
 //Comando para as migrations
 // dotnet ef migrations add AdicionandoFuncoesSeed --project ..\Infrastructure
 
