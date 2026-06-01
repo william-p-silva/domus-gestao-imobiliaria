@@ -10,8 +10,11 @@ public class Usuario
     public Guid? Endereco_ID { get; private set; }
     public DateTime CriadoEm { get; private set; } = DateTime.UtcNow;
 
+
+    private readonly List<UsuarioFuncao> _usuarioFuncao = new();
+
     //Relacionamentos
-    public ICollection<UsuarioFuncao> UsuarioFuncao { get; private set; } = new List<UsuarioFuncao>();
+    public IReadOnlyCollection<UsuarioFuncao> UsuarioFuncao => _usuarioFuncao.AsReadOnly();
     public ICollection<Avaliacao> Avaliacoes { get; private set; } = new List<Avaliacao>();
 
     public ICollection<Notificacao> Notificacoes { get; private set; } = new List<Notificacao>();
@@ -55,9 +58,56 @@ public class Usuario
     public void AddFuncaoUsuario(Guid funcaoId)
     {
         if (funcaoId == Guid.Empty)
-            throw new ArgumentNullException("è preciso um id valido para esta ação", nameof(funcaoId));
+            throw new ArgumentException("É preciso um id valido para esta ação", nameof(funcaoId));
+
+        if (_usuarioFuncao.Any(uf => uf.Funcao_ID == funcaoId))
+            throw new ArgumentException("O usuário já possui esta função.");
 
         var usuarioFuncao = new UsuarioFuncao(usuarioId: Usuario_ID, funcaoId: funcaoId);
-        UsuarioFuncao.Add(usuarioFuncao);
+        _usuarioFuncao.Add(usuarioFuncao);
+    }
+
+    public void AlterarEmail(string novoEmail)
+    {
+        if (string.IsNullOrWhiteSpace(novoEmail))
+            throw new ArgumentException("O email do usuário é obrigatório.", nameof(novoEmail));
+
+        Email = novoEmail;
+    }
+
+    public void AlterarNome(string novoNome)
+    {
+        if (string.IsNullOrWhiteSpace(novoNome))
+            throw new ArgumentException("O nome do usuário é obrigatório.", nameof(novoNome));
+        Nome = novoNome;
+    }
+    public void AlterarSenha(string novaSenhaHash)
+    {
+        if (string.IsNullOrWhiteSpace(novaSenhaHash))
+            throw new ArgumentException("A senha do usuário é obrigatória.", nameof(novaSenhaHash));
+        SenhaHash = novaSenhaHash;
+    }
+
+    public void DesativarUsuario()
+    {
+        Status = false;
+    }
+
+    public void AtivarUsuario()
+    {
+        Status = true;
+    }
+    
+    public void AdicionarEndereco(Guid enderecoId)
+    {
+        if (enderecoId == Guid.Empty)
+            throw new ArgumentException("É preciso um id valido para esta ação", nameof(enderecoId));
+
+        Endereco_ID = enderecoId;
+    }
+
+    public void RemoverEndereco()
+    {
+        Endereco_ID = null;
     }
 }

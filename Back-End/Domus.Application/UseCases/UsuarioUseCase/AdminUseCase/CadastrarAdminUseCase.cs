@@ -1,0 +1,55 @@
+﻿
+
+using Domus.Application.DTOs.Usuarios.LocatarioDTOs;
+using Domus.Application.Interfaces.Repositories;
+using Domus.Application.Interfaces.Security;
+using Domus.Domain.Entity;
+
+namespace Domus.Application.UseCases.UsuarioUseCase.AdminUseCase;
+
+public class CadastrarAdminUseCase(
+    IUsuarioRepository usuarioRepository, 
+    IPasswordHasher passwordHasher, 
+    IFuncaoRepository funcaoRepository, 
+    IUnitOfWork commit)
+{
+    private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
+    private readonly IPasswordHasher _passwordHasher = passwordHasher;
+    private readonly IFuncaoRepository _funcaoRepository = funcaoRepository;
+    private readonly IUnitOfWork _commit = commit;
+
+    public async Task<UsuarioResponse> Execute(UsuarioRequest request,
+        CancellationToken cancellationToken)
+    {
+        var userExiste = await _usuarioRepository.BuscarPorEmailAsync(request.Email, cancellationToken);
+        if (userExiste != null)
+            throw new ArgumentException("Usuário já esta cadastrado", nameof(request.Email));
+
+        var newSenhaHash = _passwordHasher.GerarHash(request.Senha);
+
+        var usuario = new Usuario(
+            nome: request.Nome,
+            email: request.Email,
+            senhaHash: newSenhaHash);
+
+        Funcao funcao = await _funcaoRepository.BuscarPorNomeAsync(nome: "Administrador", cancellationToken);
+
+        if (funcao == null)
+            throw new ArgumentNullException("Funcao não encontrada", nameof(funcao));
+
+        usuario.AddFuncaoUsuario(funcao.Funcao_ID);
+
+        await _usuarioRepository.AddAsync(usuario, cancellationToken);
+        await _commit.CommitAsync(cancellationToken);
+
+        return new UsuarioResponse()
+        {
+            Nome = usuario.Nome,
+            Email = usuario.Email,
+            Funcao_ID = funcao.Funcao_ID,
+            Perfil = new List<string> { funcao.Nome.ToString() },
+            UsuarioFuncao_ID = usuario.UsuarioFuncao.Select(x => x.Funcao_ID).ToList(),
+        };
+
+    }
+}

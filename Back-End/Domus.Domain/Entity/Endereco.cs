@@ -20,7 +20,7 @@ public class Endereco
 
     public Endereco 
         ( string cep, string uf, string cidade, string bairro,
-          string rua, string numero, string? complemento)
+          string rua, string numero, string? complemento = null)
     {
         if (string.IsNullOrWhiteSpace(cep))
             throw new ArgumentException("O CEP é obrigatório.", nameof(cep));

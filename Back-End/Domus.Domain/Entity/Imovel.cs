@@ -13,6 +13,8 @@ public class Imovel
     public int Comodos { get; private set; }
     public StatusImovel Status { get; private set; }
     public decimal ValorAluguel { get; private set; }
+    public DateTime CriadoEm { get; private set; } = DateTime.UtcNow;
+    public bool Aprovado { get; private set; } = false;
 
     //Relacionamentos
     public ICollection<Reclamacao> Reclamacoes { get; private set; } = new List<Reclamacao>();
@@ -59,4 +61,5 @@ public class Imovel
         Status = status;
         ValorAluguel = valorAluguel;
     }
+
 }

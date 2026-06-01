@@ -33,6 +33,15 @@ public class ImovelConfiguration : IEntityTypeConfiguration<Imovel>
             .IsRequired()
             .HasConversion<string>();
 
+        builder.Property(i => i.CriadoEm)
+            .IsRequired()
+            .HasColumnType("datetime2")
+            .HasDefaultValueSql("GETUTCDATE()");
+
+        builder.Property(i => i.Aprovado)
+            .IsRequired()
+            .HasDefaultValue(false);
+
         builder.HasOne(i => i.Usuario)
             .WithMany(u => u.Imoveis)
             .HasForeignKey(i => i.Usuario_ID)

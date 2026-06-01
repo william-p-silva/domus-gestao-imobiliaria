@@ -1,26 +1,31 @@
-﻿using Domus.Application.DTOs.Usuarios.LocatarioDTOs;
+﻿
+
+using Domus.Application.DTOs.Usuarios.LocatarioDTOs;
 using Domus.Application.Interfaces.Repositories;
 using Domus.Application.Interfaces.Security;
 using Domus.Domain.Entity;
+using System.Runtime.CompilerServices;
 
-namespace Domus.Application.UseCases.UsuarioUseCase.LocatarioUseCase;
+namespace Domus.Application.UseCases.UsuarioUseCase.LocadorUseCase;
 
-public class CadastrarLocatarioUseCase
+public class CadastrarLocadorUseCase
 {
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IFuncaoRepository _funcaoRepository;
     private readonly IUnitOfWork _commit;
 
-    public CadastrarLocatarioUseCase(IUsuarioRepository usuarioRepository, IPasswordHasher passwordHasher, IUnitOfWork commit, IFuncaoRepository funcaoRepository)
+    public CadastrarLocadorUseCase(IUsuarioRepository usuarioRepository, IPasswordHasher passwordHasher, IFuncaoRepository funcaoRepository, IUnitOfWork commit)
     {
         _usuarioRepository = usuarioRepository;
         _passwordHasher = passwordHasher;
-        _commit = commit;
         _funcaoRepository = funcaoRepository;
+        _commit = commit;
     }
 
-    public async Task<UsuarioResponse> Execute(UsuarioRequest request, CancellationToken cancellationToken)
+
+    public async Task<UsuarioResponse> Execute(UsuarioRequest request, 
+        CancellationToken cancellationToken)
     {
         var userExiste = await _usuarioRepository.BuscarPorEmailAsync(request.Email, cancellationToken);
         if (userExiste != null)
@@ -28,21 +33,19 @@ public class CadastrarLocatarioUseCase
 
         var newSenhaHash = _passwordHasher.GerarHash(request.Senha);
 
-        Usuario usuario = new Usuario(nome: request.Nome, email: request.Email, senhaHash: newSenhaHash);
+        var usuario = new Usuario(
+            nome: request.Nome, 
+            email: request.Email, 
+            senhaHash: newSenhaHash);
 
-
-
-        Funcao funcao = await _funcaoRepository.BuscarPorNomeAsync(nome: "Locatario", cancellationToken);
+        Funcao funcao = await _funcaoRepository.BuscarPorNomeAsync(nome: "Locador", cancellationToken);
 
         if (funcao == null)
             throw new ArgumentNullException("Funcao não encontrada", nameof(funcao));
-
-
+        
         usuario.AddFuncaoUsuario(funcao.Funcao_ID);
 
-
         await _usuarioRepository.AddAsync(usuario, cancellationToken);
-
         await _commit.CommitAsync(cancellationToken);
 
         return new UsuarioResponse()
@@ -50,8 +53,9 @@ public class CadastrarLocatarioUseCase
             Nome = usuario.Nome,
             Email = usuario.Email,
             Funcao_ID = funcao.Funcao_ID,
-            Perfil = new List<string> {funcao.Nome.ToString()},
+            Perfil = new List<string> { funcao.Nome.ToString() },
             UsuarioFuncao_ID = usuario.UsuarioFuncao.Select(x => x.Funcao_ID).ToList(),
         };
+
     }
 }
