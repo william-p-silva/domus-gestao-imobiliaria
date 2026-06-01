@@ -50,4 +50,14 @@ public class Usuario
         Status = true; 
         Endereco_ID = enderecoId;
     }
+
+
+    public void AddFuncaoUsuario(Guid funcaoId)
+    {
+        if (funcaoId == Guid.Empty)
+            throw new ArgumentNullException("è preciso um id valido para esta ação", nameof(funcaoId));
+
+        var usuarioFuncao = new UsuarioFuncao(usuarioId: Usuario_ID, funcaoId: funcaoId);
+        UsuarioFuncao.Add(usuarioFuncao);
+    }
 }

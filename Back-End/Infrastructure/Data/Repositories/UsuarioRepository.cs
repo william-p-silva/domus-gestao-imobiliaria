@@ -20,6 +20,12 @@ public class UsuarioRepository : IUsuarioRepository
         await _context.AddAsync(usuario, cancellationToken);
     }
 
+    public async Task<Usuario?> BuscarPorEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        var usuario = await _context.Usuarios.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
+        return usuario;
+    }
+
     public async Task<Usuario?> BuscarPorIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var usuario = await _context.Usuarios.FindAsync(id, cancellationToken); 
