@@ -6,14 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Domus.Infrastructure.Data.Repositories;
 
-public class FuncaoRepository : IFuncaoRepository
+public class FuncaoRepository(AppDbContext context) : IFuncaoRepository
 {
-    private readonly AppDbContext _context;
-
-    public FuncaoRepository(AppDbContext context)
-    {
-        _context = context;
-    }
+    private readonly AppDbContext _context = context;
 
     public async Task AddAsync(Funcao funcao, CancellationToken cancellationToken = default)
     {

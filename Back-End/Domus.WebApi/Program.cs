@@ -1,9 +1,5 @@
-using Domus.Application.Interfaces.Repositories;
-using Domus.Application.Interfaces.Security; // Import necessário para o Hasher
-using Domus.Application.UseCases.UsuarioUseCase.LocatarioUseCase;
 using Domus.Infrastructure.Data.Context;
-using Domus.Infrastructure.Data.Repositories;
-using Domus.Infrastructure.Data.Security;
+using Domus.WebApi;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,18 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // ============================================================================
 // 2. INJEÇÃO DE DEPENDÊNCIA (DI) - SERVIÇOS, REPOSITÓRIOS E SEGURANÇA
 // ============================================================================
-
-// Repositories & Transações (Compartilhando o escopo do DbContext)
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-builder.Services.AddScoped<IFuncaoRepository, FuncaoRepository>();
-builder.Services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
-
-// Segurança (Correção: Injetando o serviço de Hash exigido pelo Use Case)
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
-
-// Use Cases (Application)
-builder.Services.AddScoped<CadastrarLocatarioUseCase>();
+builder.Services.AddProjectDependencies(); // Método de extensão para organizar a DI em um único local (DependencyInjectionConfig.cs)
 
 // ============================================================================
 // 3. CONTROLLERS E DOCUMENTAÇÃO DA API
@@ -81,7 +66,7 @@ app.Run();
 // 
 // Criar uma nova Migration:
 // dotnet ef migrations add nomeMigration --project ..\Infrastructure 
-
+//
 // Atualizar o banco manualmente (Caso não queira depender do auto-migrate):
 // dotnet ef database update --project ..\Infrastructure  .
 // ============================================================================

@@ -6,18 +6,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Domus.Infrastructure.Data.Repositories;
 
-public class UsuarioRepository : IUsuarioRepository
+public class UsuarioRepository(AppDbContext context) : IUsuarioRepository
 {
-    private readonly AppDbContext _context;
-
-    public UsuarioRepository(AppDbContext context)
-    {
-        _context = context;
-    }
+    private readonly AppDbContext _context = context;
 
     public async Task AddAsync(Usuario usuario, CancellationToken cancellationToken = default)
     {
         await _context.AddAsync(usuario, cancellationToken);
+    }
+
+    public async Task AddFuncaoUserAsync(UsuarioFuncao usuarioFuncao, CancellationToken cancellationToken = default)
+    {
+        await _context.UsuarioFuncoes.AddAsync(usuarioFuncao, cancellationToken);
+    }
+
+    public async Task<UsuarioFuncao?> BuscarFuncaoUserPorIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var usuarioFuncao = await _context.UsuarioFuncoes.FindAsync(id, cancellationToken);
+        return usuarioFuncao;
     }
 
     public async Task<Usuario?> BuscarPorEmailAsync(string email, CancellationToken cancellationToken = default)

@@ -11,4 +11,9 @@ public interface IUsuarioRepository
     Task<List<Usuario>> ListarAsync(CancellationToken cancellationToken = default);
     void Remover(Usuario usuario);
     Task AddAsync(Usuario usuario, CancellationToken cancellationToken = default);
+
+
+    //UsuarioFunção
+    Task<UsuarioFuncao?> BuscarFuncaoUserPorIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task AddFuncaoUserAsync(UsuarioFuncao usuarioFuncao, CancellationToken cancellationToken = default);
 }
