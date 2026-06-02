@@ -1,5 +1,6 @@
 using Domus.Infrastructure.Data.Context;
-using Domus.WebApi;
+using Domus.WebApi.Dependencies;
+using Domus.WebApi.Middlewares;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +27,12 @@ builder.Services.AddOpenApi();
 var app = builder.Build();
 
 // ============================================================================
-// 4. PIPELINE DE REQUISIÇÕES HTTP (MIDDLEWARES)
+// 4. Middleware global para tratamento de exceções personalizadas (ExceptionMiddleware.cs)
+// ============================================================================
+app.UseMiddleware<ExceptionMiddleware>();
+
+// ============================================================================
+// 5. PIPELINE DE REQUISIÇÕES HTTP (MIDDLEWARES)
 // ============================================================================
 if (app.Environment.IsDevelopment())
 {
@@ -40,7 +46,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 // ============================================================================
-// 5. INICIALIZAÇÃO E AUTO-MIGRATION (Executado de forma isolada e segura)
+// 6. INICIALIZAÇÃO E AUTO-MIGRATION (Executado de forma isolada e segura)
 // ============================================================================
 using (var scope = app.Services.CreateScope())
 {

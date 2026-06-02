@@ -2,11 +2,16 @@
 using Domus.Application.DTOs.Endereco;
 using Domus.Application.DTOs.Imovel;
 using Domus.Application.Interfaces.Repositories;
+using Domus.Domain.Enums;
 using Domus.Domain.Entity;
 
 namespace Domus.Application.UseCases.ImovelUseCase;
 
-public class CadastrarImovelUseCase(IImovelRepository imovelRepository, IUsuarioRepository usuarioRepository, IUnitOfWork commit, IEnderecoRepository enderecoRepository)
+public class CadastrarImovelUseCase(
+    IImovelRepository imovelRepository, 
+    IUsuarioRepository usuarioRepository, 
+    IUnitOfWork commit, 
+    IEnderecoRepository enderecoRepository)
 {
     private readonly IImovelRepository _imovelRepository = imovelRepository;
     private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
@@ -18,6 +23,10 @@ public class CadastrarImovelUseCase(IImovelRepository imovelRepository, IUsuario
         var user = await _usuarioRepository.BuscarPorIdAsync(request.Usuario_ID, cancellationToken);
         if (user == null)
             throw new ArgumentException("Usuário não encontrado", nameof(request.Usuario_ID));
+
+        if (!user.PossuiFuncao(FuncaoUser.Locador))
+            throw new ArgumentException("Usuário não tem permissão para cadastrar um imóvel", nameof(request.Usuario_ID));
+
 
         var endereco = new Endereco(
             cep: request.Endereco.CEP,

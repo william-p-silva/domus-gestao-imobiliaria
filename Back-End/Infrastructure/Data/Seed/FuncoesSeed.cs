@@ -3,7 +3,6 @@ using Domus.Domain.Entity;
 using Domus.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Domus.Infrastructure.Data.Seed;
 

@@ -10,7 +10,7 @@ using Domus.Application.UseCases.UsuarioUseCase.LocatarioUseCase;
 using Domus.Infrastructure.Data.Repositories;
 using Domus.Infrastructure.Data.Security;
 
-namespace Domus.WebApi;
+namespace Domus.WebApi.Dependencies;
 
 public static class DependencyInjectionConfig
 {

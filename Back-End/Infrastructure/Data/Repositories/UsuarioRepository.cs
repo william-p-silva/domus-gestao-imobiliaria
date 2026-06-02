@@ -34,7 +34,9 @@ public class UsuarioRepository(AppDbContext context) : IUsuarioRepository
 
     public async Task<Usuario?> BuscarPorIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var usuario = await _context.Usuarios.FindAsync(id, cancellationToken); 
+        var usuario = await _context.Usuarios.Include(u => u.UsuarioFuncao).ThenInclude(f => f.Funcao)
+            .FirstOrDefaultAsync(u => u.Usuario_ID == id, cancellationToken); 
+
         return usuario;
     }
 

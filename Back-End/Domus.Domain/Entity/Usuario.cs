@@ -1,4 +1,6 @@
-﻿namespace Domus.Domain.Entity;
+﻿using Domus.Domain.Enums;
+
+namespace Domus.Domain.Entity;
 
 public class Usuario
 {
@@ -50,7 +52,7 @@ public class Usuario
         Nome = nome;
         Email = email;
         SenhaHash = senhaHash;
-        Status = true; 
+        Status = true;
         Endereco_ID = enderecoId;
     }
 
@@ -97,7 +99,7 @@ public class Usuario
     {
         Status = true;
     }
-    
+
     public void AdicionarEndereco(Guid enderecoId)
     {
         if (enderecoId == Guid.Empty)
@@ -109,5 +111,12 @@ public class Usuario
     public void RemoverEndereco()
     {
         Endereco_ID = null;
+    }
+
+    public bool PossuiFuncao(FuncaoUser funcao)
+    {
+        return _usuarioFuncao != null && _usuarioFuncao.Any(uf =>
+            uf.Funcao != null &&
+            uf.Funcao.Nome == funcao);
     }
 }

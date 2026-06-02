@@ -49,9 +49,9 @@ public class CadastrarLocatarioUseCase
         {
             Nome = usuario.Nome,
             Email = usuario.Email,
-            Funcao_ID = funcao.Funcao_ID,
+            Funcao_ID = funcao.Funcao_ID, //Transformar em Lista de IDs, um user pode ter varias funções
             Perfil = new List<string> {funcao.Nome.ToString()},
-            UsuarioFuncao_ID = usuario.UsuarioFuncao.Select(x => x.Funcao_ID).ToList(),
+            UsuarioFuncao_ID = usuario.UsuarioFuncao.Select(x => x.UsuarioFuncao_ID).ToList(),
         };
     }
 }
