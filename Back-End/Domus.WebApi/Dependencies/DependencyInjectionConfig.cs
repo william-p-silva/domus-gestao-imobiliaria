@@ -9,6 +9,7 @@ using Domus.Application.UseCases.UsuarioUseCase.LocadorUseCase;
 using Domus.Application.UseCases.UsuarioUseCase.LocatarioUseCase;
 using Domus.Infrastructure.Data.Repositories;
 using Domus.Infrastructure.Data.Security;
+using Domus.Application.UseCases.ContratoUseCase;
 
 namespace Domus.WebApi.Dependencies;
 
@@ -35,6 +36,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<CadastrarAdminUseCase>();
         services.AddScoped<CadastrarImovelUseCase>();
         services.AddScoped<CriarAvaliacaoUseCase>();
+        services.AddScoped<CadastrarContratoUseCase>();
 
         return services;
     }

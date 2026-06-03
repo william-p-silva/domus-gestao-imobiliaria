@@ -33,6 +33,11 @@ public class ContratoConfiguration : IEntityTypeConfiguration<Contrato>
             .HasConversion<string>()
             .HasMaxLength(50);
 
+        builder.Property(c => c.CriadoEm)
+            .IsRequired()
+            .HasColumnType("datetime2")
+            .HasDefaultValueSql("GETUTCDATE()");
+
         builder.Property(c => c.DataInicio)
             .IsRequired(false)
             .HasColumnType("datetime2");

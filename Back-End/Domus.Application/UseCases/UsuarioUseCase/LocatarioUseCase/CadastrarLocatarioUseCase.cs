@@ -5,20 +5,12 @@ using Domus.Domain.Entity;
 
 namespace Domus.Application.UseCases.UsuarioUseCase.LocatarioUseCase;
 
-public class CadastrarLocatarioUseCase
+public class CadastrarLocatarioUseCase(IUsuarioRepository usuarioRepository, IPasswordHasher passwordHasher, IUnitOfWork commit, IFuncaoRepository funcaoRepository)
 {
-    private readonly IUsuarioRepository _usuarioRepository;
-    private readonly IPasswordHasher _passwordHasher;
-    private readonly IFuncaoRepository _funcaoRepository;
-    private readonly IUnitOfWork _commit;
-
-    public CadastrarLocatarioUseCase(IUsuarioRepository usuarioRepository, IPasswordHasher passwordHasher, IUnitOfWork commit, IFuncaoRepository funcaoRepository)
-    {
-        _usuarioRepository = usuarioRepository;
-        _passwordHasher = passwordHasher;
-        _commit = commit;
-        _funcaoRepository = funcaoRepository;
-    }
+    private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
+    private readonly IPasswordHasher _passwordHasher = passwordHasher;
+    private readonly IFuncaoRepository _funcaoRepository = funcaoRepository;
+    private readonly IUnitOfWork _commit = commit;
 
     public async Task<UsuarioResponse> Execute(UsuarioRequest request, CancellationToken cancellationToken)
     {

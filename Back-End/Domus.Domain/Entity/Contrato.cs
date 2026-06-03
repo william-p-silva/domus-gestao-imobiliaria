@@ -14,6 +14,7 @@ public class Contrato
     public string Descricao { get; private set; }
     public string Tipo { get; private set; }
     public string UrlContrato { get; private set; }
+    public DateTime CriadoEm { get; private set; } = DateTime.UtcNow;
     public DateTime? DataInicio { get; private set; }
     public DateTime? DataTermino { get; private set; }
     public StatusContrato Status { get; private set; }
@@ -33,7 +34,7 @@ public class Contrato
 
     public Contrato
         ( Guid imovel_id, Guid locador_id, string titulo, string descricao, 
-          string tipo, string urlContrato )
+          string tipo, string urlContrato, Imovel imovel )
     {
         if (imovel_id == Guid.Empty)
             throw new ArgumentException("O ID do imóvel é obrigatório.", nameof(imovel_id)); 
@@ -47,6 +48,9 @@ public class Contrato
             throw new ArgumentException("O tipo do contrato é obrigatório.", nameof(tipo));
         if (string.IsNullOrWhiteSpace(urlContrato))
             throw new ArgumentException("A URL do contrato é obrigatória.", nameof(urlContrato));
+
+        if (imovel != null && imovel.Usuario_ID != locador_id)
+            throw new ArgumentException("O locador deve ser o proprietário do imóvel.", nameof(locador_id));
 
         Contrato_ID = Guid.NewGuid();
         Imovel_ID = imovel_id;

@@ -7,42 +7,39 @@ using Domus.Domain.Entity;
 
 namespace Domus.Application.UseCases.AvaliacaoUseCases;
 
-public class CriarAvaliacaoUseCase
-{
-    private readonly IAvaliacaoRepository _avaliacaoRepository;
-    private readonly IUsuarioRepository _usuarioRepository;
-    private readonly IImovelRepository _imovelRepository;
-    private readonly IContratoRepository _contratoRepository;
-    private readonly IUnitOfWork _commit;
-
-    public CriarAvaliacaoUseCase( 
+public class CriarAvaliacaoUseCase(
         IAvaliacaoRepository avaliacaoRepository
-        ,IUnitOfWork commit
-        ,IUsuarioRepository usuarioRepository
-        ,IImovelRepository imovelRepository
-        ,IContratoRepository contratoRepository
+        , IUnitOfWork commit
+        , IUsuarioRepository usuarioRepository
+        , IImovelRepository imovelRepository
+        , IContratoRepository contratoRepository
         )
-    {
-        _avaliacaoRepository = avaliacaoRepository;
-        _commit = commit;
-        _usuarioRepository = usuarioRepository;
-        _imovelRepository = imovelRepository;
-        _contratoRepository = contratoRepository;
-    }
+{
+    private readonly IAvaliacaoRepository _avaliacaoRepository = avaliacaoRepository;
+    private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
+    private readonly IImovelRepository _imovelRepository = imovelRepository;
+    private readonly IContratoRepository _contratoRepository = contratoRepository;
+    private readonly IUnitOfWork _commit = commit;
 
     public async Task<AvaliacaoResponse> Execute(AvaliacaoRequest request, CancellationToken cancellationToken)
     {
         var usuario = await _usuarioRepository.BuscarPorIdAsync(request.Usuario_ID, cancellationToken);
         if (usuario == null) 
             throw new ArgumentException("Usuario Inexistente ", nameof(request.Usuario_ID));
+        if (!usuario.PossuiFuncao(Domain.Enums.FuncaoUser.Locatario))
+            throw new ArgumentException("Usuario não é um locatário ", nameof(request.Usuario_ID));
 
         var imovel = await _imovelRepository.BuscarPorIdAsync(request.Imovel_ID, cancellationToken);
         if (imovel == null)
             throw new ArgumentException("Imovel inexistente ", nameof(request.Imovel_ID));
+        if(imovel.Status != Domain.Enums.StatusImovel.Disponivel)
+            throw new ArgumentException("Imovel não disponível para avaliação ", nameof(request.Imovel_ID));
 
         var contrato = await _contratoRepository.BuscarPorIdAsync(request.Contrato_ID, cancellationToken);
         if (contrato == null)
             throw new ArgumentException("Contrato inexistente ", nameof(request.Contrato_ID));
+        if (contrato.Status != Domain.Enums.StatusContrato.Ativo)
+            throw new ArgumentException("Contrato não ativo ", nameof(request.Contrato_ID));
 
         Avaliacao avaliacao = new Avaliacao(
             usuario_id: request.Usuario_ID
