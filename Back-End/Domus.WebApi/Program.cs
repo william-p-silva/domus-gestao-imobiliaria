@@ -1,7 +1,10 @@
 using Domus.Infrastructure.Data.Context;
 using Domus.WebApi.Dependencies;
 using Domus.WebApi.Middlewares;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,8 +21,29 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // ============================================================================
 builder.Services.AddProjectDependencies(); // Método de extensão para organizar a DI em um único local (DependencyInjectionConfig.cs)
 
+
 // ============================================================================
-// 3. CONTROLLERS E DOCUMENTAÇÃO DA API
+// 3. TokenService - Implementação de geração de tokens JWT para autenticação e autorização
+// ============================================================================
+var key = Encoding.UTF8.GetBytes(
+    builder.Configuration["Jwt:Key"]!);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+
+    options.DefaultChallengeScheme =
+        JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options => 
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+
+    }
+)
+
+// ============================================================================
+// 4. CONTROLLERS E DOCUMENTAÇÃO DA API
 // ============================================================================
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
@@ -27,12 +51,12 @@ builder.Services.AddOpenApi();
 var app = builder.Build();
 
 // ============================================================================
-// 4. Middleware global para tratamento de exceções personalizadas (ExceptionMiddleware.cs)
+// 5. Middleware global para tratamento de exceções personalizadas (ExceptionMiddleware.cs)
 // ============================================================================
 app.UseMiddleware<ExceptionMiddleware>();
 
 // ============================================================================
-// 5. PIPELINE DE REQUISIÇÕES HTTP (MIDDLEWARES)
+// 6. PIPELINE DE REQUISIÇÕES HTTP (MIDDLEWARES)
 // ============================================================================
 if (app.Environment.IsDevelopment())
 {
@@ -46,7 +70,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 // ============================================================================
-// 6. INICIALIZAÇÃO E AUTO-MIGRATION (Executado de forma isolada e segura)
+// 7. INICIALIZAÇÃO E AUTO-MIGRATION (Executado de forma isolada e segura)
 // ============================================================================
 using (var scope = app.Services.CreateScope())
 {

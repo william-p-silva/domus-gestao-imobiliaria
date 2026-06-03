@@ -10,7 +10,7 @@ namespace Domus.WebApi.Controllers.UsuarioControllers;
 public class LocatarioController(CadastrarLocatarioUseCase cadastrarLocatarioUseCase) : ControllerBase
 {
     [HttpPost("post/locatario")]
-    public async Task<IActionResult> PostLocatario(UsuarioRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> PostLocatario([FromBody] UsuarioRequest request, CancellationToken cancellationToken)
     {
         var usuario = await cadastrarLocatarioUseCase.Execute(request, cancellationToken);
         return Ok(new SuccessApiResponse<UsuarioResponse>

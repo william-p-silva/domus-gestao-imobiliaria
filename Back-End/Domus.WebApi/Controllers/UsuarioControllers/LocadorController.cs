@@ -11,7 +11,7 @@ public class LocadorController(CadastrarLocadorUseCase cadastrarLocadorUseCase) 
 {
 
     [HttpPost("post/locador")]
-    public async Task<IActionResult> PostLocador(UsuarioRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> PostLocador([FromBody] UsuarioRequest request, CancellationToken cancellationToken)
     {
         var usuario = await cadastrarLocadorUseCase.Execute(request, cancellationToken);
         return Ok(new SuccessApiResponse<UsuarioResponse>

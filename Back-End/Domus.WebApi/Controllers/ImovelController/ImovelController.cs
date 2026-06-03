@@ -10,7 +10,7 @@ namespace Domus.WebApi.Controllers.ImovelController;
 public class ImovelController(CadastrarImovelUseCase cadastrarImovelUseCase) : ControllerBase
 {
     [HttpPost("post/imovel")]
-    public async Task<IActionResult> PostImovel(ImovelRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> PostImovel([FromBody] ImovelRequest request, CancellationToken cancellationToken)
     {
         var imovel = await cadastrarImovelUseCase.Execute(request, cancellationToken);
         return Ok(new SuccessApiResponse<ImovelResponse>

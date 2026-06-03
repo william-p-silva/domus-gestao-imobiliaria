@@ -18,7 +18,9 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
 
     public async Task<Imovel?> BuscarPorIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var imovel = await context.Imoveis.FindAsync(id, cancellationToken);
+        var imovel = await context.Imoveis.Include(i => i.Endereco)
+            .Include(i => i.Contratos)
+            .FirstOrDefaultAsync(i => i.Imovel_ID == id, cancellationToken);
         return imovel;
     }
 

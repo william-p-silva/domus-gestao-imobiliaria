@@ -19,7 +19,10 @@ public class CadastrarContratoUseCase(
         if ( imovel == null)
             throw new ArgumentException("Imovel Inexistente ", nameof(request.Imovel_ID));
 
-        if(imovel.Status == StatusImovel.Indisponivel)
+        if (imovel.Contratos.Select(c => c.Imovel_ID == imovel.Imovel_ID).FirstOrDefault())
+            throw new ArgumentException("Imovel já possui contrato ativo", nameof(request.Imovel_ID));
+
+        if (imovel.Status == StatusImovel.Indisponivel)
             throw new ArgumentException("Imovel Indisponivel ", nameof(request.Imovel_ID));
 
         var user = await usuarioRepository.BuscarPorIdAsync(locador_ID, cancellationToken);
