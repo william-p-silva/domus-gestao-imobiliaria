@@ -8,6 +8,6 @@ public class TokenService : ITokenService
 {
     public Task<string> GenereteToken(Usuario usuario)
     {
-        
+        throw new NotImplementedException();
     }
 }

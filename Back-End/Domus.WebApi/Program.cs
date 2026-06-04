@@ -25,8 +25,10 @@ builder.Services.AddProjectDependencies(); // Método de extensão para organiza
 // ============================================================================
 // 3. TokenService - Implementação de geração de tokens JWT para autenticação e autorização
 // ============================================================================
-var key = Encoding.UTF8.GetBytes(
-    builder.Configuration["Jwt:Key"]!);
+var jwtKey = builder.Configuration["Jwt:Key"]
+    ?? throw new InvalidOperationException("A chave secreta do JWT (Jwt:Key) não foi configurada no appsettings.json.");
+
+var key = Encoding.UTF8.GetBytes(jwtKey);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -35,18 +37,63 @@ builder.Services.AddAuthentication(options =>
 
     options.DefaultChallengeScheme =
         JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options => 
+}).AddJwtBearer(options => {
     options.TokenValidationParameters = new TokenValidationParameters
     {
+        ValidateAudience = true,
+        ValidateIssuer = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
 
-    }
-)
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+
+        IssuerSigningKey = new SymmetricSecurityKey(key)
+    };
+});
+
+builder.Services.AddAuthorization();
 
 // ============================================================================
 // 4. CONTROLLERS E DOCUMENTAÇÃO DA API
 // ============================================================================
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        var requirement = new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+        {
+            {
+                new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                    {
+                        Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                Array.Empty<string>()
+            }
+        };
+
+        document.SecurityRequirements = new List<Microsoft.OpenApi.Models.OpenApiSecurityRequirement> { requirement };
+
+        var scheme = new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+        {
+            Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+            Description = "Insira o token JWT gerado no login neste formato: {seu_token}"
+        };
+
+        document.Components ??= new Microsoft.OpenApi.Models.OpenApiComponents();
+        document.Components.SecuritySchemes.Add("Bearer", scheme);
+
+        return Task.CompletedTask;
+    });
+});
 
 var app = builder.Build();
 
@@ -61,11 +108,19 @@ app.UseMiddleware<ExceptionMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "Domus API v1");
+        options.RoutePrefix = "swagger"; // Define a URL de acesso
+    });
 }
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 
@@ -91,6 +146,8 @@ using (var scope = app.Services.CreateScope())
 
 app.Run();
 
+
+//http://localhost:5038/swagger/index.html
 // ============================================================================
 // COMANDOS ÚTEIS PARA O TERMINAL:
 // 
@@ -99,4 +156,10 @@ app.Run();
 //
 // Atualizar o banco manualmente (Caso não queira depender do auto-migrate):
 // dotnet ef database update --project ..\Infrastructure  .
+//
+//
+// Salvar Chaves de configuração sensíveis (ex: JWT) usando Secret Manager (Desenvolvimento local):
+// dotnet user-secrets list // Listar chaves e valores atuais
+// dotnet dotnet user-secrets set chave valor // Adicionar ou atualizar uma chave-valor
+// dotnet user-secrets remove chave // Remover uma chave específica
 // ============================================================================

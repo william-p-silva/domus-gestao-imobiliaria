@@ -1,10 +1,13 @@
 @Domus.WebApi_HostAddress = http://localhost:5038/domus
+@MeuTokenJWT = TrocarPorUmTokenValido
+
 
 //============================================================
-//Controller: LocatarioController
+//Controller: 
 //============================================================
 POST {{Domus.WebApi_HostAddress}}/locatario/post/locatario
 Content-Type: application/json
+
 {
   "nome": "Locatario",
   "email": "locatario@gmail.com",
@@ -19,6 +22,7 @@ Content-Type: application/json
 //============================================================
 POST {{Domus.WebApi_HostAddress}}/locador/post/locador
 Content-Type: application/json
+
 {
   "nome": "Locador",
   "email": "locador@gmail.com",
@@ -33,6 +37,7 @@ Content-Type: application/json
 //============================================================
 POST {{Domus.WebApi_HostAddress}}/admin/post/admin
 Content-Type: application/json
+
 {
   "nome": "admin",
   "email": "admin@gmail.com",
@@ -47,6 +52,7 @@ Content-Type: application/json
 //============================================================
 POST {{Domus.WebApi_HostAddress}}/imovel/post/imovel
 Content-Type: application/json
+
   {
     "usuario_id": "2967AB27-178C-4A93-9F1F-EFC95052FB61",
     "titulo": "Imovel muito massa",
@@ -74,6 +80,8 @@ Content-Type: application/json
 //============================================================
 POST {{Domus.WebApi_HostAddress}}/contrato/post/contrato
 Content-Type: application/json
+Authorization: Bearer {{MeuTokenJWT}}
+
 {
   "imovel_id": "C6909269-F0DC-4349-96A5-4582EF534401",
   "titulo": "Contrato de aluguel",

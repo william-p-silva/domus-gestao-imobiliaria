@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>7c7097e1-8a34-4275-abca-b8136ab87df8</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +18,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.2.1" />
   </ItemGroup>
 
   <ItemGroup>
