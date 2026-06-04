@@ -1,9 +1,24 @@
 @Domus.WebApi_HostAddress = http://localhost:5038/domus
-@MeuTokenJWT = TrocarPorUmTokenValido
+@MeuTokenJWT = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI0M2RjMDMxOS02YTM2LTQ5OTYtYWMzMC04YTMzOTk5NGIyMmIiLCJ1bmlxdWVfbmFtZSI6IkxvY2Fkb3IiLCJlbWFpbCI6ImxvY2Fkb3JAZ21haWwuY29tIiwicm9sZSI6IkxvY2Fkb3IiLCJuYmYiOjE3ODA2MDk3NzcsImV4cCI6MTc4MDYyMDU3NywiaWF0IjoxNzgwNjA5Nzc3LCJpc3MiOiJkb211cyIsImF1ZCI6ImRvbXVzIn0.sLJ2_QFS0vULtqfWMZpD2N2FBvnKMY2BPdezXP8dmSw
 
 
 //============================================================
-//Controller: 
+//Controller: AuthController
+//============================================================
+POST {{Domus.WebApi_HostAddress}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "locador@gmail.com",
+  "senha": "123456"
+}
+
+###===========================================================
+
+
+
+//============================================================
+//Controller: LocatarioController
 //============================================================
 POST {{Domus.WebApi_HostAddress}}/locatario/post/locatario
 Content-Type: application/json
@@ -52,24 +67,25 @@ Content-Type: application/json
 //============================================================
 POST {{Domus.WebApi_HostAddress}}/imovel/post/imovel
 Content-Type: application/json
+Authorization: Bearer {{MeuTokenJWT}}
 
-  {
-    "usuario_id": "2967AB27-178C-4A93-9F1F-EFC95052FB61",
-    "titulo": "Imovel muito massa",
-    "descricao": "Realmente muito massa, e perto (mais ou menos) do São Francisco. Para os mais intimos 'Velho Chico'",
-    "comodos": 20,
-    "status": 1,
-    "valorAluguel": 2500.00,
-    "endereco": {
-        "cep": "07861140",
-        "uf": "AL",
-        "cidade": "Delmiro Golveia",
-        "bairro": "Campo Grande",
-        "rua": "Fernandes Lima",
-        "numero": "803",
-        "complemento": null
-    }  
-  }
+{
+  "usuario_id": "43dc0319-6a36-4996-ac30-8a339994b22b",
+  "titulo": "Lendario Imovel",
+  "descricao": "Muitas historias",
+  "comodos": 2,
+  "status": 1,
+  "valorAluguel": 200.00,
+  "endereco": {
+      "cep": "07861140",
+      "uf": "AL",
+      "cidade": "Golveia",
+      "bairro": "Campo",
+      "rua": "Lima",
+      "numero": "803",
+      "complemento": null
+  }  
+}
 
 
 ###===========================================================

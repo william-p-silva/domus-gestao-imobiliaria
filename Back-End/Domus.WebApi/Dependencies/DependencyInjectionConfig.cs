@@ -10,6 +10,7 @@ using Domus.Application.UseCases.UsuarioUseCase.LocatarioUseCase;
 using Domus.Infrastructure.Data.Repositories;
 using Domus.Infrastructure.Data.Security;
 using Domus.Application.UseCases.ContratoUseCase;
+using Domus.Application.UseCases.UsuarioUseCase.AuthUseCase;
 
 namespace Domus.WebApi.Dependencies;
 
@@ -29,6 +30,7 @@ public static class DependencyInjectionConfig
 
         // Segurança
         services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<ITokenService, TokenService>();
 
         // Use Cases
         services.AddScoped<CadastrarLocatarioUseCase>();
@@ -37,6 +39,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<CadastrarImovelUseCase>();
         services.AddScoped<CriarAvaliacaoUseCase>();
         services.AddScoped<CadastrarContratoUseCase>();
+        services.AddScoped<LoginUseCase>();
 
         return services;
     }

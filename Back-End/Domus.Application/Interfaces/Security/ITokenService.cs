@@ -4,5 +4,5 @@ namespace Domus.Application.Interfaces.Security;
 
 public interface ITokenService
 {
-    Task<string> GenereteToken(Usuario usuario);
+    string GenerateToken(Usuario usuario);
 }

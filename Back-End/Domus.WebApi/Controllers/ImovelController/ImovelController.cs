@@ -1,6 +1,7 @@
 ﻿using Domus.Application.DTOs.ApiResponse;
 using Domus.Application.DTOs.Imovel;
 using Domus.Application.UseCases.ImovelUseCase;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Domus.WebApi.Controllers.ImovelController;
@@ -9,6 +10,7 @@ namespace Domus.WebApi.Controllers.ImovelController;
 [Route("domus/[controller]")]
 public class ImovelController(CadastrarImovelUseCase cadastrarImovelUseCase) : ControllerBase
 {
+    [Authorize(Roles = "Locador")]
     [HttpPost("post/imovel")]
     public async Task<IActionResult> PostImovel([FromBody] ImovelRequest request, CancellationToken cancellationToken)
     {
