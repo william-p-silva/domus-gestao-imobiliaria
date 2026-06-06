@@ -24,8 +24,8 @@ POST {{Domus.WebApi_HostAddress}}/locatario/post/locatario
 Content-Type: application/json
 
 {
-  "nome": "Locatario",
-  "email": "locatario@gmail.com",
+  "nome": "Locatario2",
+  "email": "locatario2@gmail.com",
   "senha": "123456"
 }
 
@@ -39,8 +39,8 @@ POST {{Domus.WebApi_HostAddress}}/locador/post/locador
 Content-Type: application/json
 
 {
-  "nome": "Locador",
-  "email": "locador@gmail.com",
+  "nome": "Locador2",
+  "email": "locador2@gmail.com",
   "senha": "123456"
 }
 
@@ -54,8 +54,8 @@ POST {{Domus.WebApi_HostAddress}}/admin/post/admin
 Content-Type: application/json
 
 {
-  "nome": "admin",
-  "email": "admin@gmail.com",
+  "nome": "admin2",
+  "email": "admin2@gmail.com",
   "senha": "123456"
 }
 

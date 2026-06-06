@@ -30,7 +30,7 @@ public class CadastrarLocatarioUseCase(IUsuarioRepository usuarioRepository, IPa
             throw new ArgumentNullException("Funcao não encontrada", nameof(funcao));
 
 
-        usuario.AddFuncaoUsuario(funcao.Funcao_ID);
+        usuario.AddFuncaoUsuario(funcao);
 
 
         await _usuarioRepository.AddAsync(usuario, cancellationToken);

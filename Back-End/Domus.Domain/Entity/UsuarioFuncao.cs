@@ -18,15 +18,16 @@ public class UsuarioFuncao
     /// </summary>
     protected UsuarioFuncao() { }
 
-    public UsuarioFuncao(Guid funcaoId, Guid usuarioId)
+    public UsuarioFuncao(Funcao funcao, Guid usuarioId)
     {
-        if (funcaoId == Guid.Empty)
-            throw new ArgumentException("O ID da função é obrigatório.", nameof(funcaoId));
+        if (funcao.Funcao_ID == Guid.Empty)
+            throw new ArgumentException("O ID da função é obrigatório.", nameof(funcao.Funcao_ID));
         if (usuarioId == Guid.Empty)
             throw new ArgumentException("O ID do usuário é obrigatório.", nameof(usuarioId));
 
         UsuarioFuncao_ID = Guid.NewGuid();
-        Funcao_ID = funcaoId;
+        Funcao_ID = funcao.Funcao_ID;
         Usuario_ID = usuarioId;
+        Funcao = funcao;
     }
 }

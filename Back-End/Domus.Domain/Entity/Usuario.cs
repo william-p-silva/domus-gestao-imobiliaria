@@ -57,15 +57,15 @@ public class Usuario
     }
 
 
-    public void AddFuncaoUsuario(Guid funcaoId)
+    public void AddFuncaoUsuario(Funcao funcao)
     {
-        if (funcaoId == Guid.Empty)
-            throw new ArgumentException("É preciso um id valido para esta ação", nameof(funcaoId));
+        if (funcao.Funcao_ID == Guid.Empty)
+            throw new ArgumentException("É preciso um id valido para esta ação", nameof(funcao.Funcao_ID));
 
-        if (_usuarioFuncao.Any(uf => uf.Funcao_ID == funcaoId))
+        if (_usuarioFuncao.Any(uf => uf.Funcao_ID == funcao.Funcao_ID))
             throw new ArgumentException("O usuário já possui esta função.");
 
-        var usuarioFuncao = new UsuarioFuncao(usuarioId: Usuario_ID, funcaoId: funcaoId);
+        var usuarioFuncao = new UsuarioFuncao(usuarioId: Usuario_ID, funcao: funcao);
         _usuarioFuncao.Add(usuarioFuncao);
     }
 
