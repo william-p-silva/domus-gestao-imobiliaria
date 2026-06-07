@@ -15,7 +15,7 @@ public class TestsCadastrarContrato(ContratoFixture contratoFixture) : IClassFix
 
 
     [Fact]
-    public async Task DeveRetornarSucesso_QuandoDadosValidos()
+    public async Task RetornarSucesso_QuandoDadosValidos()
     {
         //Arrange
         var contratoFake = contratoFixture.GerarContrato();

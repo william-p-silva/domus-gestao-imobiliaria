@@ -47,7 +47,7 @@ public class ContratoFixture
     public Usuario GerarUsuarioContrato()
     {
         var usuario = new Usuario(
-            nome: "Tete de Locador dos Contratos da Silva",
+            nome: "Teste de Locador dos Contratos da Silva",
             email: "testeContratoLocador@gmail.com",
             senhaHash: "jfgdhncxbaliubvdfjmkfkdbc"
             );
