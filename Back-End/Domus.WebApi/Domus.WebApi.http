@@ -1,5 +1,9 @@
 @Domus.WebApi_HostAddress = http://localhost:5038/domus
 @MeuTokenJWT = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI0M2RjMDMxOS02YTM2LTQ5OTYtYWMzMC04YTMzOTk5NGIyMmIiLCJ1bmlxdWVfbmFtZSI6IkxvY2Fkb3IiLCJlbWFpbCI6ImxvY2Fkb3JAZ21haWwuY29tIiwicm9sZSI6IkxvY2Fkb3IiLCJuYmYiOjE3ODA2MDk3NzcsImV4cCI6MTc4MDYyMDU3NywiaWF0IjoxNzgwNjA5Nzc3LCJpc3MiOiJkb211cyIsImF1ZCI6ImRvbXVzIn0.sLJ2_QFS0vULtqfWMZpD2N2FBvnKMY2BPdezXP8dmSw
+@Locador_ID = "43dc0319-6a36-4996-ac30-8a339994b22b"
+@Locatario_ID = "d162af62-af03-419b-a58a-7f894992bf05"
+@Admin_ID = "0caa380d-c1f2-4804-a9bb-6d36b628b519"
+@FinalEmail = "@gmail.com"
 
 
 //============================================================
@@ -9,7 +13,7 @@ POST {{Domus.WebApi_HostAddress}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "locador@gmail.com",
+  "email": "locador{{FinalEmail}}",
   "senha": "123456"
 }
 
@@ -70,7 +74,7 @@ Content-Type: application/json
 Authorization: Bearer {{MeuTokenJWT}}
 
 {
-  "usuario_id": "43dc0319-6a36-4996-ac30-8a339994b22b",
+  "usuario_id": {{Locador_ID}},
   "titulo": "Lendario Imovel",
   "descricao": "Muitas historias",
   "comodos": 2,
@@ -99,7 +103,7 @@ Content-Type: application/json
 Authorization: Bearer {{MeuTokenJWT}}
 
 {
-  "imovel_id": "C6909269-F0DC-4349-96A5-4582EF534401",
+  "imovel_id": {{Locador_ID}},
   "titulo": "Contrato de aluguel",
   "descricao": "Contrato de aluguel do imovel muito massa",
   "tipo": "Mensal",
@@ -107,3 +111,21 @@ Authorization: Bearer {{MeuTokenJWT}}
 }
 ###===========================================================
 
+
+//============================================================
+//Controller: AvaliacaoController
+//============================================================
+POST {{Domus.WebApi_HostAddress}}/avaliacao/post/avaliacao
+Content-Type: application/json
+Authorization: Bearer {{MeuTokenJWT}}
+
+{
+  "usuario_id": {{Locatario_ID}},
+  "imovel_id": "50626A6E-BDD1-43D2-9243-32962DF64219",
+  "contrato_id": "08348E82-9659-4648-992B-4C810BF83A5E",
+  "titulo": "Avaliação muito massa",
+  "descricao": "Descrição da avaliação muito massa",
+  "nota": 5
+}
+
+###
