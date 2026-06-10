@@ -18,6 +18,21 @@ public class CadastrarImovelUseCase(
     private readonly IEnderecoRepository _enderecoRepository = enderecoRepository;
     private readonly IUnitOfWork _commit = commit;
 
+
+
+    /// <summary>
+    /// Caso de Uso: Realiza o cadastramento e publicação de um novo imóvel no sistema, criando também o seu respectivo endereço.
+    /// </summary>
+    /// <remarks>
+    /// O fluxo garante a atomicidade da operação salvando o endereço e o imóvel sob a mesma transação, 
+    /// além de certificar que apenas usuários com o perfil de Locador possam disponibilizar propriedades.
+    /// </remarks>
+    /// <param name="request">DTO com as informações estruturais do imóvel e os dados aninhados do endereço.</param>
+    /// <param name="cancellationToken">Token de cancelamento para controle de concorrência e aborto da operação.</param>
+    /// <returns>Um <see cref="ImovelResponse"/> contendo o ID gerado para o imóvel e os detalhes do endereço persistido.</returns>
+    /// <exception cref="ArgumentException">
+    /// Lançada caso o identificador do usuário não seja encontrado ou se o usuário não possuir o perfil <see cref="FuncaoUser.Locador"/>.
+    /// </exception>
     public async Task<ImovelResponse> Execute(ImovelRequest request, CancellationToken cancellationToken)
     {
         var user = await _usuarioRepository.BuscarPorIdAsync(request.Usuario_ID, cancellationToken);

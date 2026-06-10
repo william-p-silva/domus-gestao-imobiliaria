@@ -21,6 +21,21 @@ public class CriarAvaliacaoUseCase(
     private readonly IContratoRepository _contratoRepository = contratoRepository;
     private readonly IUnitOfWork _commit = commit;
 
+
+    /// <summary>
+    /// Caso de Uso: Executa a criação e persistência de uma nova avaliação de imóvel.
+    /// </summary>
+    /// <remarks>
+    /// Este fluxo valida se o avaliador é um inquilino ativo, se o imóvel está disponível para receber notas, 
+    /// se o contrato vinculado está ativo e se o avaliador é, de fato, o locatário presente no contrato informado.
+    /// </remarks>
+    /// <param name="request">DTO contendo as chaves estrangeiras, nota, título e descrição da avaliação.</param>
+    /// <param name="cancellationToken">Token de cancelamento para interrupção resiliente da requisição.</param>
+    /// <returns>Um objeto <see cref="AvaliacaoResponse"/> populado com os dados consolidados da avaliação e das entidades vinculadas.</returns>
+    /// <exception cref="ArgumentException">
+    /// Lançada se o usuário, imóvel ou contrato não existirem; se o usuário não possuir papel de Locatário; 
+    /// se o imóvel estiver inativo; se o contrato não estiver vigente; ou se o usuário não for o locatário oficial do contrato.
+    /// </exception>
     public async Task<AvaliacaoResponse> Execute(AvaliacaoRequest request, CancellationToken cancellationToken)
     {
         var usuario = await _usuarioRepository.BuscarPorIdAsync(request.Usuario_ID, cancellationToken);
@@ -50,7 +65,7 @@ public class CriarAvaliacaoUseCase(
             throw new ArgumentException("O usuario que fará a avaliação deve ser o mesmo do contrato ", nameof(request.Usuario_ID));
 
 
-        if (imovel.Imovel_ID == contrato.Imovel_ID)
+        if (imovel.Imovel_ID != contrato.Imovel_ID)
             throw new ArgumentException("O imovel deve ser o mesmo do contrato ", nameof(request.Imovel_ID));
 
 
