@@ -18,6 +18,8 @@ public class Contrato
     public DateTime? DataInicio { get; private set; }
     public DateTime? DataTermino { get; private set; }
     public StatusContrato Status { get; private set; }
+    public bool AssinaturaLocador { get; private set; } = false;
+    public bool AssinaturaLocatario { get; private set; } = false;
 
     //Relacionamentos
     public List<ParcelaAluguel> ParcelasAluguel { get; private set; }
@@ -32,6 +34,22 @@ public class Contrato
     /// </summary>
     protected Contrato() { }
 
+
+    /// <summary>
+    /// Inicializa uma nova instância da classe <see cref="Contrato"/> como um rascunho (minuta), 
+    /// garantindo as validações obrigatórias e que o locador seja o proprietário do imóvel.
+    /// </summary>
+    /// <param name="imovel_id">O identificador exclusivo do imóvel.</param>
+    /// <param name="locador_id">O identificador exclusivo do locador/proprietário.</param>
+    /// <param name="titulo">O título descritivo do contrato.</param>
+    /// <param name="descricao">Os detalhes e cláusulas do contrato.</param>
+    /// <param name="tipo">O tipo de contrato (ex: Residencial, Comercial).</param>
+    /// <param name="urlContrato">O endereço de armazenamento do documento físico ou PDF.</param>
+    /// <param name="imovel">A instância opcional do <see cref="Imovel"/> para validação de vínculo com o locador.</param>
+    /// <exception cref="ArgumentException">
+    /// Lançada se qualquer um dos campos obrigatórios estiver vazio, nulo ou inválido, 
+    /// ou se o <paramref name="locador_id"/> não for o proprietário do <paramref name="imovel"/> informado.
+    /// </exception>
     public Contrato
         ( Guid imovel_id, Guid locador_id, string titulo, string descricao, 
           string tipo, string urlContrato, Imovel imovel )
@@ -60,5 +78,86 @@ public class Contrato
         Tipo = tipo;
         UrlContrato = urlContrato;
         Status = StatusContrato.Rascunho;
+    }
+
+
+    /// <summary>
+    /// Registra a assinatura do locador na minuta e disponibiliza o contrato para a análise e assinatura do locatário.
+    /// </summary>
+    /// <param name="locatario_id">O identificador exclusivo <see cref="Guid"/> do candidato a inquilino</param>
+    /// <exception cref="ArgumentException">Lançada caso o <paramref name="locatario_id"/> for um Guid vazio</exception>
+    /// <exception cref="InvalidOperationException">Lançada caso o status do Contrato não esteja como <paramref name="StatusContrato.Rascunho"/></exception>
+    public void LocadorDisponibilizaAssinaturaMinuta(Guid locatario_id)
+    {
+        if (locatario_id == Guid.Empty)
+            throw new ArgumentException("Locatario invalido ", nameof(locatario_id));
+
+        if (Status != StatusContrato.Rascunho)
+            throw new InvalidOperationException("O contrato só pode ser disponibilizado para assinatura se estiver em rascunho.");
+
+        Locatario_ID = locatario_id;
+        AssinaturaLocador = true;
+        Status = StatusContrato.Pendente;
+    }
+
+    /// <summary>
+    /// Registra a assinatura do locatário na minuta e engatilha a ativação do contrato de locação.
+    /// </summary>
+    /// <param name="dataTermino">A data combinada para o término do contrato.</param>
+    /// <exception cref="InvalidOperationException">
+    /// Lançada se o contrato não cumprir os pré-requisitos de ativação (ex: não estar pendente).
+    /// </exception>
+    /// <exception cref="ArgumentException">
+    /// Lançada se os parâmetros de vigência forem inválidos.
+    /// </exception>
+    public void LocatarioAssinaMinuta(DateTime dataTermino)
+    {
+        if (Status != StatusContrato.Pendente)
+            throw new InvalidOperationException("O contrato só pode ser assinado pelo locatario caso ele esteja como pendente.");
+
+        AssinaturaLocatario = true;
+        AtivarContrato(dataTermino: dataTermino);
+    }
+
+
+    /// <summary>
+    /// Executa a transição interna de estado para ativar o contrato, cravando a data de início e definindo o encerramento da vigência.
+    /// </summary>
+    /// <param name="dataTermino">A data final combinada para o encerramento do contrato de locação.</param>
+    /// <exception cref="InvalidOperationException">
+    /// Lançada se o contrato não estiver com o status <see cref="StatusContrato.Pendente"/>.
+    /// </exception>
+    /// <exception cref="ArgumentException">
+    /// Lançada se a <paramref name="dataTermino"/> não respeitar o período mínimo exigido de vigência (menor ou igual a um mês a partir de hoje).
+    /// </exception>
+    private void AtivarContrato(DateTime dataTermino)
+    {
+        if (Status != StatusContrato.Pendente)
+            throw new InvalidOperationException("O contrato só poder ser ativado caso esteja pendente");
+
+        if (dataTermino <= DateTime.UtcNow.AddMonths(1))
+            throw new ArgumentException("Data não pode ser anterior ao dia atual");
+
+        DataInicio = DateTime.UtcNow;
+        DataTermino = dataTermino;
+        Status = StatusContrato.Ativo;
+    }
+
+    /// <summary>
+    /// Cancela a pendência de assinatura da minuta, limpando os vínculos e retornando o contrato para o estado editável de rascunho.
+    /// Pode ser executado tanto pelo locador quanto pelo locatário antes da assinatura final.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// Lançada se o contrato não estiver com o status <see cref="StatusContrato.Pendente"/>.
+    /// </exception>
+    public void CancelarPendenciaMinuta()
+    {
+        if (Status != StatusContrato.Pendente)
+            throw new InvalidOperationException("O contrato só poder ser rejeitado caso esteja pendente");
+
+        Status = StatusContrato.Rascunho;
+        AssinaturaLocador = false;
+        AssinaturaLocatario = false;
+        Locatario_ID = null;
     }
 }

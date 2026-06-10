@@ -46,6 +46,15 @@ public class ContratoConfiguration : IEntityTypeConfiguration<Contrato>
             .IsRequired(false)
             .HasColumnType("datetime2");
 
+        builder.Property(c => c.AssinaturaLocador)
+            .IsRequired()
+            .HasDefaultValue(false);
+
+
+        builder.Property(c => c.AssinaturaLocatario)
+            .IsRequired()
+            .HasDefaultValue(false);
+
         builder.HasOne(c => c.Imovel)
             .WithMany(i => i.Contratos)
             .HasForeignKey(c => c.Imovel_ID)
