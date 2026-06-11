@@ -1,9 +1,8 @@
 @Domus.WebApi_HostAddress = http://localhost:5038/domus
-@MeuTokenJWT = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI0M2RjMDMxOS02YTM2LTQ5OTYtYWMzMC04YTMzOTk5NGIyMmIiLCJ1bmlxdWVfbmFtZSI6IkxvY2Fkb3IiLCJlbWFpbCI6ImxvY2Fkb3JAZ21haWwuY29tIiwicm9sZSI6IkxvY2Fkb3IiLCJuYmYiOjE3ODA2MDk3NzcsImV4cCI6MTc4MDYyMDU3NywiaWF0IjoxNzgwNjA5Nzc3LCJpc3MiOiJkb211cyIsImF1ZCI6ImRvbXVzIn0.sLJ2_QFS0vULtqfWMZpD2N2FBvnKMY2BPdezXP8dmSw
+@MeuTokenJWT = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI0M2RjMDMxOS02YTM2LTQ5OTYtYWMzMC04YTMzOTk5NGIyMmIiLCJ1bmlxdWVfbmFtZSI6IkxvY2Fkb3IiLCJlbWFpbCI6ImxvY2Fkb3JAZ21haWwuY29tIiwicm9sZSI6IkxvY2Fkb3IiLCJuYmYiOjE3ODExODk1ODksImV4cCI6MTc4MTIwMDM4OSwiaWF0IjoxNzgxMTg5NTg5LCJpc3MiOiJkb211cyIsImF1ZCI6ImRvbXVzIn0.Gxpaud7WIsiabjKUSGqiy-GD0KI87oilZ15MG3bg5nU
 @Locador_ID = "43dc0319-6a36-4996-ac30-8a339994b22b"
 @Locatario_ID = "d162af62-af03-419b-a58a-7f894992bf05"
 @Admin_ID = "0caa380d-c1f2-4804-a9bb-6d36b628b519"
-@FinalEmail = "@gmail.com"
 
 
 //============================================================
@@ -13,7 +12,7 @@ POST {{Domus.WebApi_HostAddress}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "locador{{FinalEmail}}",
+  "email": "locador@gmail.com",
   "senha": "123456"
 }
 
@@ -58,8 +57,8 @@ POST {{Domus.WebApi_HostAddress}}/admin/post/admin
 Content-Type: application/json
 
 {
-  "nome": "admin2",
-  "email": "admin2@gmail.com",
+  "nome": "admin5",
+  "email": "admin5@gmail.com",
   "senha": "123456"
 }
 
@@ -103,12 +102,23 @@ Content-Type: application/json
 Authorization: Bearer {{MeuTokenJWT}}
 
 {
-  "imovel_id": {{Locador_ID}},
-  "titulo": "Contrato de aluguel",
-  "descricao": "Contrato de aluguel do imovel muito massa",
+  "imovel_id": "9d2303d6-b48b-4d0a-b727-c51d586049e6",
+  "titulo": "Identificador teste",
+  "descricao": "Identificador teste Contrato de aluguel do imovel muito massa",
   "tipo": "Mensal",
-  "urlContrato": "https://www.google.com"
+  "urlContrato": "https://www.google.com////////"
 }
+
+###
+
+PUT {{Domus.WebApi_HostAddress}}/contrato/put/assinatura/locador
+Content-Type: application/json
+Authorization: Bearer {{MeuTokenJWT}}
+{
+  "locatario_id": {{Locatario_ID}},
+  "contrato_id": "5ff33338-028a-48d6-a811-d981f668ba8a"
+}
+
 ###===========================================================
 
 

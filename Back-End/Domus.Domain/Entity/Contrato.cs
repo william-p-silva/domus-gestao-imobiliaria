@@ -51,11 +51,11 @@ public class Contrato
     /// ou se o <paramref name="locador_id"/> não for o proprietário do <paramref name="imovel"/> informado.
     /// </exception>
     public Contrato
-        ( Guid imovel_id, Guid locador_id, string titulo, string descricao, 
-          string tipo, string urlContrato, Imovel imovel )
+        (Guid imovel_id, Guid locador_id, string titulo, string descricao,
+          string tipo, string urlContrato, Imovel imovel)
     {
         if (imovel_id == Guid.Empty)
-            throw new ArgumentException("O ID do imóvel é obrigatório.", nameof(imovel_id)); 
+            throw new ArgumentException("O ID do imóvel é obrigatório.", nameof(imovel_id));
         if (locador_id == Guid.Empty)
             throw new ArgumentException("O ID do locador é obrigatório.", nameof(locador_id));
         if (string.IsNullOrWhiteSpace(titulo))
@@ -84,9 +84,12 @@ public class Contrato
     /// <summary>
     /// Registra a assinatura do locador na minuta e disponibiliza o contrato para a análise e assinatura do locatário.
     /// </summary>
-    /// <param name="locatario_id">O identificador exclusivo <see cref="Guid"/> do candidato a inquilino</param>
-    /// <exception cref="ArgumentException">Lançada caso o <paramref name="locatario_id"/> for um Guid vazio</exception>
-    /// <exception cref="InvalidOperationException">Lançada caso o status do Contrato não esteja como <paramref name="StatusContrato.Rascunho"/></exception>
+    /// <param name="locatario_id">O identificador exclusivo (<see cref="Guid"/>) do candidato a inquilino.</param>
+    /// <exception cref="ArgumentException">Lançada caso o <paramref name="locatario_id"/> seja um Guid vazio.</exception>
+    /// <exception cref="InvalidOperationException">
+    /// Lançada se o contrato não estiver em <see cref="StatusContrato.Rascunho"/>, 
+    /// se o locador já tiver assinado, ou se a minuta já possuir um locatário vinculado.
+    /// </exception>
     public void LocadorDisponibilizaAssinaturaMinuta(Guid locatario_id)
     {
         if (locatario_id == Guid.Empty)
@@ -94,6 +97,10 @@ public class Contrato
 
         if (Status != StatusContrato.Rascunho)
             throw new InvalidOperationException("O contrato só pode ser disponibilizado para assinatura se estiver em rascunho.");
+        if (AssinaturaLocador == true)
+            throw new InvalidOperationException("Contrato já assinado");
+        if (Locatario_ID == Guid.Empty)
+            throw new InvalidOperationException("Já existe um locatario para este contrato ");
 
         Locatario_ID = locatario_id;
         AssinaturaLocador = true;
@@ -101,19 +108,21 @@ public class Contrato
     }
 
     /// <summary>
-    /// Registra a assinatura do locatário na minuta e engatilha a ativação do contrato de locação.
+    /// Registra a assinatura do locatário na minuta e engatilha a ativação automática do contrato de locação.
     /// </summary>
     /// <param name="dataTermino">A data combinada para o término do contrato.</param>
     /// <exception cref="InvalidOperationException">
-    /// Lançada se o contrato não cumprir os pré-requisitos de ativação (ex: não estar pendente).
-    /// </exception>
-    /// <exception cref="ArgumentException">
-    /// Lançada se os parâmetros de vigência forem inválidos.
+    /// Lançada se o contrato não estiver com o status <see cref="StatusContrato.Pendente"/>, 
+    /// se o locatário já tiver assinado, ou se não houver nenhum locatário devidamente vinculado à minuta.
     /// </exception>
     public void LocatarioAssinaMinuta(DateTime dataTermino)
     {
         if (Status != StatusContrato.Pendente)
             throw new InvalidOperationException("O contrato só pode ser assinado pelo locatario caso ele esteja como pendente.");
+        if (AssinaturaLocatario == true)
+            throw new InvalidOperationException("Contrato já assinado");
+        if (Locatario_ID != Guid.Empty)
+            throw new InvalidOperationException("Já existe um locatario para este contrato");
 
         AssinaturaLocatario = true;
         AtivarContrato(dataTermino: dataTermino);
