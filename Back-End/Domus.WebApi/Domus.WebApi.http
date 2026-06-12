@@ -27,8 +27,8 @@ POST {{Domus.WebApi_HostAddress}}/locatario/post/locatario
 Content-Type: application/json
 
 {
-  "nome": "Locatario2",
-  "email": "locatario2@gmail.com",
+  "nome": "Clebinho",
+  "email": "Clebinho@gmail.com",
   "senha": "123456"
 }
 

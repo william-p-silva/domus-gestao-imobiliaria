@@ -14,7 +14,8 @@ namespace Domus.WebApi.Controllers.ContratoController;
 [Route("domus/[controller]")]
 public class ContratoController(
     CadastrarContratoUseCase cadastrarContratoUseCase,
-    DisponibilizarParaAssinaturaUseCase disponibilizarParaAssinaturaUseCase
+    DisponibilizarParaAssinaturaUseCase disponibilizarParaAssinaturaUseCase,
+    AssinarContratoUseCase assinarContratoUseCase
     ) : ControllerBase
 {
     [HttpPost("post/contrato")]
@@ -37,6 +38,23 @@ public class ContratoController(
     {
         var locadorId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
         var contrato = await disponibilizarParaAssinaturaUseCase.Execute(request: request, locador_id: locadorId, cancellationToken);
+
+        return Ok(new SuccessApiResponse<ResponseMinutaContrato>()
+        {
+            Success = true,
+            Data = contrato
+        });
+    }
+
+
+    [HttpPut("put/assinatura/locatario")]
+    public async Task<IActionResult> LocatarioAssinaContrato(
+        [FromBody] RequestAssinarContrato request,
+        CancellationToken cancellationToken
+        )
+    {
+        var locatarioId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        var contrato = await assinarContratoUseCase.Execute(request: request, locatario_id: locatarioId, cancellationToken);
 
         return Ok(new SuccessApiResponse<ResponseMinutaContrato>()
         {

@@ -52,7 +52,7 @@ public class DisponibilizarParaAssinaturaUseCase(
         contrato.LocadorDisponibilizaAssinaturaMinuta(request.Locatario_ID);
 
         await commit.CommitAsync(cancellationToken);
-
+         
         return new ResponseMinutaContrato()
         {
             Contrato_ID = contrato.Contrato_ID,
