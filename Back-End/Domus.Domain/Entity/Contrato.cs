@@ -1,6 +1,7 @@
 ﻿
 
 using Domus.Domain.Enums;
+using System.Diagnostics.Contracts;
 
 namespace Domus.Domain.Entity;
 
@@ -121,7 +122,7 @@ public class Contrato
             throw new InvalidOperationException("O contrato só pode ser assinado pelo locatario caso ele esteja como pendente.");
         if (AssinaturaLocatario == true)
             throw new InvalidOperationException("Contrato já assinado");
-        if (Locatario_ID != Guid.Empty)
+        if (Locatario_ID == Guid.Empty)
             throw new InvalidOperationException("Já existe um locatario para este contrato");
 
         AssinaturaLocatario = true;
@@ -156,13 +157,18 @@ public class Contrato
     /// Cancela a pendência de assinatura da minuta, limpando os vínculos e retornando o contrato para o estado editável de rascunho.
     /// Pode ser executado tanto pelo locador quanto pelo locatário antes da assinatura final.
     /// </summary>
+    /// <param name="usuarioId">ID do usuário que está solicitando o cancelamento.</param>
     /// <exception cref="InvalidOperationException">
-    /// Lançada se o contrato não estiver com o status <see cref="StatusContrato.Pendente"/>.
+    /// Lançada se o contrato não estiver com o status <see cref="StatusContrato.Pendente"/> 
+    /// ou se o usuário não fizer parte do contrato.
     /// </exception>
-    public void CancelarPendenciaMinuta()
+    public void CancelarPendenciaMinuta(Guid usuario_ID)
     {
         if (Status != StatusContrato.Pendente)
             throw new InvalidOperationException("O contrato só poder ser rejeitado caso esteja pendente");
+
+        if (Locatario_ID != usuario_ID && Locador_ID != usuario_ID)
+            throw new ArgumentException("Usuário sem permissão ", nameof(usuario_ID));
 
         Status = StatusContrato.Rascunho;
         AssinaturaLocador = false;

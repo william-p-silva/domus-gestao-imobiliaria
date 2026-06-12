@@ -10,14 +10,16 @@ using System.Security.Claims;
 namespace Domus.WebApi.Controllers.ContratoController;
 
 [ApiController]
-[Authorize(Roles = "Locador")]
+[Authorize]
 [Route("domus/[controller]")]
 public class ContratoController(
     CadastrarContratoUseCase cadastrarContratoUseCase,
     DisponibilizarParaAssinaturaUseCase disponibilizarParaAssinaturaUseCase,
-    AssinarContratoUseCase assinarContratoUseCase
+    AssinarContratoUseCase assinarContratoUseCase,
+    RejeitarMinutaContratoUseCase rejeitarMinutaContratoUseCase
     ) : ControllerBase
 {
+    [Authorize(Roles = "Locador")]
     [HttpPost("post/contrato")]
     public async Task<IActionResult> CadastrarContrato([FromBody] ContratoRequest request, CancellationToken cancellationToken)
     {
@@ -30,10 +32,10 @@ public class ContratoController(
         });
     }
 
-
+    [Authorize(Roles = "Locador")]
     [HttpPut("put/assinatura/locador")]
     public async Task<IActionResult> DisponibilizarParaAssinaturaDoLocatario(
-        [FromBody] RequestDisponibilizarAssinatura request, 
+        [FromBody] RequestDisponibilizarAssinatura request,
         CancellationToken cancellationToken)
     {
         var locadorId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -46,7 +48,7 @@ public class ContratoController(
         });
     }
 
-
+    [Authorize(Roles = "Locatario")]
     [HttpPut("put/assinatura/locatario")]
     public async Task<IActionResult> LocatarioAssinaContrato(
         [FromBody] RequestAssinarContrato request,
@@ -57,6 +59,24 @@ public class ContratoController(
         var contrato = await assinarContratoUseCase.Execute(request: request, locatario_id: locatarioId, cancellationToken);
 
         return Ok(new SuccessApiResponse<ResponseMinutaContrato>()
+        {
+            Success = true,
+            Data = contrato
+        });
+    }
+
+
+    [Authorize(Roles = "Locador,Locatario")]
+    [HttpPut("put/cancelar-minuta")]
+    public async Task<IActionResult> CancelarMinutaContrato(
+        [FromBody] Guid contrato_id,
+        CancellationToken cancellationToken
+        )
+    {
+        var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        var contrato = await rejeitarMinutaContratoUseCase.Execute(contrato_ID: contrato_id ,userId, cancellationToken);
+
+        return Ok(new SuccessApiResponse<ContratoResponse>()
         {
             Success = true,
             Data = contrato
