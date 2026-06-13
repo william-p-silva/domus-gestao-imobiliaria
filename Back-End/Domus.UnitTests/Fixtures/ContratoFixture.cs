@@ -1,6 +1,8 @@
 ﻿
 using Domus.Application.DTOs.Contrato;
+using Domus.Application.DTOs.Contrato.CicloDeVida;
 using Domus.Domain.Entity;
+using Domus.Domain.Enums;
 
 namespace Domus.UnitTests.Fixtures;
 
@@ -44,7 +46,7 @@ public class ContratoFixture
             );
     }
 
-    public Usuario GerarUsuarioContrato()
+    public Usuario GerarUsuarioContrato(FuncaoUser funcaoFake = FuncaoUser.Locador)
     {
         var usuario = new Usuario(
             nome: "Teste de Locador dos Contratos da Silva",
@@ -52,10 +54,19 @@ public class ContratoFixture
             senhaHash: "jfgdhncxbaliubvdfjmkfkdbc"
             );
 
-        var funcao = new Funcao(perfil: Domain.Enums.FuncaoUser.Locador);
+        var funcao = new Funcao(perfil: funcaoFake);
 
         usuario.AddFuncaoUsuario(funcao);
 
         return usuario;
+    }
+
+    public RequestDisponibilizarAssinatura disponibilizarAssinatura()
+    {
+        return new RequestDisponibilizarAssinatura()
+        {
+            Contrato_ID = Guid.Parse("9CAD6F47-6F28-4F4B-BE96-A4C5435F54AC"),
+            Locatario_ID = Guid.Parse("d162af62-af03-419b-a58a-7f894992bf05")
+        };
     }
 }

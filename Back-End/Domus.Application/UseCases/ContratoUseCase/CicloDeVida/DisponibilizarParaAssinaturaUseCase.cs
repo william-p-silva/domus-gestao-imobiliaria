@@ -10,9 +10,8 @@ namespace Domus.Application.UseCases.ContratoUseCase.CicloDeVida;
 public class DisponibilizarParaAssinaturaUseCase(
     IContratoRepository contratoRepository,
     IUsuarioRepository usuarioRepository,
-    IUnitOfWork commit,
-    IFuncaoRepository funcaoRepository,
-    IImovelRepository imovelRepository)
+    IUnitOfWork commit 
+    )
 {
 
     /// <summary>
