@@ -76,7 +76,7 @@ public class CadastrarImovelUseCase(
             Titulo = imovel.Titulo,
             Descricao = imovel.Descricao,
             Comodos = imovel.Comodos,
-            Status = imovel.Status,
+            Status = imovel.Status.ToString(),
             ValorAluguel = imovel.ValorAluguel,
             CriadoEm = imovel.CriadoEm,
             Endereco = new EnderecoResponse()
@@ -89,7 +89,9 @@ public class CadastrarImovelUseCase(
                 Rua = endereco.Rua,
                 Numero = endereco.Numero,
                 Complemento = endereco.Complemento
-            }
+            },
+            Aprovado = imovel.Aprovado,
+            Avaliado = imovel.Avaliado
         };
     }
 }

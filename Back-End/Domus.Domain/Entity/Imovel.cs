@@ -15,6 +15,7 @@ public class Imovel
     public decimal ValorAluguel { get; private set; }
     public DateTime CriadoEm { get; private set; } = DateTime.UtcNow;
     public bool Aprovado { get; private set; } = false;
+    public bool Avaliado { get; private set; } = false;
 
     //Relacionamentos
     public ICollection<Reclamacao> Reclamacoes { get; private set; } = new List<Reclamacao>();
@@ -60,6 +61,13 @@ public class Imovel
         Comodos = comodos;
         Status = status;
         ValorAluguel = valorAluguel;
+    }
+
+
+    public void AvaliarImovel(bool aprovado)
+    {
+        Aprovado = aprovado;
+        Avaliado = true;
     }
 
 }

@@ -4,6 +4,7 @@ using Domus.Application.UseCases.AvaliacaoUseCases;
 using Domus.Application.UseCases.ContratoUseCase;
 using Domus.Application.UseCases.ContratoUseCase.CicloDeVida;
 using Domus.Application.UseCases.ImovelUseCase;
+using Domus.Application.UseCases.ImovelUseCase.CicloDeVida;
 using Domus.Application.UseCases.UsuarioUseCase.AdminUseCase;
 using Domus.Application.UseCases.UsuarioUseCase.AuthUseCase;
 using Domus.Application.UseCases.UsuarioUseCase.LocadorUseCase;
@@ -18,7 +19,7 @@ public static class DependencyInjectionConfig
 {
     public static IServiceCollection AddProjectDependencies(this IServiceCollection services)
     {
-        //Repositories & Transações
+        //Interfaces & Repositories
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<IFuncaoRepository, FuncaoRepository>();
@@ -41,6 +42,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<CadastrarAdminUseCase>();
         //Imovel
         services.AddScoped<CadastrarImovelUseCase>();
+        services.AddScoped<AprovarImovelUseCase>();
         //Avaliacao
         services.AddScoped<CriarAvaliacaoUseCase>();
         //Contrato

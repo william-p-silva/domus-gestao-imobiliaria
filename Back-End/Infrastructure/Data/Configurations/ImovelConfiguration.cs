@@ -42,6 +42,10 @@ public class ImovelConfiguration : IEntityTypeConfiguration<Imovel>
             .IsRequired()
             .HasDefaultValue(false);
 
+        builder.Property(i => i.Avaliado)
+            .IsRequired()
+            .HasDefaultValue(false);
+
         builder.HasOne(i => i.Usuario)
             .WithMany(u => u.Imoveis)
             .HasForeignKey(i => i.Usuario_ID)

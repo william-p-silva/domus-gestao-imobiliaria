@@ -147,12 +147,13 @@ using (var scope = app.Services.CreateScope())
 app.Run();
 
 
-//http://localhost:5038/swagger/index.html
-// ============================================================================
+// Documentação:
+// http://localhost:5038/swagger/index.html
+// ===============================================================================================
 // COMANDOS ÚTEIS PARA O TERMINAL:
 // 
 // Criar uma nova Migration:
-// dotnet ef migrations add updContrato --project ..\Infrastructure 
+// dotnet ef migrations add updImovel --project ..\Infrastructure 
 //
 // Atualizar o banco manualmente (Caso não queira depender do auto-migrate):
 // dotnet ef database update --project ..\Infrastructure  .
@@ -162,4 +163,4 @@ app.Run();
 // dotnet user-secrets list // Listar chaves e valores atuais
 // dotnet dotnet user-secrets set chave valor // Adicionar ou atualizar uma chave-valor
 // dotnet user-secrets remove chave // Remover uma chave específica
-// ============================================================================
+// =================================================================================================

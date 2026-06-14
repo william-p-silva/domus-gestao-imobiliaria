@@ -11,9 +11,11 @@ public class ImovelResponse
     public string Titulo { get; set; }
     public string Descricao { get; set; }
     public int Comodos { get; set; }
-    public StatusImovel Status { get; set; }
+    public string Status { get; set; }
     public decimal ValorAluguel { get; set; }
     public DateTime CriadoEm { get; set; }
+    public bool Aprovado { get; set; }
+    public bool Avaliado { get; set; }
 
     public EnderecoResponse Endereco { get; set; }
 }

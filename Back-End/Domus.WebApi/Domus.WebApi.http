@@ -1,5 +1,5 @@
 @Domus.WebApi_HostAddress = http://localhost:5038/domus
-@MeuTokenJWT = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyOTY3YWIyNy0xNzhjLTRhOTMtOWYxZi1lZmM5NTA1MmZiNjEiLCJ1bmlxdWVfbmFtZSI6IldpbHNvbiIsImVtYWlsIjoid2lsc29uQGdtYWlsLmNvbSIsInJvbGUiOiJMb2NhZG9yIiwibmJmIjoxNzgxMjg5NTYwLCJleHAiOjE3ODEzMDAzNjAsImlhdCI6MTc4MTI4OTU2MCwiaXNzIjoiRG9tdXMiLCJhdWQiOiJEb211cyJ9.XjVfSe46J8hzF-sO5X3ihDQdSgD-596Y9CSqw4ulKro
+@MeuTokenJWT = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIwY2FhMzgwZC1jMWYyLTQ4MDQtYTliYi02ZDM2YjYyOGI1MTkiLCJ1bmlxdWVfbmFtZSI6ImFkbWluIiwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiQWRtaW5pc3RyYWRvciIsIm5iZiI6MTc4MTQ2MDkzNiwiZXhwIjoxNzgxNDcxNzM2LCJpYXQiOjE3ODE0NjA5MzYsImlzcyI6IkRvbXVzIiwiYXVkIjoiRG9tdXMifQ.D2zUPyg_0TMBh_XHgHYHd2aaNp6zwhuIRjEGTuz4B4o
 @Locador_ID = "43dc0319-6a36-4996-ac30-8a339994b22b"
 @Locatario_ID = "d162af62-af03-419b-a58a-7f894992bf05"
 @Admin_ID = "0caa380d-c1f2-4804-a9bb-6d36b628b519"
@@ -12,8 +12,8 @@ POST {{Domus.WebApi_HostAddress}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "wilson@gmail.com",
-  "senha": "123"
+  "email": "admin@gmail.com",
+  "senha": "123456"
 }
 
 ###===========================================================
@@ -90,6 +90,16 @@ Authorization: Bearer {{MeuTokenJWT}}
   }  
 }
 
+
+###
+
+PUT {{Domus.WebApi_HostAddress}}/imovel/put/avaliar
+Content-Type: application/json
+Authorization: Bearer {{MeuTokenJWT}}
+{
+  "imovel_id": "6E892E36-8C65-4C66-B883-533D1B6CC4C2",
+  "aprovado": true
+}
 
 ###===========================================================
 
