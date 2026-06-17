@@ -1,16 +1,23 @@
 ﻿using Domus.Application.DTOs.Usuarios.LocatarioDTOs;
+using Domus.Application.Interfaces.Email;
 using Domus.Application.Interfaces.Repositories;
 using Domus.Application.Interfaces.Security;
 using Domus.Domain.Entity;
 
 namespace Domus.Application.UseCases.UsuarioUseCase.LocatarioUseCase;
 
-public class CadastrarLocatarioUseCase(IUsuarioRepository usuarioRepository, IPasswordHasher passwordHasher, IUnitOfWork commit, IFuncaoRepository funcaoRepository)
+public class CadastrarLocatarioUseCase(
+    IUsuarioRepository usuarioRepository,
+    IPasswordHasher passwordHasher,
+    IUnitOfWork commit,
+    IFuncaoRepository funcaoRepository,
+    IEmailService emailService)
 {
     private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
     private readonly IFuncaoRepository _funcaoRepository = funcaoRepository;
     private readonly IUnitOfWork _commit = commit;
+    private readonly IEmailService _emailService = emailService;
 
     public async Task<UsuarioResponse> Execute(UsuarioRequest request, CancellationToken cancellationToken)
     {
@@ -37,12 +44,24 @@ public class CadastrarLocatarioUseCase(IUsuarioRepository usuarioRepository, IPa
 
         await _commit.CommitAsync(cancellationToken);
 
+        await _emailService.EnviarAsync(
+            destinatario: usuario.Email,
+            assunto: "Bem-vindo à Domus!",
+            corpo: $"""
+                <h2>Olá, {usuario.Nome}!</h2>
+                <p>Seu cadastro foi realizado com sucesso na plataforma <strong>Domus Gestão Imobiliária</strong>.</p>
+                <p>Agora você já pode acessar sua conta e explorar os imóveis disponíveis.</p>
+                <br/>
+                <p>Atenciosamente,<br/>Equipe Domus</p>
+                """
+        );
+
         return new UsuarioResponse()
         {
             Nome = usuario.Nome,
             Email = usuario.Email,
             Funcao_ID = funcao.Funcao_ID, //Transformar em Lista de IDs, um user pode ter varias funções
-            Perfil = new List<string> {funcao.Nome.ToString()},
+            Perfil = new List<string> { funcao.Nome.ToString() },
             UsuarioFuncao_ID = usuario.UsuarioFuncao.Select(x => x.UsuarioFuncao_ID).ToList(),
         };
     }

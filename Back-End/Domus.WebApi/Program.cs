@@ -19,7 +19,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // ============================================================================
 // 2. INJEÇÃO DE DEPENDÊNCIA (DI) - SERVIÇOS, REPOSITÓRIOS E SEGURANÇA
 // ============================================================================
-builder.Services.AddProjectDependencies(); // Método de extensão para organizar a DI em um único local (DependencyInjectionConfig.cs)
+builder.Services.AddProjectDependencies(builder.Configuration); // Método de extensão para organizar a DI em um único local (DependencyInjectionConfig.cs)
 
 
 // ============================================================================

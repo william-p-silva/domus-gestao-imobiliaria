@@ -1,4 +1,5 @@
-﻿using Domus.Application.Interfaces.Repositories;
+﻿using Domus.Application.Interfaces.Email;
+using Domus.Application.Interfaces.Repositories;
 using Domus.Application.Interfaces.Security;
 using Domus.Application.UseCases.AvaliacaoUseCases;
 using Domus.Application.UseCases.ContratoUseCase;
@@ -9,6 +10,7 @@ using Domus.Application.UseCases.UsuarioUseCase.AdminUseCase;
 using Domus.Application.UseCases.UsuarioUseCase.AuthUseCase;
 using Domus.Application.UseCases.UsuarioUseCase.LocadorUseCase;
 using Domus.Application.UseCases.UsuarioUseCase.LocatarioUseCase;
+using Domus.Infrastructure.Data.Email;
 using Domus.Infrastructure.Data.Repositories;
 using Domus.Infrastructure.Data.Security;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +19,7 @@ namespace Domus.WebApi.Dependencies;
 
 public static class DependencyInjectionConfig
 {
-    public static IServiceCollection AddProjectDependencies(this IServiceCollection services)
+    public static IServiceCollection AddProjectDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         //Interfaces & Repositories
         services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -32,6 +34,10 @@ public static class DependencyInjectionConfig
         //Segurança
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<ITokenService, TokenService>();
+
+        //Email
+        services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+        services.AddScoped<IEmailService, EmailService>();
 
         //Use Cases
         //Locatario

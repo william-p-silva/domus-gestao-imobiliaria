@@ -1,5 +1,6 @@
 ﻿
 
+using Domus.Application.Interfaces.Email;
 using Domus.Application.Interfaces.Repositories;
 using Domus.Application.Interfaces.Security;
 using Domus.Application.UseCases.UsuarioUseCase.LocatarioUseCase;
@@ -16,6 +17,7 @@ public class TestCadastroLocatario(UsuarioFixture fixture) : IClassFixture<Usuar
     private readonly Mock<IFuncaoRepository> _funcaoMock = new();
     private readonly Mock<IPasswordHasher> _hashMock = new();
     private readonly Mock<IUnitOfWork> _commitMock = new();
+    private readonly Mock<IEmailService> _emailMock = new(); 
     
 
     [Fact]
@@ -36,7 +38,8 @@ public class TestCadastroLocatario(UsuarioFixture fixture) : IClassFixture<Usuar
             usuarioRepository: _userMock.Object,
             passwordHasher: _hashMock.Object,
             funcaoRepository: _funcaoMock.Object,
-            commit: _commitMock.Object
+            commit: _commitMock.Object,
+            emailService: _emailMock.Object
             );
 
         var user = await useCaseCadastroLocatario.Execute(requestLocatario, It.IsAny<CancellationToken>());
