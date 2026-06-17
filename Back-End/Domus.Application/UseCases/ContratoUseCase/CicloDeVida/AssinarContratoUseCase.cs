@@ -11,7 +11,6 @@ public class AssinarContratoUseCase(
     IContratoRepository contratoRepository,
     IUsuarioRepository usuarioRepository,
     IUnitOfWork commit,
-    IFuncaoRepository funcaoRepository,
     IImovelRepository imovelRepository)
 {
     public async Task<ResponseMinutaContrato> Execute(
@@ -33,7 +32,12 @@ public class AssinarContratoUseCase(
         if(locador == null)
             throw new ArgumentException("Locador invalido");
 
-        contrato.LocatarioAssinaMinuta(dataTermino: request.DataTermino);
+        var imovel = await imovelRepository.BuscarPorIdAsync(contrato.Imovel_ID, cancellationToken);
+        if (imovel == null || imovel.Status != Domain.Enums.StatusImovel.Disponivel)
+            throw new ArgumentException("Imovel inválido ", nameof(contrato.Imovel_ID));
+
+        contrato.LocatarioAssinaMinuta(dataTermino: request.DataTermino, imovel.ValorAluguel);      
+        
 
         await commit.CommitAsync(cancellationToken);
 

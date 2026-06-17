@@ -23,7 +23,7 @@ public class Contrato
     public bool AssinaturaLocatario { get; private set; } = false;
 
     //Relacionamentos
-    public List<ParcelaAluguel> ParcelasAluguel { get; private set; }
+    public List<ParcelaAluguel> ParcelasAluguel { get; private set; } = new List<ParcelaAluguel>();
     public Imovel Imovel { get; private set; }
     public Usuario Locador { get; private set; }
     public Usuario Locatario { get; private set; }
@@ -100,7 +100,7 @@ public class Contrato
             throw new InvalidOperationException("O contrato só pode ser disponibilizado para assinatura se estiver em rascunho.");
         if (AssinaturaLocador == true)
             throw new InvalidOperationException("Contrato já assinado");
-        if (Locatario_ID == Guid.Empty)
+        if (Locatario_ID != Guid.Empty || Locatario_ID == null)
             throw new InvalidOperationException("Já existe um locatario para este contrato ");
 
         Locatario_ID = locatario_id;
@@ -116,17 +116,17 @@ public class Contrato
     /// Lançada se o contrato não estiver com o status <see cref="StatusContrato.Pendente"/>, 
     /// se o locatário já tiver assinado, ou se não houver nenhum locatário devidamente vinculado à minuta.
     /// </exception>
-    public void LocatarioAssinaMinuta(DateTime dataTermino)
+    public void LocatarioAssinaMinuta(DateTime dataTermino, decimal valorAluguel)
     {
         if (Status != StatusContrato.Pendente)
             throw new InvalidOperationException("O contrato só pode ser assinado pelo locatario caso ele esteja como pendente.");
         if (AssinaturaLocatario == true)
             throw new InvalidOperationException("Contrato já assinado");
-        if (Locatario_ID == Guid.Empty)
-            throw new InvalidOperationException("Já existe um locatario para este contrato");
+        if (Locatario_ID == Guid.Empty || Locatario_ID == null)
+            throw new InvalidOperationException("Não existe um locatario para este contrato");
 
         AssinaturaLocatario = true;
-        AtivarContrato(dataTermino: dataTermino);
+        AtivarContrato(dataTermino: dataTermino, valorAluguel);
     }
 
 
@@ -140,17 +140,19 @@ public class Contrato
     /// <exception cref="ArgumentException">
     /// Lançada se a <paramref name="dataTermino"/> não respeitar o período mínimo exigido de vigência (menor ou igual a um mês a partir de hoje).
     /// </exception>
-    private void AtivarContrato(DateTime dataTermino)
+    private void AtivarContrato(DateTime dataTermino, decimal valorAluguel)
     {
         if (Status != StatusContrato.Pendente)
             throw new InvalidOperationException("O contrato só poder ser ativado caso esteja pendente");
 
         if (dataTermino <= DateTime.UtcNow.AddMonths(1))
-            throw new ArgumentException("Data não pode ser anterior ao dia atual");
+            throw new ArgumentException("A data de término deve ser de no mínimo um mês a partir de hoje.");
 
         DataInicio = DateTime.UtcNow;
         DataTermino = dataTermino;
         Status = StatusContrato.Ativo;
+
+        GerarParcelasContrato(valorAluguel: valorAluguel);
     }
 
     /// <summary>
@@ -174,5 +176,33 @@ public class Contrato
         AssinaturaLocador = false;
         AssinaturaLocatario = false;
         Locatario_ID = null;
+    }
+
+
+    private void GerarParcelasContrato(decimal valorAluguel)
+    {
+        if (valorAluguel <= 0)
+            throw new InvalidOperationException("Valor do aluguel incoerente ");
+
+        int mesesContrato = ((DataTermino.Value.Year - DataInicio.Value.Year) * 12 ) + 
+                                DataTermino.Value.Month - DataInicio.Value.Month;
+
+        if (mesesContrato <= 0) mesesContrato = 1;
+
+        for (int i = 1; i <= mesesContrato; i++)
+        {
+            var dataVencimento = DataInicio.Value.AddMonths(i);
+
+            var novaParcelaAluguel = new ParcelaAluguel(
+                contratoId: Contrato_ID,
+                valorParcela: valorAluguel,
+                urlParcelaAluguel: $"https://domus.com/faturas/{Contrato_ID}/{i}",
+                dataVencimento: dataVencimento,
+                descricao: $"Parcela de Aluguel {i}/{mesesContrato} - {Titulo}",
+                pixCopiaCola: $"PIX_FAKE_CHAVE_CONTRATO_{Contrato_ID}_PARCELA_{i}" // Substitua pela sua lógica/serviço de Pix real futuramente
+                );
+
+            ParcelasAluguel.Add(novaParcelaAluguel);
+        }
     }
 }
