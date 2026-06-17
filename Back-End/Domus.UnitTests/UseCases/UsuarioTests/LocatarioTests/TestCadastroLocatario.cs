@@ -45,11 +45,6 @@ public class TestCadastroLocatario(UsuarioFixture fixture) : IClassFixture<Usuar
         var user = await useCaseCadastroLocatario.Execute(requestLocatario, It.IsAny<CancellationToken>());
 
         //Asserts
-        Assert.NotNull(user);
-        Assert.Equal(requestLocatario.Nome, user.Nome);
-        Assert.Equal(requestLocatario.Email, user.Email);
-        Assert.Equal("Locatario", user.Perfil.FirstOrDefault());
-
         _commitMock.Verify(x => x.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
         _userMock.Verify(x => x.BuscarPorEmailAsync(requestLocatario.Email, It.IsAny<CancellationToken>()), Times.Once);
         _userMock.Verify(x => x.AddAsync(It.IsAny<Usuario>(), It.IsAny<CancellationToken>()), Times.Once);

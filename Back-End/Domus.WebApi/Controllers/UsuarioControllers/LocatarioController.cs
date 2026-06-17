@@ -13,7 +13,7 @@ public class LocatarioController(CadastrarLocatarioUseCase cadastrarLocatarioUse
     public async Task<IActionResult> PostLocatario([FromBody] UsuarioRequest request, CancellationToken cancellationToken)
     {
         var usuario = await cadastrarLocatarioUseCase.Execute(request, cancellationToken);
-        return Ok(new SuccessApiResponse<UsuarioResponse>
+        return Ok(new SuccessApiResponse<string>
         {
             Success = true,
             Data = usuario

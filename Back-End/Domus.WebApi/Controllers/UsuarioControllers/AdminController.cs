@@ -13,7 +13,7 @@ public class AdminController(CadastrarAdminUseCase cadastrarAdminUseCase) : Cont
     public async Task<IActionResult> PostAdmin([FromBody] UsuarioRequest request, CancellationToken cancellationToken)
     {
         var usuario = await cadastrarAdminUseCase.Execute(request, cancellationToken);
-        return Ok(new SuccessApiResponse<UsuarioResponse>
+        return Ok(new SuccessApiResponse<string>
         {
             Success = true,
             Data = usuario

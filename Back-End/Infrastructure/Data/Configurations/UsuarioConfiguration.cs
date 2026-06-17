@@ -19,7 +19,7 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
             .HasMaxLength(100);
 
         builder.Property(u => u.Email)
-            .IsRequired()
+            .IsRequired(false)
             .HasMaxLength(150);
         builder.HasIndex(u => u.Email)
             .IsUnique();
@@ -28,7 +28,23 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
             .IsRequired()
             .HasMaxLength(255);
 
-        builder.Property(u => u.Status)
+        builder.Property(u => u.Ativo)
+            .IsRequired();
+
+        builder.Property(u => u.TokenConfirmaEmail)
+            .IsRequired();
+
+        builder.Property(u => u.EmailAConfirmar)
+            .IsRequired()
+            .HasMaxLength(150);
+        builder.HasIndex(u => u.EmailAConfirmar)
+            .IsUnique();
+
+        builder.Property(u => u.TokenEmailExpire)
+            .IsRequired()
+            .HasColumnType("datetime2");
+
+        builder.Property(u => u.EmailConfirmado)
             .IsRequired();
 
         builder.Property(u => u.CriadoEm)

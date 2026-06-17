@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Domus.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AdicionandoFuncoesSeed : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,11 +48,15 @@ namespace Domus.Infrastructure.Migrations
                 columns: table => new
                 {
                     Usuario_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Nome = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false),
-                    SenhaHash = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Endereco_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Nome = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false),
+                    SenhaHash = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    TokenConfirmaEmail = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TokenEmailExpire = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EmailAConfirmar = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    EmailConfirmado = table.Column<bool>(type: "bit", nullable: false),
                     CriadoEm = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
                 },
                 constraints: table =>
@@ -77,7 +81,10 @@ namespace Domus.Infrastructure.Migrations
                     Descricao = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     Comodos = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ValorAluguel = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    ValorAluguel = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CriadoEm = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    Aprovado = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    Avaliado = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -174,9 +181,12 @@ namespace Domus.Infrastructure.Migrations
                     Descricao = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: false),
                     Tipo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     UrlContrato = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    CriadoEm = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
                     DataInicio = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DataTermino = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    AssinaturaLocador = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    AssinaturaLocatario = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -542,6 +552,13 @@ namespace Domus.Infrastructure.Migrations
                 name: "IX_Usuarios_Email",
                 table: "Usuarios",
                 column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_EmailAConfirmar",
+                table: "Usuarios",
+                column: "EmailAConfirmar",
                 unique: true);
 
             migrationBuilder.CreateIndex(

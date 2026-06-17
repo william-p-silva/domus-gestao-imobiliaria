@@ -5,11 +5,15 @@ namespace Domus.Domain.Entity;
 public class Usuario
 {
     public Guid Usuario_ID { get; private set; }
+    public Guid? Endereco_ID { get; private set; }
     public string Nome { get; private set; }
     public string Email { get; private set; }
-    public bool Status { get; private set; }
+    public bool Ativo { get; private set; }
     public string SenhaHash { get; private set; }
-    public Guid? Endereco_ID { get; private set; }
+    public Guid TokenConfirmaEmail { get; private set; }
+    public DateTime TokenEmailExpire { get; private set; } = DateTime.UtcNow.AddHours(2);
+    public string EmailAConfirmar { get; private set; }
+    public bool EmailConfirmado { get; private set; } = false;
     public DateTime CriadoEm { get; private set; } = DateTime.UtcNow;
 
 
@@ -39,20 +43,21 @@ public class Usuario
     /// </summary>
     protected Usuario() { }
 
-    public Usuario(string nome, string email, string senhaHash, Guid? enderecoId = null)
+    public Usuario(string nome, string emailAConfirmar, string senhaHash, Guid? enderecoId = null)
     {
         if (string.IsNullOrWhiteSpace(nome))
             throw new ArgumentException("O nome do usuário é obrigatório.", nameof(nome));
-        if (string.IsNullOrWhiteSpace(email))
-            throw new ArgumentException("O email do usuário é obrigatório.", nameof(email));
+        if (string.IsNullOrWhiteSpace(emailAConfirmar))
+            throw new ArgumentException("O email do usuário é obrigatório.", nameof(emailAConfirmar));
         if (string.IsNullOrWhiteSpace(senhaHash))
             throw new ArgumentException("A senha do usuário é obrigatória.", nameof(senhaHash));
 
         Usuario_ID = Guid.NewGuid();
+        TokenConfirmaEmail = Guid.NewGuid();
         Nome = nome;
-        Email = email;
+        EmailAConfirmar = emailAConfirmar;
         SenhaHash = senhaHash;
-        Status = true;
+        Ativo = false;
         Endereco_ID = enderecoId;
     }
 
@@ -67,6 +72,20 @@ public class Usuario
 
         var usuarioFuncao = new UsuarioFuncao(usuarioId: Usuario_ID, funcao: funcao);
         _usuarioFuncao.Add(usuarioFuncao);
+    }
+
+    public void ConfirmarEmail()
+    {
+
+        if (EmailConfirmado)
+            throw new InvalidOperationException("Email já confirmado.");
+
+        Email = EmailAConfirmar;
+        Ativo = true;
+        EmailConfirmado = true;
+
+        TokenConfirmaEmail = Guid.Empty;
+        TokenEmailExpire = DateTime.MinValue;
     }
 
     public void AlterarEmail(string novoEmail)
@@ -92,12 +111,12 @@ public class Usuario
 
     public void DesativarUsuario()
     {
-        Status = false;
+        Ativo = false;
     }
 
     public void AtivarUsuario()
     {
-        Status = true;
+        Ativo = true;
     }
 
     public void AdicionarEndereco(Guid enderecoId)

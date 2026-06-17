@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domus.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260601220748_AprovacaoImovelConfg")]
-    partial class AprovacaoImovelConfg
+    [Migration("20260617151600_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -90,6 +90,21 @@ namespace Domus.Infrastructure.Migrations
                     b.Property<Guid>("Contrato_ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("AssinaturaLocador")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("AssinaturaLocatario")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime>("CriadoEm")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<DateTime?>("DataInicio")
                         .HasColumnType("datetime2");
@@ -251,6 +266,11 @@ namespace Domus.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Aprovado")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("Avaliado")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
@@ -514,15 +534,25 @@ namespace Domus.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("CriadoEm")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("Email")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("EmailAConfirmar")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("EmailConfirmado")
+                        .HasColumnType("bit");
 
                     b.Property<Guid?>("Endereco_ID")
                         .HasColumnType("uniqueidentifier");
@@ -537,12 +567,19 @@ namespace Domus.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<Guid>("TokenConfirmaEmail")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("TokenEmailExpire")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Usuario_ID");
 
                     b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
+
+                    b.HasIndex("EmailAConfirmar")
                         .IsUnique();
 
                     b.HasIndex("Endereco_ID")

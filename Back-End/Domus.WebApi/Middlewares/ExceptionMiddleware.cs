@@ -47,7 +47,7 @@ namespace Domus.WebApi.Middlewares
                 {
                     StatusCode = httpContext.Response.StatusCode,
                     Success = false,
-                    Message = "Ocorreu um erro inesperado. Por favor, tente novamente mais tarde."
+                    Message = "Ocorreu um erro inesperado. Por favor, tente novamente mais tarde." + ex.Message
                 };
 
                 await httpContext.Response.WriteAsJsonAsync(errorResponse);

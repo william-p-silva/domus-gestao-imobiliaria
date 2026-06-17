@@ -27,7 +27,7 @@ public class UsuarioFixture
     {
         var usuario = new Usuario(
             nome: "Teste de Locador da Silva",
-            email: "testeLocador@gmail.com",
+            emailAConfirmar: "testeLocador@gmail.com",
             senhaHash: "jfgdhncxbaliubvdfjmkfkdbc"
             );
 
@@ -42,7 +42,7 @@ public class UsuarioFixture
     {
         var usuario = new Usuario(
             nome: "Teste de Locatario da Silva",
-            email: "testeLocatario@gmail.com",
+            emailAConfirmar: "testeLocatario@gmail.com",
             senhaHash: "jfgdhncxbaliubvdfjmkfkdbc"
             );
 
@@ -57,7 +57,7 @@ public class UsuarioFixture
     {
         var usuario = new Usuario(
             nome: "Teste de Administrador da Silva",
-            email: "testeAdministrador@gmail.com",
+            emailAConfirmar: "testeAdministrador@gmail.com",
             senhaHash: "jfgdhncxbaliubvdfjmkfkdbc"
             );
 

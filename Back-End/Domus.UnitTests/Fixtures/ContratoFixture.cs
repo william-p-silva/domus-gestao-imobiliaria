@@ -50,7 +50,7 @@ public class ContratoFixture
     {
         var usuario = new Usuario(
             nome: "Teste de Locador dos Contratos da Silva",
-            email: "testeContratoLocador@gmail.com",
+            emailAConfirmar: "testeContratoLocador@gmail.com",
             senhaHash: "jfgdhncxbaliubvdfjmkfkdbc"
             );
 

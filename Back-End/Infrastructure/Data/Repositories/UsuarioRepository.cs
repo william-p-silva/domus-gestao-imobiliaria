@@ -36,7 +36,18 @@ public class UsuarioRepository(AppDbContext context) : IUsuarioRepository
     public async Task<Usuario?> BuscarPorIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var usuario = await _context.Usuarios.Include(u => u.UsuarioFuncao).ThenInclude(f => f.Funcao)
-            .FirstOrDefaultAsync(u => u.Usuario_ID == id, cancellationToken); 
+            .FirstOrDefaultAsync(u => u.Usuario_ID == id && u.Ativo == true, cancellationToken); 
+
+        return usuario;
+    }
+
+    public async Task<Usuario?> BuscarPorTokenEmailAsync(string tokenEmail, CancellationToken cancellationToken = default)
+    {
+        if (!Guid.TryParse(tokenEmail, out var emailToken))
+            return null;
+
+        var usuario = await _context.Usuarios
+            .FirstOrDefaultAsync(x => x.TokenConfirmaEmail == emailToken, cancellationToken);
 
         return usuario;
     }

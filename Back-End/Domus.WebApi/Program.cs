@@ -153,10 +153,10 @@ app.Run();
 // COMANDOS ÚTEIS PARA O TERMINAL:
 // 
 // Criar uma nova Migration:
-// dotnet ef migrations add updImovel --project ..\Infrastructure 
+// dotnet ef migrations add Initial --project ..\Infrastructure 
 //
 // Atualizar o banco manualmente (Caso não queira depender do auto-migrate):
-// dotnet ef database update --project ..\Infrastructure  .
+// dotnet ef database update --project ..\Infrastructure  
 //
 //
 // Salvar Chaves de configuração sensíveis (ex: JWT) usando Secret Manager (Desenvolvimento local):

@@ -19,7 +19,7 @@ public class CadastrarLocatarioUseCase(
     private readonly IUnitOfWork _commit = commit;
     private readonly IEmailService _emailService = emailService;
 
-    public async Task<UsuarioResponse> Execute(UsuarioRequest request, CancellationToken cancellationToken)
+    public async Task<string> Execute(UsuarioRequest request, CancellationToken cancellationToken)
     {
         var userExiste = await _usuarioRepository.BuscarPorEmailAsync(request.Email, cancellationToken);
         if (userExiste != null)
@@ -27,8 +27,7 @@ public class CadastrarLocatarioUseCase(
 
         var newSenhaHash = _passwordHasher.GerarHash(request.Senha);
 
-        Usuario usuario = new Usuario(nome: request.Nome, email: request.Email, senhaHash: newSenhaHash);
-
+        Usuario usuario = new Usuario(nome: request.Nome, emailAConfirmar: request.Email, senhaHash: newSenhaHash);
 
 
         Funcao funcao = await _funcaoRepository.BuscarPorNomeAsync(nome: "Locatario", cancellationToken);
@@ -44,25 +43,20 @@ public class CadastrarLocatarioUseCase(
 
         await _commit.CommitAsync(cancellationToken);
 
+        string linkConfirmaEmail = $"http://localhost:5038/domus/confirmar/{usuario.TokenConfirmaEmail}";
+
         await _emailService.EnviarAsync(
-            destinatario: usuario.Email,
+            destinatario: usuario.EmailAConfirmar,
             assunto: "Bem-vindo à Domus!",
             corpo: $"""
                 <h2>Olá, {usuario.Nome}!</h2>
                 <p>Seu cadastro foi realizado com sucesso na plataforma <strong>Domus Gestão Imobiliária</strong>.</p>
-                <p>Agora você já pode acessar sua conta e explorar os imóveis disponíveis.</p>
+                <p>Agora você só precisa acessar o link para ativar a sua conta {linkConfirmaEmail}</p>
                 <br/>
                 <p>Atenciosamente,<br/>Equipe Domus</p>
                 """
         );
 
-        return new UsuarioResponse()
-        {
-            Nome = usuario.Nome,
-            Email = usuario.Email,
-            Funcao_ID = funcao.Funcao_ID, //Transformar em Lista de IDs, um user pode ter varias funções
-            Perfil = new List<string> { funcao.Nome.ToString() },
-            UsuarioFuncao_ID = usuario.UsuarioFuncao.Select(x => x.UsuarioFuncao_ID).ToList(),
-        };
+        return linkConfirmaEmail;
     }
 }
