@@ -10,7 +10,10 @@ public class Imovel
     public Guid Endereco_ID { get; private set; }
     public string Titulo { get; private set; }
     public string Descricao { get; private set; }
+    public TipoImovel Tipo { get; private set; } //
+    public decimal MetrosQuadrados { get; private set; }//
     public int Comodos { get; private set; }
+    public int Banheiros { get; private set; }//
     public StatusImovel Status { get; private set; }
     public decimal ValorAluguel { get; private set; }
     public DateTime CriadoEm { get; private set; } = DateTime.UtcNow;
@@ -37,8 +40,17 @@ public class Imovel
     protected Imovel() { }
 
     public Imovel
-        ( Guid usuario_id, Guid endereco_id, string titulo, string descricao, 
-          int comodos, StatusImovel status, decimal valorAluguel )
+        (Guid usuario_id,
+        Guid endereco_id,
+        string titulo,
+        string descricao,
+        int comodos,
+        StatusImovel status,
+        decimal valorAluguel,
+        int banheiros,
+        TipoImovel tipo,
+        decimal metrosQuadrados
+          )
     {
         if (usuario_id == Guid.Empty)
             throw new ArgumentException("O ID do usuário é obrigatório.", nameof(usuario_id));
@@ -48,8 +60,12 @@ public class Imovel
             throw new ArgumentException("O título do imóvel é obrigatório.", nameof(titulo));
         if (string.IsNullOrWhiteSpace(descricao))
             throw new ArgumentException("A descrição do imóvel é obrigatória.", nameof(descricao));
+        if (metrosQuadrados <= 0)
+            throw new ArgumentException("A metragem deve ser maior que zero", nameof(metrosQuadrados));
         if (comodos <= 0)
             throw new ArgumentException("O número de cômodos deve ser maior que zero.", nameof(comodos));
+        if(banheiros <= 0)
+            throw new ArgumentException("O número de Banheiros deve ser maior que zero.", nameof(banheiros));
         if (valorAluguel <= 0)
             throw new ArgumentException("O valor do aluguel deve ser maior que zero.", nameof(valorAluguel));
 
@@ -58,7 +74,10 @@ public class Imovel
         Endereco_ID = endereco_id;
         Titulo = titulo;
         Descricao = descricao;
+        Tipo = tipo;
+        MetrosQuadrados = metrosQuadrados;
         Comodos = comodos;
+        Banheiros = banheiros;
         Status = status;
         ValorAluguel = valorAluguel;
     }

@@ -29,7 +29,7 @@ public class LoginUseCase(
             Token = token,
             Usuario_ID = usuario.Usuario_ID,
             Nome = usuario.Nome,
-            Email = usuario.Email,
+            Email = usuario.Email.ToString(),
             Perfil = usuario.UsuarioFuncao.Select(uf => uf.Funcao.Nome.ToString()).ToList()
         };
     }

@@ -24,6 +24,18 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
         builder.HasIndex(u => u.Email)
             .IsUnique();
 
+        builder.Property(u => u.CPF)
+            .IsRequired(false)
+            .HasMaxLength(11);
+        builder.HasIndex(u => u.CPF)
+            .IsUnique();
+
+        builder.Property(u => u.Celular)
+            .IsRequired(false)
+            .HasMaxLength(11);
+        builder.HasIndex(u => u.Celular)
+            .IsUnique();
+
         builder.Property(u => u.SenhaHash)
             .IsRequired()
             .HasMaxLength(255);

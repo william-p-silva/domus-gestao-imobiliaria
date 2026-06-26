@@ -65,7 +65,7 @@ public class CadastrarContratoUseCase(
             Locador = new ContratoLocadorResponse()
             {
                 Locador_ID = user.Usuario_ID,
-                Email = user.Email,
+                Email = user.Email.ToString(),
                 Nome = user.Nome
             },
             Titulo = contrato.Titulo,

@@ -88,7 +88,7 @@ public class CriarAvaliacaoUseCase(
             Usuario = new AvaliacaoUsuarioResponse
             {
                 Nome = usuario.Nome,
-                Email = usuario.Email,
+                Email = usuario.Email.ToString(),
                 Usuario_ID = usuario.Usuario_ID
             },
             Imovel = new AvaliacaoImovelResponse

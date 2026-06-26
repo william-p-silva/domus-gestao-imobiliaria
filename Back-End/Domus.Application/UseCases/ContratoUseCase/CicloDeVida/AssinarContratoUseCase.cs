@@ -48,13 +48,13 @@ public class AssinarContratoUseCase(
             Locador = new ContratoLocadorResponse()
             {
                 Locador_ID = locador.Usuario_ID,
-                Email = locador.Email,
+                Email = locador.Email.ToString(),
                 Nome = locador.Nome
             },
             Locatario = new ContratoLocatarioResponse()
             {
                 Locatario_ID = locatario.Usuario_ID,
-                Email = locatario.Email,
+                Email = locatario.Email.ToString(),
                 Nome = locatario.Nome
             },
             CriadoEm = contrato.CriadoEm,

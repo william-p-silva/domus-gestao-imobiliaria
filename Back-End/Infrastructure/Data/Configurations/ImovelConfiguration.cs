@@ -22,7 +22,17 @@ public class ImovelConfiguration : IEntityTypeConfiguration<Imovel>
             .IsRequired()
             .HasMaxLength(1000);
 
+        builder.Property(i => i.Tipo)
+            .IsRequired()
+            .HasConversion<string>();
+
+        builder.Property(i => i.MetrosQuadrados)
+            .IsRequired();
+
         builder.Property(i => i.Comodos)
+            .IsRequired();
+
+        builder.Property(i => i.Banheiros)
             .IsRequired();
 
         builder.Property(i => i.ValorAluguel)

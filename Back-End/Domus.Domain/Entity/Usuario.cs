@@ -1,4 +1,5 @@
 ﻿using Domus.Domain.Enums;
+using Domus.Domain.ValueObjects;
 
 namespace Domus.Domain.Entity;
 
@@ -8,6 +9,8 @@ public class Usuario
     public Guid? Endereco_ID { get; private set; }
     public string Nome { get; private set; }
     public string Email { get; private set; }
+    public string? CPF { get; private set; }
+    public string? Celular { get; private set; }
     public bool Ativo { get; private set; }
     public string SenhaHash { get; private set; }
     public Guid TokenConfirmaEmail { get; private set; }
@@ -43,7 +46,26 @@ public class Usuario
     /// </summary>
     protected Usuario() { }
 
-    public Usuario(string nome, string emailAConfirmar, string senhaHash, Guid? enderecoId = null)
+    // NOVO: Construtor para Seeds / Dados Estáticos (IDs fixos)
+    public Usuario(Guid usuario_id, string nome, string email, string senha)
+    {
+        Usuario_ID =usuario_id;
+        TokenConfirmaEmail = Guid.NewGuid();
+        Nome = nome;
+        Email = email;
+        EmailConfirmado = true;
+        EmailAConfirmar = email;
+        SenhaHash = senha;
+        Ativo = true;
+    }
+
+    public Usuario(
+        string nome,
+        string emailAConfirmar,
+        string senhaHash,
+        string? cpf = null,
+        string? celular = null,
+        Guid? enderecoId = null)
     {
         if (string.IsNullOrWhiteSpace(nome))
             throw new ArgumentException("O nome do usuário é obrigatório.", nameof(nome));
@@ -55,6 +77,8 @@ public class Usuario
         Usuario_ID = Guid.NewGuid();
         TokenConfirmaEmail = Guid.NewGuid();
         Nome = nome;
+        CPF = cpf;
+        Celular = celular;
         EmailAConfirmar = emailAConfirmar;
         SenhaHash = senhaHash;
         Ativo = false;

@@ -3,6 +3,7 @@ using Domus.Application.DTOs.Imovel;
 using Domus.Application.DTOs.Imovel.CicloDeVida;
 using Domus.Application.UseCases.ImovelUseCase;
 using Domus.Application.UseCases.ImovelUseCase.CicloDeVida;
+using Domus.Application.UseCases.ImovelUseCase.Listar;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -10,13 +11,14 @@ using System.Security.Claims;
 namespace Domus.WebApi.Controllers.ImovelController;
 
 [ApiController]
-[Authorize]
 [Route("domus/[controller]")]
 public class ImovelController(
     CadastrarImovelUseCase cadastrarImovelUseCase,
-    AprovarImovelUseCase aprovarImovelUseCase
+    AprovarImovelUseCase aprovarImovelUseCase,
+    ListarImoveisAprovadosUseCase listarImoveisAprovadosUseCase
     ) : ControllerBase
 {
+
     [Authorize(Roles = "Locador")]
     [HttpPost("post/imovel")]
     public async Task<IActionResult> PostImovel([FromBody] ImovelRequest request, CancellationToken cancellationToken)
@@ -28,6 +30,7 @@ public class ImovelController(
             Data = imovel
         });
     }
+
 
     [Authorize(Roles = "Administrador")]
     [HttpPut("put/avaliar")]
@@ -45,4 +48,18 @@ public class ImovelController(
             Data = imovel
         });
     }
+
+
+    
+    [HttpGet("get/listar/aprovados")]
+    public async Task<IActionResult> ListarimoveisAprovados()
+    {
+        var imoveis = await listarImoveisAprovadosUseCase.Execute();
+        return Ok(new SuccessApiResponse<List<ImovelResponse>>()
+        {
+            Success = true,
+            Data = imoveis
+        });
+    }
+
 }

@@ -6,6 +6,7 @@ using Domus.Application.UseCases.ContratoUseCase;
 using Domus.Application.UseCases.ContratoUseCase.CicloDeVida;
 using Domus.Application.UseCases.ImovelUseCase;
 using Domus.Application.UseCases.ImovelUseCase.CicloDeVida;
+using Domus.Application.UseCases.ImovelUseCase.Listar;
 using Domus.Application.UseCases.UsuarioUseCase;
 using Domus.Application.UseCases.UsuarioUseCase.AdminUseCase;
 using Domus.Application.UseCases.UsuarioUseCase.AuthUseCase;
@@ -52,6 +53,7 @@ public static class DependencyInjectionConfig
         //Imovel
         services.AddScoped<CadastrarImovelUseCase>();
         services.AddScoped<AprovarImovelUseCase>();
+        services.AddScoped<ListarImoveisAprovadosUseCase>();
         //Avaliacao
         services.AddScoped<CriarAvaliacaoUseCase>();
         //Contrato

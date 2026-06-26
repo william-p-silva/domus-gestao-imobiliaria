@@ -24,7 +24,12 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
         return imovel;
     }
 
-    public Task<List<Imovel>> ListarAsync(bool aprovados = true, CancellationToken cancellationToken = default)
+    public async Task<List<Imovel>> ListarAllImoveisAsync(CancellationToken cancellationToken = default)
+    {
+        return await context.Imoveis.ToListAsync(cancellationToken);
+    }
+
+    public async Task<List<Imovel>> ListarAsync(bool aprovados = true, CancellationToken cancellationToken = default)
     {
         var query = context.Imoveis.AsNoTracking().AsQueryable();
         if (aprovados)
@@ -32,7 +37,7 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
         if (!aprovados)
             query = query.Where(x => !x.Aprovado);
 
-        var imoveis = query.ToListAsync(cancellationToken);
+        var imoveis = await query.ToListAsync(cancellationToken);
         return imoveis;
     }
 
