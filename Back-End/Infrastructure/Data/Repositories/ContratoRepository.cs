@@ -18,7 +18,10 @@ public class ContratoRepository(AppDbContext context) : IContratoRepository
 
     public async Task<Contrato?> BuscarPorIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var contrato = await context.Contratos.FindAsync(id, cancellationToken);
+        var contrato = await context.Contratos
+            .Include(x => x.Locador)
+            .Include(x => x.Locatario)
+            .FirstOrDefaultAsync(x => x.Contrato_ID == id, cancellationToken);
         return contrato;
     }
 

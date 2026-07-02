@@ -4,6 +4,7 @@ using Domus.Application.Interfaces.Security;
 using Domus.Application.UseCases.AvaliacaoUseCases;
 using Domus.Application.UseCases.ContratoUseCase;
 using Domus.Application.UseCases.ContratoUseCase.CicloDeVida;
+using Domus.Application.UseCases.ContratoUseCase.Listar;
 using Domus.Application.UseCases.ImovelUseCase;
 using Domus.Application.UseCases.ImovelUseCase.CicloDeVida;
 using Domus.Application.UseCases.ImovelUseCase.Listar;
@@ -61,6 +62,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<RejeitarMinutaContratoUseCase>();
         services.AddScoped<AssinarContratoUseCase>();
         services.AddScoped<DisponibilizarParaAssinaturaUseCase>();
+        services.AddScoped<BuscarContratoUseCase>();
         //Auth
         services.AddScoped<LoginUseCase>();
 
