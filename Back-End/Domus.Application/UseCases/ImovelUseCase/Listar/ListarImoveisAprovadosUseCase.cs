@@ -34,7 +34,9 @@ public class ListarImoveisAprovadosUseCase(IImovelRepository imovelRepository)
             Titulo = x.Titulo,
             Usuario_ID = x.Usuario_ID,
             ValorAluguel = x.ValorAluguel,
-
+            Banheiros = x.Banheiros,
+            MetrosQuadrados = x.MetrosQuadrados,
+            TipoDoImovel = x.Tipo.ToString()
         }).ToList();
     }
 }

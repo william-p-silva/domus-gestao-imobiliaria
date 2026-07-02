@@ -36,6 +36,9 @@ public class ContratoFixture
     public Imovel GerarImovelContrato(Guid locador_ID)
     {
         return new Imovel(
+                banheiros: 2,
+                tipo: TipoImovel.Casa,
+                metrosQuadrados: 25.25m,
                 usuario_id: locador_ID,
                 endereco_id: Guid.NewGuid(),
                 titulo: "Teste de Contrato",

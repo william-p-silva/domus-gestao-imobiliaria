@@ -11,9 +11,11 @@ public class ImovelRequest
     public string Titulo { get; set; }
     public string Descricao { get; set; }
     public int Comodos { get; set; }
+    public int Banheiros { get; set; }
+    public decimal MetrosQuadrados { get; set; }
     public StatusImovel Status { get; set; }
     public decimal ValorAluguel { get; set; }
-
+    public TipoImovel TipoDoImovel { get; set; }
     public EnderecoRequest Endereco { get; set; }
 
 }

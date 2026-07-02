@@ -27,7 +27,9 @@ public class ImovelConfiguration : IEntityTypeConfiguration<Imovel>
             .HasConversion<string>();
 
         builder.Property(i => i.MetrosQuadrados)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnType("decimal(18,2)");
+
 
         builder.Property(i => i.Comodos)
             .IsRequired();

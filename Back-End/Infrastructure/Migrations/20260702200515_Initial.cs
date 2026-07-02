@@ -51,6 +51,8 @@ namespace Domus.Infrastructure.Migrations
                     Endereco_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Nome = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: true),
+                    CPF = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: true),
+                    Celular = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: true),
                     Ativo = table.Column<bool>(type: "bit", nullable: false),
                     SenhaHash = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     TokenConfirmaEmail = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -79,7 +81,10 @@ namespace Domus.Infrastructure.Migrations
                     Endereco_ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Titulo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Descricao = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    Tipo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MetrosQuadrados = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Comodos = table.Column<int>(type: "int", nullable: false),
+                    Banheiros = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ValorAluguel = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CriadoEm = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
@@ -547,6 +552,20 @@ namespace Domus.Infrastructure.Migrations
                 name: "IX_UsuarioFuncoes_Usuario_ID",
                 table: "UsuarioFuncoes",
                 column: "Usuario_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_Celular",
+                table: "Usuarios",
+                column: "Celular",
+                unique: true,
+                filter: "[Celular] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_CPF",
+                table: "Usuarios",
+                column: "CPF",
+                unique: true,
+                filter: "[CPF] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_Email",

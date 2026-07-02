@@ -16,6 +16,8 @@ public class ImovelResponse
     public DateTime CriadoEm { get; set; }
     public bool Aprovado { get; set; }
     public bool Avaliado { get; set; }
-
+    public decimal MetrosQuadrados { get; set; }
+    public int Banheiros { get; set; }
+    public string TipoDoImovel { get; set; }
     public EnderecoResponse Endereco { get; set; }
 }

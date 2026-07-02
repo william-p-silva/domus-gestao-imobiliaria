@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domus.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260617151600_Initial")]
+    [Migration("20260702200515_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -275,6 +275,9 @@ namespace Domus.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
+                    b.Property<int>("Banheiros")
+                        .HasColumnType("int");
+
                     b.Property<int>("Comodos")
                         .HasColumnType("int");
 
@@ -291,7 +294,14 @@ namespace Domus.Infrastructure.Migrations
                     b.Property<Guid>("Endereco_ID")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<decimal>("MetrosQuadrados")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tipo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -537,6 +547,14 @@ namespace Domus.Infrastructure.Migrations
                     b.Property<bool>("Ativo")
                         .HasColumnType("bit");
 
+                    b.Property<string>("CPF")
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
+                    b.Property<string>("Celular")
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
                     b.Property<DateTime>("CriadoEm")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -574,6 +592,14 @@ namespace Domus.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Usuario_ID");
+
+                    b.HasIndex("CPF")
+                        .IsUnique()
+                        .HasFilter("[CPF] IS NOT NULL");
+
+                    b.HasIndex("Celular")
+                        .IsUnique()
+                        .HasFilter("[Celular] IS NOT NULL");
 
                     b.HasIndex("Email")
                         .IsUnique()

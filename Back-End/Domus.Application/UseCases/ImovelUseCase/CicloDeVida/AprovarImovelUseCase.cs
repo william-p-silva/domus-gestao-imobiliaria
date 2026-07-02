@@ -34,8 +34,13 @@ public class AprovarImovelUseCase(
         return new ImovelResponse()
         {
             Imovel_ID = imovel.Imovel_ID,
+            Usuario_ID = imovel.Usuario_ID,
             Titulo = imovel.Titulo,
             Descricao = imovel.Descricao,
+            Comodos = imovel.Comodos,
+            Status = imovel.Status.ToString(),
+            ValorAluguel = imovel.ValorAluguel,
+            CriadoEm = imovel.CriadoEm,
             Endereco = new EnderecoResponse()
             {
                 CEP = imovel.Endereco.CEP,
@@ -47,13 +52,11 @@ public class AprovarImovelUseCase(
                 Complemento = imovel.Endereco.Complemento,
                 Endereco_ID = imovel.Endereco_ID,
             },
-            Comodos = imovel.Comodos,
-            CriadoEm = imovel.CriadoEm,
-            Status = imovel.Status.ToString(),
-            Usuario_ID = imovel.Usuario_ID,
-            ValorAluguel = imovel.ValorAluguel,
             Aprovado = imovel.Aprovado,
-            Avaliado = imovel.Avaliado
+            Avaliado = imovel.Avaliado,
+            Banheiros = imovel.Banheiros,
+            MetrosQuadrados = imovel.MetrosQuadrados,
+            TipoDoImovel = imovel.Tipo.ToString()
         };
     }
 }

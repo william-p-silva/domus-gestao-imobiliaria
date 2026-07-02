@@ -78,6 +78,9 @@ Authorization: Bearer {{MeuTokenJWT}}
   "descricao": "Muitas historias",
   "comodos": 2,
   "status": 1,
+  "banheiros": 2,
+  "metrosQuadrados": 100,
+  "TipoDoImovel": 1,
   "valorAluguel": 200.00,
   "endereco": {
       "cep": "07861140",

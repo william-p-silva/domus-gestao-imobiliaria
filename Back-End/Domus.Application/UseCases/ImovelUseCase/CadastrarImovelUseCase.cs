@@ -60,7 +60,10 @@ public class CadastrarImovelUseCase(
             descricao: request.Descricao,
             comodos: request.Comodos,
             status: request.Status,
-            valorAluguel: request.ValorAluguel
+            valorAluguel: request.ValorAluguel,
+            banheiros: request.Banheiros,
+            metrosQuadrados: request.MetrosQuadrados,
+            tipo: request.TipoDoImovel
         );
 
 
@@ -91,7 +94,10 @@ public class CadastrarImovelUseCase(
                 Complemento = endereco.Complemento
             },
             Aprovado = imovel.Aprovado,
-            Avaliado = imovel.Avaliado
+            Avaliado = imovel.Avaliado,
+            Banheiros = imovel.Banheiros,
+            MetrosQuadrados = imovel.MetrosQuadrados,
+            TipoDoImovel = imovel.Tipo.ToString()
         };
     }
 }
