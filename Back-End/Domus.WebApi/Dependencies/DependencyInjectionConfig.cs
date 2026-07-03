@@ -11,6 +11,7 @@ using Domus.Application.UseCases.ImovelUseCase.Listar;
 using Domus.Application.UseCases.UsuarioUseCase;
 using Domus.Application.UseCases.UsuarioUseCase.AdminUseCase;
 using Domus.Application.UseCases.UsuarioUseCase.AuthUseCase;
+using Domus.Application.UseCases.UsuarioUseCase.Listar;
 using Domus.Application.UseCases.UsuarioUseCase.LocadorUseCase;
 using Domus.Application.UseCases.UsuarioUseCase.LocatarioUseCase;
 using Domus.Infrastructure.Data.Email;
@@ -43,8 +44,11 @@ public static class DependencyInjectionConfig
         services.AddScoped<IEmailService, EmailService>();
 
         //Use Cases
-        // ConfirmarEmail
-        services.AddScoped<ConfirmarEmailUseCase>();
+        //Usuário
+        services.AddScoped<ConfirmarEmailUseCase>(); // Confirmar email
+        services.AddScoped<AdicionarInfosExtrasUseCase>();
+        services.AddScoped<BuscarPerfilUseCase>();
+        services.AddScoped<ExcluirContaUseCase>();
         //Locatario
         services.AddScoped<CadastrarLocatarioUseCase>();
         //Locador

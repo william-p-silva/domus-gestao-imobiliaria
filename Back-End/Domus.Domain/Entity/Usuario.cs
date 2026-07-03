@@ -46,18 +46,6 @@ public class Usuario
     /// </summary>
     protected Usuario() { }
 
-    // NOVO: Construtor para Seeds / Dados Estáticos (IDs fixos)
-    public Usuario(Guid usuario_id, string nome, string email, string senha)
-    {
-        Usuario_ID =usuario_id;
-        TokenConfirmaEmail = Guid.NewGuid();
-        Nome = nome;
-        Email = email;
-        EmailConfirmado = true;
-        EmailAConfirmar = email;
-        SenhaHash = senha;
-        Ativo = true;
-    }
 
     public Usuario(
         string nome,
@@ -110,6 +98,28 @@ public class Usuario
 
         TokenConfirmaEmail = Guid.Empty;
         TokenEmailExpire = DateTime.MinValue;
+    }
+
+    public void AdicionarCPF(string cpf)
+    {
+        if (string.IsNullOrWhiteSpace(cpf))
+            throw new ArgumentException("O CPF do usuário é obrigatório.", nameof(cpf));
+        if (cpf.Count(c => char.IsDigit(c)) != 11)
+            throw new ArgumentException("O CPF deve conter 11 dígitos.", nameof(cpf));
+        if (cpf.Any(c => !char.IsDigit(c)))
+            throw new ArgumentException("O CPF deve conter apenas números.", nameof(cpf));
+        CPF = cpf;
+    }
+
+    public void AdicionarCelular(string celular)
+    {
+        if (string.IsNullOrWhiteSpace(celular))
+            throw new ArgumentException("O celular do usuário é obrigatório.", nameof(celular));
+        if (celular.Count(c => char.IsDigit(c)) != 11)
+            throw new ArgumentException("O celular deve conter 11 dígitos.", nameof(celular));
+        if (celular.Any(c => !char.IsDigit(c)))
+            throw new ArgumentException("O celular deve conter apenas números.", nameof(celular));
+        Celular = celular;
     }
 
     public void AlterarEmail(string novoEmail)
