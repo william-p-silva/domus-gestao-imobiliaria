@@ -12,7 +12,7 @@ public interface IUsuarioRepository
     Task<List<Usuario>> ListarAsync(CancellationToken cancellationToken = default);
     void Remover(Usuario usuario);
     Task AddAsync(Usuario usuario, CancellationToken cancellationToken = default);
-
+    Task<Usuario?> BuscarPorCelular(string celular, CancellationToken cancellationToken = default);
 
     //UsuarioFunção
     Task<UsuarioFuncao?> BuscarFuncaoUserPorIdAsync(Guid id, CancellationToken cancellationToken = default);

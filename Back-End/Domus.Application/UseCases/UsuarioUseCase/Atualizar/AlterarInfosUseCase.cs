@@ -24,22 +24,37 @@ public class AlterarInfosUseCase(
         if (!passwordHasher.VerificarSenha(request.AtualSenha, usuario.SenhaHash))
             throw new ArgumentException("Senha atual incorreta.");
 
+
+        bool houveAlteracao = false;
         if (!string.IsNullOrWhiteSpace(request.NovaSenha))
         {
             var novaSenhaHash = passwordHasher.GerarHash(request.NovaSenha);
             usuario.AlterarSenha(novaSenhaHash);
+            houveAlteracao = true;
         }
         if (!string.IsNullOrWhiteSpace(request.Nome))
         {
             usuario.AlterarNome(request.Nome);
+            houveAlteracao = true;
         }
         if (!string.IsNullOrWhiteSpace(request.Celular))
         {
+            var celularExistente = await usuarioRepository.BuscarPorCelular(request.Celular, cancellationToken);
+            if (celularExistente != null && celularExistente.Usuario_ID != usuario_id)
+                throw new ArgumentException("O celular informado já está em uso por outro usuário.");
             usuario.AlterarCelular(request.Celular);
+            houveAlteracao = true;
         }
 
-        await unitOfWork.CommitAsync(cancellationToken);
+        if(houveAlteracao)
+        {
+            await unitOfWork.CommitAsync(cancellationToken);
+            return "Usuário atualizado com sucesso.";
+        }
+        else
+        {
+            return "Nenhuma alteração foi realizada.";
+        }
 
-        return "Usuário atualizado com sucesso.";
     }
 }
