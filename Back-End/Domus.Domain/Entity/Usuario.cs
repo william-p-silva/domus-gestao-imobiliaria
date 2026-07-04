@@ -122,6 +122,17 @@ public class Usuario
         Celular = celular;
     }
 
+    public void AlterarCelular(string celular)
+    {
+        if (string.IsNullOrWhiteSpace(celular))
+            throw new ArgumentException("O celular do usuário é obrigatório.", nameof(celular));
+        if (celular.Count(c => char.IsDigit(c)) != 11)
+            throw new ArgumentException("O celular deve conter 11 dígitos.", nameof(celular));
+        if (celular.Any(c => !char.IsDigit(c)))
+            throw new ArgumentException("O celular deve conter apenas números.", nameof(celular));
+        Celular = celular;
+    }
+
     public void AlterarEmail(string novoEmail)
     {
         if (string.IsNullOrWhiteSpace(novoEmail))

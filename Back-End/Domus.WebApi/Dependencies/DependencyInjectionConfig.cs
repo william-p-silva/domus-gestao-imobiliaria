@@ -10,6 +10,7 @@ using Domus.Application.UseCases.ImovelUseCase.CicloDeVida;
 using Domus.Application.UseCases.ImovelUseCase.Listar;
 using Domus.Application.UseCases.UsuarioUseCase;
 using Domus.Application.UseCases.UsuarioUseCase.AdminUseCase;
+using Domus.Application.UseCases.UsuarioUseCase.Atualizar;
 using Domus.Application.UseCases.UsuarioUseCase.AuthUseCase;
 using Domus.Application.UseCases.UsuarioUseCase.Listar;
 using Domus.Application.UseCases.UsuarioUseCase.LocadorUseCase;
@@ -49,6 +50,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<AdicionarInfosExtrasUseCase>();
         services.AddScoped<BuscarPerfilUseCase>();
         services.AddScoped<ExcluirContaUseCase>();
+        services.AddScoped<AlterarInfosUseCase>();
         //Locatario
         services.AddScoped<CadastrarLocatarioUseCase>();
         //Locador
