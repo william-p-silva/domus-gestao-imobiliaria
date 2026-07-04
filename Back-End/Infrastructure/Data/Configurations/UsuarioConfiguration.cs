@@ -43,6 +43,10 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
         builder.Property(u => u.Ativo)
             .IsRequired();
 
+        builder.Property(u => u.ExcluidoEm)
+            .IsRequired(false)
+            .HasColumnType("datetime2");
+
         builder.Property(u => u.TokenConfirmaEmail)
             .IsRequired();
 

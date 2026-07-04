@@ -1,5 +1,4 @@
 ﻿using Domus.Domain.Enums;
-using Domus.Domain.ValueObjects;
 
 namespace Domus.Domain.Entity;
 
@@ -18,6 +17,7 @@ public class Usuario
     public string EmailAConfirmar { get; private set; }
     public bool EmailConfirmado { get; private set; } = false;
     public DateTime CriadoEm { get; private set; } = DateTime.UtcNow;
+    public DateTime? ExcluidoEm { get; private set; }
 
 
     private readonly List<UsuarioFuncao> _usuarioFuncao = new();
@@ -159,6 +159,7 @@ public class Usuario
         if(!Ativo)
             throw new InvalidOperationException("O usuário já está desativado.");
         Ativo = false;
+        ExcluidoEm = DateTime.UtcNow;
     }
 
     public void AtivarUsuario()

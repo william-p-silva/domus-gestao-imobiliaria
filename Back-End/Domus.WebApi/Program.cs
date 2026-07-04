@@ -153,7 +153,7 @@ app.Run();
 // COMANDOS ÚTEIS PARA O TERMINAL:
 // 
 // Criar uma nova Migration:
-// dotnet ef migrations add Initial --project ..\Infrastructure 
+// dotnet ef migrations add ControleExclusao --project ..\Infrastructure 
 //
 // Atualizar o banco manualmente (Caso não queira depender do auto-migrate):
 // dotnet ef database update --project ..\Infrastructure  

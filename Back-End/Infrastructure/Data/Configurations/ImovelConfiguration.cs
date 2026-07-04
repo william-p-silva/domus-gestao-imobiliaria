@@ -58,6 +58,10 @@ public class ImovelConfiguration : IEntityTypeConfiguration<Imovel>
             .IsRequired()
             .HasDefaultValue(false);
 
+        builder.Property(i => i.ExcluidoEm)
+            .IsRequired(false)
+            .HasColumnType("datetime2");
+
         builder.HasOne(i => i.Usuario)
             .WithMany(u => u.Imoveis)
             .HasForeignKey(i => i.Usuario_ID)

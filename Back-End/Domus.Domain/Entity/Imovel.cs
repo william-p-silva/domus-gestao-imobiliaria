@@ -19,6 +19,7 @@ public class Imovel
     public DateTime CriadoEm { get; private set; } = DateTime.UtcNow;
     public bool Aprovado { get; private set; } = false;
     public bool Avaliado { get; private set; } = false;
+    public DateTime? ExcluidoEm { get; private set; }
 
     //Relacionamentos
     public ICollection<Reclamacao> Reclamacoes { get; private set; } = new List<Reclamacao>();
@@ -105,6 +106,7 @@ public class Imovel
             throw new InvalidOperationException("Não é possível excluir um imóvel alugado.");
         VerificarContratoAtivo();
         Status = StatusImovel.Excluido;
+        ExcluidoEm = DateTime.UtcNow;
     }
 
     private void VerificarContratoAtivo()
