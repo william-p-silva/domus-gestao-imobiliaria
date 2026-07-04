@@ -39,8 +39,8 @@ public class Imovel
     /// </summary>
     protected Imovel() { }
 
-    public Imovel
-        (Guid usuario_id,
+    public Imovel(
+        Guid usuario_id,
         Guid endereco_id,
         string titulo,
         string descricao,
@@ -50,7 +50,7 @@ public class Imovel
         int banheiros,
         TipoImovel tipo,
         decimal metrosQuadrados
-          )
+        )
     {
         if (usuario_id == Guid.Empty)
             throw new ArgumentException("O ID do usuário é obrigatório.", nameof(usuario_id));
@@ -83,10 +83,34 @@ public class Imovel
     }
 
 
-    public void AvaliarImovel(bool aprovado)
+    public void Avaliar(bool aprovado)
     {
+        if(Status == StatusImovel.Excluido)
+            throw new InvalidOperationException("Não é possível avaliar um imóvel excluído.");
+        if(Avaliado)
+            throw new InvalidOperationException("O imóvel já foi avaliado.");
         Aprovado = aprovado;
         Avaliado = true;
+    }
+
+    /// <summary>
+    /// Exclui o imóvel, alterando seu status para "Excluído".
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Status que não permite exclusão</exception>
+    public void Excluir()
+    {
+        if (Status == StatusImovel.Excluido)
+            throw new InvalidOperationException("O imóvel já está excluído.");
+        if (Status == StatusImovel.Alugado)
+            throw new InvalidOperationException("Não é possível excluir um imóvel alugado.");
+        VerificarContratoAtivo();
+        Status = StatusImovel.Excluido;
+    }
+
+    private void VerificarContratoAtivo()
+    {
+        if (Contratos.Any(c => c.Status == StatusContrato.Ativo))
+            throw new InvalidOperationException("O imóvel possui contrato ativo.");
     }
 
 }

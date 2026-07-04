@@ -76,11 +76,12 @@ public class UsuarioController(
     [HttpDelete("delete/usuario")]
     [Authorize]
     public async Task<IActionResult> ExcluirConta(
+        string confirmarSenha,
         CancellationToken cancellationToken
         )
     {
         var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-        var result = await excluirContaUseCase.Execute(userId, cancellationToken);
+        var result = await excluirContaUseCase.Execute(userId, confirmarSenha, cancellationToken);
         return Ok(new SuccessApiResponse<bool>
         {
             Success = true,

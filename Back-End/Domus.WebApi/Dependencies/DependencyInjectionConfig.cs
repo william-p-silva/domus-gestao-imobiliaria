@@ -61,6 +61,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<CadastrarImovelUseCase>();
         services.AddScoped<AprovarImovelUseCase>();
         services.AddScoped<ListarImoveisAprovadosUseCase>();
+        services.AddScoped<ExcluirImovelUseCase>();
         //Avaliacao
         services.AddScoped<CriarAvaliacaoUseCase>();
         //Contrato

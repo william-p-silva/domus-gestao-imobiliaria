@@ -156,11 +156,15 @@ public class Usuario
 
     public void DesativarUsuario()
     {
+        if(!Ativo)
+            throw new InvalidOperationException("O usuário já está desativado.");
         Ativo = false;
     }
 
     public void AtivarUsuario()
     {
+        if (Ativo)
+            throw new InvalidOperationException("O usuário já está ativo.");
         Ativo = true;
     }
 
@@ -174,6 +178,8 @@ public class Usuario
 
     public void RemoverEndereco()
     {
+        if (Endereco_ID == Guid.Empty)
+            throw new InvalidOperationException("O usuário não possui endereço para remover.");
         Endereco_ID = null;
     }
 

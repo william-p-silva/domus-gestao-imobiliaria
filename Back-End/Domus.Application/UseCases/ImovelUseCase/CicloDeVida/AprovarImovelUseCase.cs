@@ -27,7 +27,7 @@ public class AprovarImovelUseCase(
         if (imovel == null)
             throw new ArgumentException("Imovel inválido ", nameof(request.Imovel_ID));
 
-        imovel.AvaliarImovel(request.Aprovado);
+        imovel.Avaliar(request.Aprovado);
 
         await commit.CommitAsync(cancellationToken);
 
