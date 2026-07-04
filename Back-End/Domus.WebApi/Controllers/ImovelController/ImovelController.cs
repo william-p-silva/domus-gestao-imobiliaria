@@ -15,7 +15,8 @@ namespace Domus.WebApi.Controllers.ImovelController;
 public class ImovelController(
     CadastrarImovelUseCase cadastrarImovelUseCase,
     AprovarImovelUseCase aprovarImovelUseCase,
-    ListarImoveisAprovadosUseCase listarImoveisAprovadosUseCase
+    ListarImoveisAprovadosUseCase listarImoveisAprovadosUseCase,
+    ExcluirImovelUseCase excluirImovelUseCase
     ) : ControllerBase
 {
 
@@ -59,6 +60,24 @@ public class ImovelController(
         {
             Success = true,
             Data = imoveis
+        });
+    }
+
+
+    [HttpDelete("delete")]
+    [Authorize(Roles = "Locador")]
+    public async Task<IActionResult> DeletarImovel(
+        [FromBody] RequestExcluirImovel request,
+        CancellationToken cancellationToken
+        )
+    {
+        var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        var result = await excluirImovelUseCase.Execute(request, userId, cancellationToken);
+
+        return Ok(new SuccessApiResponse<string>
+        {
+            Success = true,
+            Data = result
         });
     }
 
