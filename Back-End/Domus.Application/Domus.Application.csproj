@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Domus.Domain\Domus.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases\ContratoUseCase\Atualizar\" />
+  </ItemGroup>
+
 </Project>

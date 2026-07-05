@@ -3,6 +3,7 @@
 using Domus.Application.DTOs.Contrato;
 using Domus.Application.DTOs.Contrato.CicloDeVida;
 using Domus.Application.Interfaces.Repositories;
+using Domus.Domain.Enums;
 
 namespace Domus.Application.UseCases.ContratoUseCase.CicloDeVida;
 
@@ -36,8 +37,8 @@ public class AssinarContratoUseCase(
         if (imovel == null || imovel.Status != Domain.Enums.StatusImovel.Disponivel)
             throw new ArgumentException("Imovel inválido ", nameof(contrato.Imovel_ID));
 
-        contrato.LocatarioAssinaMinuta(dataTermino: request.DataTermino, imovel.ValorAluguel);      
-        
+        contrato.LocatarioAssinaMinuta(dataTermino: request.DataTermino, imovel.ValorAluguel);
+        imovel.Alugar();
 
         await commit.CommitAsync(cancellationToken);
 

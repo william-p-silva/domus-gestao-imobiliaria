@@ -126,7 +126,7 @@ public class Contrato
             throw new InvalidOperationException("Não existe um locatario para este contrato");
 
         AssinaturaLocatario = true;
-        AtivarContrato(dataTermino: dataTermino, valorAluguel);
+        AtivarContrato(dataTermino: dataTermino, valorAluguel: valorAluguel);
     }
 
 
@@ -143,7 +143,7 @@ public class Contrato
     private void AtivarContrato(DateTime dataTermino, decimal valorAluguel)
     {
         if (Status != StatusContrato.Pendente)
-            throw new InvalidOperationException("O contrato só poder ser ativado caso esteja pendente");
+            throw new InvalidOperationException("O contrato só pode ser ativado caso esteja pendente");
 
         if (dataTermino <= DateTime.UtcNow.AddMonths(1))
             throw new ArgumentException("A data de término deve ser de no mínimo um mês a partir de hoje.");
@@ -151,9 +151,10 @@ public class Contrato
         DataInicio = DateTime.UtcNow;
         DataTermino = dataTermino;
         Status = StatusContrato.Ativo;
-
+        
         GerarParcelasContrato(valorAluguel: valorAluguel);
     }
+
 
     /// <summary>
     /// Cancela a pendência de assinatura da minuta, limpando os vínculos e retornando o contrato para o estado editável de rascunho.
@@ -167,7 +168,7 @@ public class Contrato
     public void CancelarPendenciaMinuta(Guid usuario_ID)
     {
         if (Status != StatusContrato.Pendente)
-            throw new InvalidOperationException("O contrato só poder ser rejeitado caso esteja pendente");
+            throw new InvalidOperationException("O contrato só pode ser rejeitado caso esteja pendente");
 
         if (Locatario_ID != usuario_ID && Locador_ID != usuario_ID)
             throw new ArgumentException("Usuário sem permissão ", nameof(usuario_ID));

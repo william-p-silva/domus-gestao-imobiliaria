@@ -6,6 +6,7 @@ using Domus.Application.UseCases.ContratoUseCase;
 using Domus.Application.UseCases.ContratoUseCase.CicloDeVida;
 using Domus.Application.UseCases.ContratoUseCase.Listar;
 using Domus.Application.UseCases.ImovelUseCase;
+using Domus.Application.UseCases.ImovelUseCase.Atualizar;
 using Domus.Application.UseCases.ImovelUseCase.CicloDeVida;
 using Domus.Application.UseCases.ImovelUseCase.Listar;
 using Domus.Application.UseCases.UsuarioUseCase;
@@ -51,6 +52,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<BuscarPerfilUseCase>();
         services.AddScoped<ExcluirContaUseCase>();
         services.AddScoped<AlterarInfosUseCase>();
+        services.AddScoped<AlterarInfosImovelUseCase>();
         //Locatario
         services.AddScoped<CadastrarLocatarioUseCase>();
         //Locador
@@ -62,6 +64,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<AprovarImovelUseCase>();
         services.AddScoped<ListarImoveisAprovadosUseCase>();
         services.AddScoped<ExcluirImovelUseCase>();
+        services.AddScoped<AlterarInfosImovelUseCase>();
         //Avaliacao
         services.AddScoped<CriarAvaliacaoUseCase>();
         //Contrato

@@ -26,7 +26,21 @@ namespace Domus.WebApi.Middlewares
             }
             catch (UnauthorizedAccessException ex)
             {
-                httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                httpContext.Response.ContentType = "application/json";
+
+                var errorResponse = new ErroApiResponseDTO
+                {
+                    StatusCode = httpContext.Response.StatusCode,
+                    Success = false,
+                    Message = ex.Message
+                };
+
+                await httpContext.Response.WriteAsJsonAsync(errorResponse);
+            }
+            catch (InvalidOperationException ex)
+            {
+                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
                 httpContext.Response.ContentType = "application/json";
 
                 var errorResponse = new ErroApiResponseDTO

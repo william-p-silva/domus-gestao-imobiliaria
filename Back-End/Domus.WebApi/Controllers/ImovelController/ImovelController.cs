@@ -1,7 +1,9 @@
 ﻿using Domus.Application.DTOs.ApiResponse;
 using Domus.Application.DTOs.Imovel;
+using Domus.Application.DTOs.Imovel.Atualizar;
 using Domus.Application.DTOs.Imovel.CicloDeVida;
 using Domus.Application.UseCases.ImovelUseCase;
+using Domus.Application.UseCases.ImovelUseCase.Atualizar;
 using Domus.Application.UseCases.ImovelUseCase.CicloDeVida;
 using Domus.Application.UseCases.ImovelUseCase.Listar;
 using Microsoft.AspNetCore.Authorization;
@@ -14,6 +16,7 @@ namespace Domus.WebApi.Controllers.ImovelController;
 [Route("domus/[controller]")]
 public class ImovelController(
     CadastrarImovelUseCase cadastrarImovelUseCase,
+    AlterarInfosImovelUseCase alterarInfosImovelUseCase,
     AprovarImovelUseCase aprovarImovelUseCase,
     ListarImoveisAprovadosUseCase listarImoveisAprovadosUseCase,
     ExcluirImovelUseCase excluirImovelUseCase
@@ -26,6 +29,21 @@ public class ImovelController(
     {
         var imovel = await cadastrarImovelUseCase.Execute(request, cancellationToken);
         return Ok(new SuccessApiResponse<ImovelResponse>
+        {
+            Success = true,
+            Data = imovel
+        });
+    }
+
+    [HttpPut("put/infos")]
+    [Authorize(Roles = "Locador")]
+    public async Task<IActionResult> AlterarInfos(
+        RequestAlterarInfosImovel request, CancellationToken cancellationToken)
+    {
+        var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        var imovel = await alterarInfosImovelUseCase.Execute(request, userId, cancellationToken);
+
+        return Ok(new SuccessApiResponse<string>
         {
             Success = true,
             Data = imovel
