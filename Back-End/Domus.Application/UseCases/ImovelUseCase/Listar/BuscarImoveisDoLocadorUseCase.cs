@@ -21,8 +21,6 @@ public class BuscarImoveisDoLocadorUseCase(
             throw new ArgumentException($"Usuário com ID {locadorId} não é um locador.");
 
         var imoveis = await imovelRepository.ListarImoveisLocador(locadorId, cancellationToken);
-        if (imoveis is null || !imoveis.Any())
-            throw new ArgumentException($"Nenhum imóvel encontrado para o locador com ID {locadorId}.");
 
         return imoveis.Select(i => new ImovelResponse
         {

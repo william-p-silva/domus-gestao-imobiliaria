@@ -19,6 +19,7 @@ public class ImovelController(
     AlterarInfosImovelUseCase alterarInfosImovelUseCase,
     AprovarImovelUseCase aprovarImovelUseCase,
     BuscarImoveisDoLocadorUseCase buscarImoveisDoLocadorUseCase,
+    BuscarImovelPorIdUseCase buscarImovelPorIdUseCase,
     ListarImoveisAprovadosUseCase listarImoveisAprovadosUseCase,
     ExcluirImovelUseCase excluirImovelUseCase
     ) : ControllerBase
@@ -35,6 +36,7 @@ public class ImovelController(
             Data = imovel
         });
     }
+
 
     [HttpPut("put/infos")]
     [Authorize(Roles = "Locador")]
@@ -72,7 +74,8 @@ public class ImovelController(
 
     [HttpGet("get/listar/locador")]
     [Authorize(Roles = "Locador")]
-    public async Task<IActionResult> ListarImoveisLocador(CancellationToken cancellationToken)
+    public async Task<IActionResult> ListarImoveisLocador(
+        CancellationToken cancellationToken)
     {
         var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
         var imoveisLocador = await buscarImoveisDoLocadorUseCase.Execute(userId, cancellationToken);
@@ -86,13 +89,29 @@ public class ImovelController(
 
         
     [HttpGet("get/listar/aprovados")]
-    public async Task<IActionResult> ListarimoveisAprovados()
+    public async Task<IActionResult> ListarimoveisAprovados(
+        CancellationToken cancellationToken)
     {
-        var imoveis = await listarImoveisAprovadosUseCase.Execute();
+        var imoveis = await listarImoveisAprovadosUseCase.Execute(cancellationToken);
         return Ok(new SuccessApiResponse<List<ImovelResponse>>()
         {
             Success = true,
             Data = imoveis
+        });
+    }
+
+
+    [HttpGet("get/buscar/{imovelId:guid}")]
+    public async Task<IActionResult> BuscarPorId(
+        [FromRoute] Guid imovelId,
+        CancellationToken cancellationToken
+        )
+    {
+        var imovel = await buscarImovelPorIdUseCase.Execute(imovelId, cancellationToken);
+        return Ok(new SuccessApiResponse<ImovelResponse>
+        {
+            Success = true,
+            Data = imovel
         });
     }
 

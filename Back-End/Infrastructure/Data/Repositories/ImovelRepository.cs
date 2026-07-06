@@ -18,7 +18,8 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
 
     public async Task<Imovel?> BuscarPorIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var imovel = await context.Imoveis.Include(i => i.Endereco)
+        var imovel = await context.Imoveis
+            .Include(i => i.Endereco)
             .Include(i => i.Contratos)
             .FirstOrDefaultAsync(i => i.Imovel_ID == id, cancellationToken);
         return imovel;
@@ -26,7 +27,9 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
 
     public async Task<List<Imovel>> ListarAllImoveisAsync(CancellationToken cancellationToken = default)
     {
-        return await context.Imoveis.ToListAsync(cancellationToken);
+        return await context.Imoveis
+            .Include(i => i.Endereco)
+            .AsNoTracking().ToListAsync(cancellationToken);
     }
 
     public async Task<List<Imovel>> ListarAsync(bool aprovados = true, CancellationToken cancellationToken = default)

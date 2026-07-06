@@ -7,9 +7,9 @@ namespace Domus.Application.UseCases.ImovelUseCase.Listar;
 public class ListarImoveisAprovadosUseCase(IImovelRepository imovelRepository)
 {
 
-    public async Task<List<ImovelResponse>> Execute()
+    public async Task<List<ImovelResponse>> Execute(CancellationToken cancellationToken)
     {
-        var imoveis = await imovelRepository.ListarAsync(aprovados: true);
+        var imoveis = await imovelRepository.ListarAsync(aprovados: true, cancellationToken);
 
         return imoveis.Select(x => new ImovelResponse
         {
