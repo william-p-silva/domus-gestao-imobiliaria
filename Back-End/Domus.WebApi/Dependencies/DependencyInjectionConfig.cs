@@ -52,27 +52,39 @@ public static class DependencyInjectionConfig
         services.AddScoped<BuscarPerfilUseCase>();
         services.AddScoped<ExcluirContaUseCase>();
         services.AddScoped<AlterarInfosUseCase>();
-        services.AddScoped<AlterarInfosImovelUseCase>();
+
         //Locatario
         services.AddScoped<CadastrarLocatarioUseCase>();
+
         //Locador
         services.AddScoped<CadastrarLocadorUseCase>();
+
         //Admin
         services.AddScoped<CadastrarAdminUseCase>();
+
         //Imovel
         services.AddScoped<CadastrarImovelUseCase>();
         services.AddScoped<AprovarImovelUseCase>();
-        services.AddScoped<ListarImoveisAprovadosUseCase>();
         services.AddScoped<ExcluirImovelUseCase>();
+        //Atualizar Imoveis
         services.AddScoped<AlterarInfosImovelUseCase>();
+        //Listar Imoveis
+        services.AddScoped<ListarImoveisAprovadosUseCase>();
+        services.AddScoped<ListarImoveisComFiltroUseCase>();
+        services.AddScoped<ListarTodosImoveisUseCase>();
+        services.AddScoped<BuscarImoveisDoLocadorUseCase>();
+        services.AddScoped<BuscarImovelPorIdUseCase>();
+
         //Avaliacao
         services.AddScoped<CriarAvaliacaoUseCase>();
+
         //Contrato
         services.AddScoped<CadastrarContratoUseCase>();
         services.AddScoped<RejeitarMinutaContratoUseCase>();
         services.AddScoped<AssinarContratoUseCase>();
         services.AddScoped<DisponibilizarParaAssinaturaUseCase>();
         services.AddScoped<BuscarContratoUseCase>();
+
         //Auth
         services.AddScoped<LoginUseCase>();
 

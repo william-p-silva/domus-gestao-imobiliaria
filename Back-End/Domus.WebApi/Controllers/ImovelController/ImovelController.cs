@@ -18,6 +18,7 @@ public class ImovelController(
     CadastrarImovelUseCase cadastrarImovelUseCase,
     AlterarInfosImovelUseCase alterarInfosImovelUseCase,
     AprovarImovelUseCase aprovarImovelUseCase,
+    BuscarImoveisDoLocadorUseCase buscarImoveisDoLocadorUseCase,
     ListarImoveisAprovadosUseCase listarImoveisAprovadosUseCase,
     ExcluirImovelUseCase excluirImovelUseCase
     ) : ControllerBase
@@ -69,7 +70,21 @@ public class ImovelController(
     }
 
 
-    
+    [HttpGet("get/listar/locador")]
+    [Authorize(Roles = "Locador")]
+    public async Task<IActionResult> ListarImoveisLocador(CancellationToken cancellationToken)
+    {
+        var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        var imoveisLocador = await buscarImoveisDoLocadorUseCase.Execute(userId, cancellationToken);
+
+        return Ok(new SuccessApiResponse<List<ImovelResponse>>
+        {
+            Success = true,
+            Data = imoveisLocador
+        });
+    }
+
+        
     [HttpGet("get/listar/aprovados")]
     public async Task<IActionResult> ListarimoveisAprovados()
     {
@@ -98,5 +113,4 @@ public class ImovelController(
             Data = result
         });
     }
-
 }

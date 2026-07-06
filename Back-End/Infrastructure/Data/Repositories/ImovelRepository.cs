@@ -37,8 +37,23 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
         if (!aprovados)
             query = query.Where(x => !x.Aprovado);
 
-        var imoveis = await query.ToListAsync(cancellationToken);
+        var imoveis = await query
+            .Include(i => i.Endereco)
+            .Include(i => i.Contratos)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
         return imoveis;
+    }
+
+    public async Task<List<Imovel>> ListarImoveisLocador(Guid locadorId, CancellationToken cancellationToken = default)
+    {
+        var imovesLocador = await context.Imoveis
+            .Where(i => i.Usuario_ID == locadorId)
+            .Include(i => i.Endereco)
+            .Include(i => i.Contratos)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+        return imovesLocador;
     }
 
     public async Task<List<Imovel>> ListarPorStatusAsync(StatusImovel status, CancellationToken cancellationToken = default)
