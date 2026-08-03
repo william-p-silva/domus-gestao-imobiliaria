@@ -49,6 +49,21 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
         return imoveis;
     }
 
+    public Task<List<Imovel>> ListarAvaliadosAsync(bool avaliados = true, CancellationToken cancellationToken = default)
+    {
+        var query = context.Imoveis
+            .Include(x => x.Endereco)
+            .AsNoTracking()
+            .AsQueryable();
+
+        if (avaliados)
+            query = query.Where(x => x.Avaliado);
+        if (!avaliados)
+            query = query.Where(x => !x.Avaliado);
+
+        return query.ToListAsync();
+    }
+
     public Task<List<Imovel>> ListarComFiltroAsync(FiltroImovel filtro, CancellationToken cancellationToken = default)
     {
         var query = context.Imoveis

@@ -74,6 +74,8 @@ public static class DependencyInjectionConfig
         services.AddScoped<ListarTodosImoveisUseCase>();
         services.AddScoped<BuscarImoveisDoLocadorUseCase>();
         services.AddScoped<BuscarImovelPorIdUseCase>();
+        services.AddScoped<ListarImoveisNaoAvaliadosUseCase>();
+        services.AddScoped<ListarImoveisNaoAprovadosUseCase>();
 
         //Avaliacao
         services.AddScoped<CriarAvaliacaoUseCase>();

@@ -58,6 +58,19 @@ builder.Services.AddAuthorization();
 // 4. CONTROLLERS E DOCUMENTAÇÃO DA API
 // ============================================================================
 builder.Services.AddControllers();
+
+// Define a política de CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("VueAppPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173", "http://localhost:3000") // Substitua pelas URLs do seu Vue (ex: Vite usa 5173)
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // Importante se for enviar cookies/tokens de autenticação
+    });
+});
+
 builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer((document, context, cancellationToken) =>
@@ -117,6 +130,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("VueAppPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -2,6 +2,7 @@
 
 using Domus.Application.DTOs.ApiResponse;
 using Domus.Application.DTOs.Imovel;
+using Domus.Application.DTOs.Imovel.Listar;
 using Domus.Application.UseCases.ImovelUseCase.Listar;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,9 @@ public class ImovelGetController(
     ListarTodosImoveisUseCase listarTodosImoveisUseCase,
     BuscarImoveisDoLocadorUseCase buscarImoveisDoLocadorUseCase,
     ListarImoveisAprovadosUseCase listarImoveisAprovadosUseCase,
+    ListarImoveisComFiltroUseCase listarImoveisComFiltroUseCase,
+    ListarImoveisNaoAvaliadosUseCase listarImoveisNaoAvaliados,
+    ListarImoveisNaoAprovadosUseCase listarImoveisNaoAprovadosUseCase,
     BuscarImovelPorIdUseCase buscarImovelPorIdUseCase
     ): ControllerBase
 {
@@ -72,6 +76,46 @@ public class ImovelGetController(
         {
             Success = true,
             Data = imovel
+        });
+    }
+
+
+    [HttpGet("listar/pesquisa")]
+    public async Task<IActionResult> ListarComFiltro(
+        [FromQuery] FiltroImovel filtro,
+        CancellationToken cancellationToken)
+    {
+        var imoveis = await listarImoveisComFiltroUseCase.Execute(filtro, cancellationToken);
+
+        return Ok(new SuccessApiResponse<List<ImovelResponse>>
+        {
+            Success = true,
+            Data = imoveis
+        });
+    }
+
+
+    [HttpGet("listar/sem-avaliacao")]
+    public async Task<IActionResult> ListarNaoAvaliados(CancellationToken cancellationToken)
+    {
+        var imoveis = await listarImoveisNaoAvaliados.Execute(cancellationToken);
+
+        return Ok(new SuccessApiResponse<List<ImovelResponse>>
+        {
+            Success = true,
+            Data = imoveis
+        });
+    }
+
+    [HttpGet("listar/nao-aprovados")]
+    public async Task<IActionResult> ListarNaoAprovados(CancellationToken cancellationToken)
+    {
+        var imoveis = await listarImoveisNaoAprovadosUseCase.Execute(cancellationToken);
+
+                return Ok(new SuccessApiResponse<List<ImovelResponse>>
+        {
+            Success = true,
+            Data = imoveis
         });
     }
 }
