@@ -1,16 +1,13 @@
 import { ref } from "vue";
 import { type RequestLogin } from "../types/requestLogin";
 import { LoginService } from "../services/loginService";
-import { HttpService } from "@/core/http/httpService";
-import { AuthenticationConfig } from "@/core/configuration/authentication";
 import { useRouter } from "vue-router";
 
 
 
 
 export const useLogin = () => {
-    const loginService = new LoginService(new HttpService());
-    const auth = AuthenticationConfig();
+    const loginService = new LoginService();
     const router = useRouter();
 
     const errorLogin = ref<string>("");
@@ -21,8 +18,29 @@ export const useLogin = () => {
         senha: ""
     });
 
-    if(auth.isLogged){
-        router.push("/home");
+    async function handleLogin() : Promise<boolean>{
+        isLoading.value = true;
+        errorLogin.value = "";        
+
+        const result = await loginService.login(requestLogin.value);
+
+        if (result) {
+            router.push({ name: "home" });
+        } else {
+            errorLogin.value = "Falha ao realizar login. Verifique suas credenciais.";
+        }
+
+        isLoading.value = false;
+
+        return result;
+    };
+
+    return {
+        requestLogin,
+        errorLogin,
+        isLoading,
+        router,
+        handleLogin
     }
 
 }

@@ -1,44 +1,61 @@
 import { type ResponseLogin } from "@/features/auth/types/responseLogin";
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { HttpService } from "../http/httpService";
-import { LoginService } from "@/features/auth/services/loginService";
+import { AuthService } from "./authService";
+
+const DEFAULT_USER: ResponseLogin = {
+    usuario_id: "",
+    nome: "",
+    email: "",
+    perfil: [],
+}
+
+const authService = new AuthService();
 
 
-
-export const AuthenticationConfig = defineStore(('authConfig'), () => {
+export const useAuthStore = defineStore(('useAuthStore'), () => {
     const isLogged = ref<boolean>(false);
-    const loginService = new LoginService(new HttpService());
-    
-    const userLogged = ref<ResponseLogin>({
-        usuario_id: "",
-        nome: "",
-        email: "",
-        perfil: [],
-    });
+    const isCheckingAuth = ref<boolean>(true);
 
-    async function IsLoggedIn() {
-        const result = await loginService.VerifyIsLogged();
+    const userLogged = ref<ResponseLogin>(DEFAULT_USER);
 
-        if(result === false){
-            isLogged.value = false;
-            userLogged.value = {
-                usuario_id: "",
-                nome: "",
-                email: "",
-                perfil: [],
+    async function checkAuth(): Promise<boolean> {
+        isCheckingAuth.value = true;
+        try{
+            const result = await authService.VerifyIsLogged();
+
+            if (result) {
+                setUserLogged(result);
+            } else {
+                logout();
             }
+    
+            return isLogged.value;
+        }
+        catch {
+            return false;
+        }
+        finally{
+            isCheckingAuth.value = false;
         }
 
-        if(result !== false){
-            isLogged.value = true;
-            userLogged.value = result;
-        }
+    }
+
+    function setUserLogged(user: ResponseLogin) {
+        isLogged.value = true;
+        userLogged.value = user;
+    }
+
+    async function logout() {
+        isLogged.value = false;
+        userLogged.value = { ...DEFAULT_USER };
     }
 
     return {
         isLogged,
         userLogged,
-        IsLoggedIn
+        checkAuth,
+        setUserLogged,
+        logout
     }
 });
