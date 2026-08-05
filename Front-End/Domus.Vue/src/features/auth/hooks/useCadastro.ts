@@ -1,4 +1,3 @@
-import { defineStore } from "pinia";
 import { ref } from "vue";
 import type { RequestCadastro } from "../types/requestCadastro";
 import { SchemeCadastro } from "../scheme/schemeCadastro";
@@ -70,7 +69,6 @@ export const useCadastro = () => {
         isLoading,
         errorCadastro,
         requestCadastro,
-        handleSubmit,
-        
+        handleSubmit,        
     }
 }

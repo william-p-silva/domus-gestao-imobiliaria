@@ -27,7 +27,6 @@ export class HttpService{
         });
 
         return await this.HandleResponse<TResponse>(response);
-
     }
 
     public async GetAsync<TResponse>(endpoint: string): Promise<TResponse>{
@@ -35,6 +34,28 @@ export class HttpService{
             method: "GET",
             credentials: "include",
             headers: {"Content-Type": "application/json"}
+        });
+
+        return await this.HandleResponse<TResponse>(response);
+    }
+
+    public async PutAsync<TResponse, TResquest>(endpoint: string, data: TResquest): Promise<TResponse>{
+        const response = await fetch(`${this.BaseURL}/${endpoint}`, {
+            method: "PUT",
+            credentials: "include",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+        });
+
+        return await this.HandleResponse<TResponse>(response);
+    }
+
+    public async DeleteAsync<TResponse, TRequest>(endpoint: string, data: TRequest): Promise<TResponse>{
+        const response = await fetch(`${this.BaseURL}/${endpoint}`, {
+            method: "DELETE",
+            credentials: "include",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
         });
 
         return await this.HandleResponse<TResponse>(response);
