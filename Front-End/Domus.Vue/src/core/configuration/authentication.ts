@@ -53,6 +53,7 @@ export const useAuthStore = defineStore(('useAuthStore'), () => {
 
     return {
         isLogged,
+        isCheckingAuth,
         userLogged,
         checkAuth,
         setUserLogged,
