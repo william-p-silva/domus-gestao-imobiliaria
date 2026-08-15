@@ -1,0 +1,22 @@
+.reset-enter-active,
+.reset-leave-active {
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+.reset-enter-from {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.reset-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.reset-enter-to,
+.reset-leave-from {
+    opacity: 1;
+    transform: translateY(0);
+}

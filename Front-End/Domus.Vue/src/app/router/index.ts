@@ -6,12 +6,12 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "Home",
+      name: "Landing",
       component: () => import("@/shared/layouts/appLayout.vue"),
       children: [
         {
           path: "",
-          name: "Landing Page",
+          name: "LandingPage",
           component: () => import("@/app/view/home.vue")
         },
       ]
@@ -20,22 +20,20 @@ const router = createRouter({
       path: "/auth",
       name: "Auth",
       component: () => import("@/shared/layouts/appLayout.vue"),
-      meta: { requiresGuest: true },
-      redirect: "/auth/login",
       children: [
         {
           path: "cadastro",
           name: "Cadastro",
-          component: () => import("@/app/view/auth/CadastroView.vue")
+          component: () => import("@/app/view/auth/AuthView.vue")
         },
         {
           path: "login",
           name: "Login",
-          component: () => import("@/app/view/auth/LoginView.vue")
+          component: () => import("@/app/view/auth/AuthView.vue")
         },
         {
           path: "",
-          name: "Auths",
+          name: "AuthHome",
           component: () => import("@/app/view/auth/AuthView.vue")
         },
       ]
@@ -49,10 +47,24 @@ const router = createRouter({
       children: [
         {
           path: "dashboard",
-          name: "Dashboard",
+          name: "LocadorDashboard",
           component: () => import("@/app/view/locador/HomeLocadorView.vue")
         }
       ],
+    },
+    {
+      path: "/locatario",
+      name: "Locatario",
+      component: () => import("@/shared/layouts/appLayout.vue"),
+      meta: { requiresAuth: true, roles: ["Locatario"] },
+      redirect: "/locatario/home",
+      children: [
+        {
+          path: "home",
+          name: "LocatarioHome",
+          component: () => import("@/app/view/locatario/HomeLocatarioView.vue")
+        }
+      ]
     },
     {
       // Rota coringa para capturar URLs inexistentes (404)
@@ -62,34 +74,53 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to) => {
   const authStore = useAuthStore();
 
   if (authStore.isCheckingAuth) {
-    await authStore.checkAuth();
+      await authStore.checkAuth();
   }
 
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  const requiresGuest = to.matched.some((record) => record.meta.requiresGuest);
+  const requiresAuth = to.matched.some(
+      record => record.meta.requiresAuth
+  );
 
+  const requiresGuest = to.matched.some(
+      record => record.meta.requiresGuest
+  );
+
+  // Usuário não autenticado tentando acessar rota protegida
   if (requiresAuth && !authStore.isLogged) {
-    return next({ name: 'Login', query: { redirect: to.fullPath } });
+      return {
+          name: "Login",
+          query: {
+              redirect: to.fullPath
+          }
+      };
   }
 
+  // Usuário autenticado tentando acessar rota de convidado
   if (requiresGuest && authStore.isLogged) {
-    return next({ name: 'Home' });
+      return {
+          name: "Login"
+      };
   }
 
-  const allowRoles = to.meta.roles as string[] | undefined;
-  if (allowRoles && authStore.isLogged) {
-    const hasPermission = authStore.userLogged.perfil.some((role) => allowRoles.includes(role));
+  const allowedRoles = to.meta.roles as string[] | undefined;
 
-    if (!hasPermission) {
-      return next({ name: "Home" });
-    }
+  if (allowedRoles && authStore.isLogged) {
+      const hasPermission = authStore.userLogged.perfil.some(
+          role => allowedRoles.includes(role)
+      );
+
+      if (!hasPermission) {
+          return {
+              name: "Login"
+          };
+      }
   }
 
-  next();
+  return true;
 });
 
 export default router

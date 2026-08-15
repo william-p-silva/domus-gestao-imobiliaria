@@ -1,12 +1,15 @@
 <script setup lang="ts">
+import LoadingCircle from '@/shared/components/loadingCircle.vue';
+
 defineProps<{
-    value: string
+    value: string,
+    isLoading: boolean
 }>();
 
 </script>
 
 <template>
-    <button type="submit" class="
+    <button type="submit" :disabled="isLoading" class="
                 mt-1
                 w-full
                 rounded-xl
@@ -39,6 +42,9 @@ defineProps<{
 
                 cursor-pointer
             ">
-        {{value}}
+        <LoadingCircle v-if="isLoading" size="sm" />
+        <span v-else>
+            {{ value }}
+        </span>
     </button>
 </template>

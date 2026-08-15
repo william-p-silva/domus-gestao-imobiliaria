@@ -1,5 +1,5 @@
 
 
 <template>
-    <RouterLink to="/auth/cadastro" class=" " >Cadastro</RouterLink>
+    <RouterLink to="/auth" class=" " >Cadastro</RouterLink>
 </template>

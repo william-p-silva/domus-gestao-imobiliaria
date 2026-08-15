@@ -36,15 +36,15 @@ async function handleSubmit() {
         <!-- Senha -->
         <AuthInput label="Senha" type="password" placeholder="Digite sua senha"
             v-model="cadastro.requestCadastro.value.senha" />
-            
-            <!-- Submit -->
-            <Button value="Cadastrar"/>
-            
-            <!-- Error -->
-            <Error v-if="cadastro.errorCadastro.value" :error="cadastro.errorCadastro.value" />
-            
-            <!-- Login -->
-            <AuthToggle description="Já possui uma conta?" value="Entrar" target="login"/>
-            
+
+        <!-- Error -->
+        <Error v-if="cadastro.errorCadastro.value" :error="cadastro.errorCadastro.value" />
+
+        <!-- Submit -->
+        <Button value="Cadastrar" :isLoading="cadastro.isLoading.value" />
+
+        <!-- Login -->
+        <AuthToggle description="Já possui uma conta?" value="Entrar" target="login" />
+
     </form>
 </template>

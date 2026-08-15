@@ -37,7 +37,8 @@ builder.Services.AddAuthentication(options =>
 
     options.DefaultChallengeScheme =
         JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options => {
+}).AddJwtBearer(options =>
+{
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateAudience = true,
@@ -49,6 +50,16 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = builder.Configuration["Jwt:Audience"],
 
         IssuerSigningKey = new SymmetricSecurityKey(key)
+    };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            context.Token = context.Request.Cookies["token"];
+
+            return Task.CompletedTask;
+        }
     };
 });
 
@@ -110,6 +121,8 @@ builder.Services.AddOpenApi(options =>
 
 var app = builder.Build();
 
+app.UseHttpsRedirection();
+
 // ============================================================================
 // 5. Middleware global para tratamento de exceções personalizadas (ExceptionMiddleware.cs)
 // ============================================================================
@@ -129,7 +142,6 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
 
 app.UseCors("VueAppPolicy");
 

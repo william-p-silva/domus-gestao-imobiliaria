@@ -2,7 +2,6 @@
 using Domus.Application.DTOs.ApiResponse;
 using Domus.Application.DTOs.Usuarios;
 using Domus.Application.UseCases.UsuarioUseCase.AuthUseCase;
-using Domus.Domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +19,7 @@ public class AuthController(LoginUseCase loginUseCase) : ControllerBase
         Response.Cookies.Append("token", usuario.Token, new CookieOptions
         {
             HttpOnly = true,
-            Secure = true,
+            Secure = false,
             SameSite = SameSiteMode.Strict,
             Expires = DateTimeOffset.UtcNow.AddHours(3)
         });
@@ -57,16 +56,20 @@ public class AuthController(LoginUseCase loginUseCase) : ControllerBase
     {
         var email = User.FindFirst(ClaimTypes.Email)?.Value;
         var nome = User.FindFirst(ClaimTypes.Name)?.Value;
-        var perfil = User.FindFirst(ClaimTypes.Role)?.Value;
+        var perfis = User.FindAll(ClaimTypes.Role)
+                        .Select(c => c.Value)
+                        .ToList();
+        var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        return Ok(new SuccessApiResponse<object>
+        return Ok(new SuccessApiResponse<AuthResponse>
         {
             Success = true,
-            Data = new
+            Data = new AuthResponse
             {
+                Usuario_ID = id,
                 Email = email,
                 Nome = nome,
-                Perfil = perfil
+                Perfil = perfis
             }
         });
     }
