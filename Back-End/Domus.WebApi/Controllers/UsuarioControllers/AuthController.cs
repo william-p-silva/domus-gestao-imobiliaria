@@ -66,9 +66,9 @@ public class AuthController(LoginUseCase loginUseCase) : ControllerBase
             Success = true,
             Data = new AuthResponse
             {
-                Usuario_ID = id,
-                Email = email,
-                Nome = nome,
+                Usuario_ID = id ?? "",
+                Email = email ?? "",
+                Nome = nome ?? "",
                 Perfil = perfis
             }
         });
