@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { ShieldCheck } from '@lucide/vue';
 import HeaderLandingPage from './headerLandingPage.vue';
 import heroImg from '@/assets/imgs/LandingPage/contratoImovel.jpeg'
+import HeroSectionLanding from './heroSectionLanding.vue';
 </script>
 
 
@@ -11,32 +13,18 @@ import heroImg from '@/assets/imgs/LandingPage/contratoImovel.jpeg'
         <section class="relative h-full w-full overflow-hidden bg-slate-50">
 
             <!-- Imagem do lado direito -->
-            <img :src="heroImg" alt="Ilustração Domus" class="absolute right-0 top-0  w-[70%] object-cover" />
+            <img :src="heroImg" alt="Ilustração Domus" class="absolute right-0 top-0  w-[80%] object-cover" />
+
+            <!-- Gradiente sobre a imagem -->
+            <div class="absolute inset-0 bg-linear-to-r
+               from-white via-white/80 via-45% to-transparent"></div>
 
             <!-- Header por cima da imagem -->
             <HeaderLandingPage class="relative z-10" />
 
             <!-- Conteúdo -->
-            <div class="relative z-10 flex h-full items-center ">
+            <HeroSectionLanding class="relative z-10" />
 
-                <div class="ml-12 w-[45%] backdrop-blur-sm bg-white/20 rounded-full" >
-                    <p class="text-sm text-blue-900">
-                        O caminho para o seu novo lar começa aqui
-                    </p>
-
-                    <h1 class="mt-4 text-6xl font-bold text-blue-950">
-                        Encontre o lar
-                        <br />
-                        perfeito para você.
-                    </h1>
-
-                    <p class="mt-6 max-w-lg text-lg text-slate-600">
-                        A DOMUS conecta você aos melhores imóveis
-                        para alugar com praticidade, segurança e confiança.
-                    </p>
-                </div>
-
-            </div>
 
         </section>
 

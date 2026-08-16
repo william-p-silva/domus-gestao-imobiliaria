@@ -9,6 +9,7 @@ const auth = authStore();
 
 function handleExit(){
     auth.router.push("/");
+    auth.clear();
 }
 </script>
 
