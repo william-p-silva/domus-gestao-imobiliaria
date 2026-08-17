@@ -11,3 +11,10 @@ export interface SimpleCardConfig {
     title: string,
     icon: 'ShieldCheck' | 'Heart' | 'UserShield'
 }
+
+
+export interface InputBuscaImovel {
+    text: string,
+    placeholder: string,
+    icon: 'location' | 'arrowDow'
+}

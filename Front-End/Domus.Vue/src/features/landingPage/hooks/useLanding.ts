@@ -1,4 +1,4 @@
-import type { NavLinks, SimpleCardConfig } from "../types/common";
+import type { InputBuscaImovel, NavLinks, SimpleCardConfig } from "../types/common";
 
 const DEFAUT_LINKS: NavLinks[] = [
     {
@@ -41,12 +41,32 @@ const DEFAUT_CONFIG_SIMPLE_CARD: SimpleCardConfig[] = [
     }
 ]
 
+const DEFAUT_INFOS_INPUTS_BUSCA: InputBuscaImovel[] = [
+    {
+        text: "Onde você quer morar?",
+        placeholder: "Ex: Delmiro Gouveia",
+        icon: 'location'
+    },
+    {
+        text: "Tipo do Imóvel",
+        placeholder: "Todos os tipos",
+        icon: 'arrowDow'
+    },
+    {
+        text: "Faixa de Preço",
+        placeholder: "Todas as Faixas",
+        icon: 'arrowDow'
+    }
+]
+
 export const useLanding = () => {
     const links: NavLinks[] = DEFAUT_LINKS;
     const simpleCard: SimpleCardConfig[] = DEFAUT_CONFIG_SIMPLE_CARD;
+    const infosBuscaImovel: InputBuscaImovel[] = DEFAUT_INFOS_INPUTS_BUSCA;
 
     return {
         links,
-        simpleCard
+        simpleCard,
+        infosBuscaImovel
     }
 } 

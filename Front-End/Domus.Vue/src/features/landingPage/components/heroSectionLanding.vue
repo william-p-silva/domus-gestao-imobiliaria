@@ -8,7 +8,7 @@ const landing = useLanding();
 
 <template>
 <div class="flex w-full mt-12">
-    <div class="px-6 w-[45%] flex-col flex">
+    <div class="px-6 w-full md:w-[45%] flex-col flex min-w-0">
             <div>
                 <div class="flex text-primary">
                     <ShieldCheck />
