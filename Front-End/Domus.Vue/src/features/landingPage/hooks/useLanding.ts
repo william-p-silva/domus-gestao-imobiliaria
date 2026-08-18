@@ -1,4 +1,6 @@
+import type { ImovelResponse } from "@/shared/types/imovel/imovelResponse";
 import type { InputBuscaImovel, NavLinks, SimpleCardConfig } from "../types/common";
+import { mockListaImoveis } from "@/shared/data/mocks/imoveisMock";
 
 const DEFAUT_LINKS: NavLinks[] = [
     {
@@ -59,14 +61,18 @@ const DEFAUT_INFOS_INPUTS_BUSCA: InputBuscaImovel[] = [
     }
 ]
 
+const DEFAUT_IMOVEIS_TESTES: ImovelResponse[] = mockListaImoveis;
+
 export const useLanding = () => {
     const links: NavLinks[] = DEFAUT_LINKS;
     const simpleCard: SimpleCardConfig[] = DEFAUT_CONFIG_SIMPLE_CARD;
     const infosBuscaImovel: InputBuscaImovel[] = DEFAUT_INFOS_INPUTS_BUSCA;
+    const imoveisFakes: ImovelResponse[] = DEFAUT_IMOVEIS_TESTES;
 
     return {
         links,
         simpleCard,
-        infosBuscaImovel
+        infosBuscaImovel,
+        imoveisFakes
     }
 } 
