@@ -25,7 +25,7 @@ const landing = useLanding();
                     para alugar com praticidade, segurança e confiança.
                 </p>
             </div>
-            <Div class="flex mt-8">
+            <Div class="flex flex-col sm:flex-row mt-8">
                 <SimpleLanding :infos="info" v-for="info in landing.simpleCard" />
             </Div>
         </div>

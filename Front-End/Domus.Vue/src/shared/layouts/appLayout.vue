@@ -1,7 +1,7 @@
 
 
 <template>
-    <main class="min-w-screen min-h-screen ">
+    <main class="w-full min-h-screen ">
         <RouterView />
     </main>
 </template>

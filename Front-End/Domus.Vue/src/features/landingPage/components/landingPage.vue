@@ -9,7 +9,7 @@ import BuscaImovel from './buscaImovel.vue';
 
 
 <template>
-    <main class="flex flex-col w-full ">
+    <main class="flex flex-col w-full overflow-hidden">
 
         <section class="relative h-full w-full overflow-hidden bg-slate-50  pb-16">
             <!-- Imagem do lado direito -->
@@ -38,5 +38,9 @@ import BuscaImovel from './buscaImovel.vue';
             <BuscaImovel />
         </section>
 
+        
     </main>
+    <section class="bg-amber-500 w-full h-12 ">
+
+    </section>
 </template>
