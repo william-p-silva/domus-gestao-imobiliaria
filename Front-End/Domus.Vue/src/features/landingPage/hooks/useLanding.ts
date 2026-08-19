@@ -1,5 +1,5 @@
 import type { ImovelResponse } from "@/shared/types/imovel/imovelResponse";
-import type { InputBuscaImovel, NavLinks, PassoPassoCard, SimpleCardConfig } from "../types/common";
+import type { BeneficiosCard, InputBuscaImovel, NavLinks, PassoPassoCard, SimpleCardConfig } from "../types/common";
 import { mockListaImoveis } from "@/shared/data/mocks/imoveisMock";
 
 const DEFAUT_LINKS: NavLinks[] = [
@@ -82,6 +82,29 @@ const DEFAUT_PASSO_PASSO_CARD: PassoPassoCard[] = [
     }
 ]
 
+const DEFAUT_BENEFICIOS_CARD: BeneficiosCard[] = [
+    {
+        icon: 'shield',
+        text: 'Imóveis reais e checados para garantir mais seguraça.',
+        title: 'Anúncios verificados'
+    },
+    {
+        icon: 'hour',
+        text: 'Filtros avaçados que encontrem o imóvel ideal rápido.',
+        title: 'Economize tempo'
+    },
+    {
+        icon: 'user',
+        text: 'Fale direto com o anunciante de forma prática',
+        title: 'Conexão direta'
+    },
+    {
+        icon: 'support',
+        text: 'Estamos aqui para ajudar sempre que precisar',
+        title: 'Suporte humano'
+    }
+]
+
 const DEFAUT_IMOVEIS_TESTES: ImovelResponse[] = mockListaImoveis;
 
 export const useLanding = () => {
@@ -90,12 +113,14 @@ export const useLanding = () => {
     const infosBuscaImovel: InputBuscaImovel[] = DEFAUT_INFOS_INPUTS_BUSCA;
     const imoveisFakes: ImovelResponse[] = DEFAUT_IMOVEIS_TESTES;
     const passoAPasso: PassoPassoCard[] = DEFAUT_PASSO_PASSO_CARD;
+    const beneficios: BeneficiosCard[] = DEFAUT_BENEFICIOS_CARD;
 
     return {
         links,
         simpleCard,
         infosBuscaImovel,
         imoveisFakes,
-        passoAPasso
+        passoAPasso,
+        beneficios
     }
 } 

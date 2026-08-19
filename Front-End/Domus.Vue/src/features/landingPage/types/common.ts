@@ -26,3 +26,10 @@ export interface PassoPassoCard {
     text: string,
     img: 'encontrar' | 'procurando' | 'contratando'
 }
+
+
+export interface BeneficiosCard {
+    icon: 'shield' | 'hour' | 'user' | 'support',
+    title: string,
+    text: string
+}
