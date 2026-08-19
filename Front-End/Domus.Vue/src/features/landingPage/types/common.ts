@@ -18,3 +18,11 @@ export interface InputBuscaImovel {
     placeholder: string,
     icon: 'location' | 'arrowDow'
 }
+
+
+export interface PassoPassoCard {
+    num: number
+    title: string,
+    text: string,
+    img: 'encontrar' | 'procurando' | 'contratando'
+}

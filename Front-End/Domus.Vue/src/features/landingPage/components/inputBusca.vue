@@ -16,7 +16,7 @@ const emit = defineEmits<{
 
 
 <template>
-    <div class="flex flex-col flex-1 min-w-[180px]">
+    <div class="flex flex-col flex-1 sm:min-w-45">
         <p class="font-bold text-primary">{{ infos.text }}</p>
         <div class="flex p-4 border border-primary/20 rounded-2xl text-primary">
             <input type="text" class="w-full min-w-0 outline-none" :placeholder="infos.placeholder" :value="modelValue"

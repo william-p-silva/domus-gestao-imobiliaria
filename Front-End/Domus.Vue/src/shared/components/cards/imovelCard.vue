@@ -26,10 +26,10 @@ const sizeIcon = 14;
                 </div>
             </div>
         </div>
-        <div class="py-2 px-4 text-primary-light h-[45%] flex flex-col justify-between">
+        <div class="py-2 px-4 text-text h-[45%] flex flex-col justify-between">
 
             <div>
-                <p class="text-primary-dark font-bold">
+                <p class="text-primary font-bold">
                     {{ imovel.titulo }}
                 </p>
             </div>
@@ -58,7 +58,7 @@ const sizeIcon = 14;
             </div>
 
             <div>
-                <p class="font-bold text-primary-dark text-lg"> {{ formatter.moeda(imovel.valorAluguel) }} /mês</p>
+                <p class="font-bold text-primary text-lg"> {{ formatter.moeda(imovel.valorAluguel) }} /mês</p>
             </div>
         </div>
     </div>
