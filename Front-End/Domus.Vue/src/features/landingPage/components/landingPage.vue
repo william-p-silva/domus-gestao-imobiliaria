@@ -6,8 +6,6 @@ import MainLanding from './sections/mainLanding.vue';
 import Passos from './sections/passos.vue';
 import BeneficiosLanding from './sections/beneficiosLanding.vue';
 import ImoveisLanding from './sections/imoveisLanding.vue';
-
-const landing = useLanding();
 </script>
 
 
@@ -17,9 +15,7 @@ const landing = useLanding();
 
         <MainLanding />
 
-        <section class=" w-full px-10">
-            <BuscaImovel />
-        </section>
+        <BuscaImovel />
 
 
         <ImoveisLanding />
@@ -29,5 +25,7 @@ const landing = useLanding();
         <BeneficiosLanding />
 
         <Comecar />
+
+
     </main>
 </template>

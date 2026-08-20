@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import logo from "@/assets/logo/LogoMarca.png"
+import logo from "@/assets/logo/LogoMarcaResumo.png"
 import { useLanding } from "../hooks/useLanding";
 import { useAuthStore } from "@/core/configuration/authentication";
 

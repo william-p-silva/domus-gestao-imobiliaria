@@ -13,5 +13,4 @@ import FooterDomus from '../components/footer/footerDomus.vue';
         <RouterView />
     </main>
 
-    <FooterDomus />
 </template>

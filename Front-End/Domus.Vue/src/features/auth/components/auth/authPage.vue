@@ -85,8 +85,7 @@ function handleExit(){
 
                 rounded-xl
 
-                bg-white/20
-                backdrop-blur-lg
+
 
                 px-2
                 py-1

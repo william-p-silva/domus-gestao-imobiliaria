@@ -19,7 +19,7 @@ const router = createRouter({
     {
       path: "/auth",
       name: "Auth",
-      component: () => import("@/shared/layouts/appLayout.vue"),
+      component: () => import("@/shared/layouts/authLayout.vue"),
       children: [
         {
           path: "cadastro",
