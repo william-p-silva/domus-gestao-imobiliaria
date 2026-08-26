@@ -74,9 +74,11 @@ const DEFAULT_LINKS_PROFILE: LinksHeaderModal[] = [
     }
 ];
 
+
+const isOpen = ref(false);
+
 export const useHeader = () => {
     const links: LinksHeader[] = DEFAULT_LINKS;
-    const isOpen = ref(false);
     const auth = useAuthStore();
     const allLinks: LinksHeaderModal[] = 
         DEFAULT_LINKS_PROFILE.filter(link => 
