@@ -39,6 +39,18 @@ const router = createRouter({
       ]
     },
     {
+      path: "/imoveis",
+      name: "Imoveis",
+      component: () => import("@/shared/layouts/masterLayout.vue"),
+      children: [
+        {
+          path: "",
+          name: "InicioImoveis",
+          component: () => import("@/app/view/imoveis/PesquisarImovelView.vue")
+        }
+      ]
+    },
+    {
       path: "/locador",
       name: "Locador",
       component: () => import("@/shared/layouts/appLayout.vue"),
