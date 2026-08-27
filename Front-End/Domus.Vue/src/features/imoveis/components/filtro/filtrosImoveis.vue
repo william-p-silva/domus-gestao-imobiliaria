@@ -11,8 +11,8 @@ import BaseButton from '@/shared/components/buttons/baseButton.vue';
 const filtro = useFiltro();
 
 
-function handleSubmit() {
-    console.log("123");
+async function handleSubmit() {
+    await filtro.submit();
 }
 </script>
 
@@ -24,7 +24,7 @@ function handleSubmit() {
 
             <div class="flex justify-between items-center">
                 <h3 class="text-primary-dark text-xl font-bold">Filtros</h3>
-                <button class="text-sm flex flex-row items-center gap-1 cursor-pointer">
+                <button class="text-sm flex flex-row items-center gap-1 cursor-pointer" @click="filtro.limparFiltros">
                     Limpar filtros
                     <RefreshCcw :size="16" />
                 </button>
@@ -112,7 +112,7 @@ function handleSubmit() {
                 </div>
 
                 <div>
-                    <BaseButton value="Buscar Imóveis" :isLoading="false" />
+                    <BaseButton value="Buscar Imóveis" :isLoading="filtro.isLoading.value" />
                 </div>
 
             </form>

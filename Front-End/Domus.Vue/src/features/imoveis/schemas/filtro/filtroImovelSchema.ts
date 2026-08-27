@@ -13,7 +13,7 @@ export const FiltroImovelSchema = z.object({
     })
     .optional(),
 
-    quartos: z.number().optional(),
+    comodos: z.number().optional(),
 
     banheiros: z.number().optional(),
 

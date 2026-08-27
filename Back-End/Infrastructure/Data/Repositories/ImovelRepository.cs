@@ -72,20 +72,48 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
             .AsNoTracking()
             .AsQueryable();
 
-        if (!string.IsNullOrWhiteSpace(filtro.Titulo))
-            query = query.Where(x => x.Titulo.Contains(filtro.Titulo));
-        if (filtro.Comodos is not null && filtro.Comodos >= 0)
-            query = query.Where(x => x.Comodos >= filtro.Comodos);
-        if(filtro.MetrosQuadrados is not null && filtro.MetrosQuadrados >= 0)
-            query = query.Where(x => x.MetrosQuadrados >=  filtro.MetrosQuadrados);
-        if (filtro.Banheiros is not null && filtro.Banheiros >= 0)
-            query = query.Where(x => x.Banheiros >= filtro.Banheiros);
-        if (filtro.ValorAluguel is not null && filtro.ValorAluguel >= 0)
-            query = query.Where(x => x.ValorAluguel <= filtro.ValorAluguel);
-        if (filtro.Tipo is not null)
-            query = query.Where(x => x.Tipo == filtro.Tipo);
 
-        if(filtro.Endereco is not null)
+        if (filtro.Comodos is not null && filtro.Comodos > 0)
+            query = query.Where(x => x.Comodos >= filtro.Comodos.Value);
+
+
+        if (filtro.Banheiros is not null && filtro.Banheiros >= 0)
+            query = query.Where(x => x.Banheiros >= filtro.Banheiros.Value);
+
+        if (filtro.TipoImovel is not null)
+        {
+            if(Enum.TryParse<TipoImovel>(filtro.TipoImovel, ignoreCase: true, out TipoImovel resultado))
+                query = query.Where(x => x.Tipo == resultado);
+        }
+
+
+        // Filtro de Área (m²)
+        if (filtro.AreaM2 != null && filtro.AreaM2.Length >= 2)
+        {
+            var minArea = filtro.AreaM2[0];
+            var maxArea = filtro.AreaM2[1];
+
+            if (minArea > 0)
+                query = query.Where(x => x.MetrosQuadrados >= minArea);
+
+            if (maxArea > 0 && maxArea > minArea)
+                query = query.Where(x => x.MetrosQuadrados <= maxArea);
+        }
+
+        if (filtro.FaixaPreco != null && filtro.FaixaPreco.Length >= 2)
+        {
+            var minPreco = filtro.FaixaPreco[0];
+            var maxPreco = filtro.FaixaPreco[1];
+
+            if (minPreco > 0)
+                query = query.Where(x => x.ValorAluguel >= minPreco);
+
+            // Remove a trava arbitrária de <= 8000
+            if (maxPreco > 0 && maxPreco > minPreco)
+                query = query.Where(x => x.ValorAluguel <= maxPreco);
+        }
+
+        if (filtro.Endereco is not null)
         {
             if (!string.IsNullOrWhiteSpace(filtro.Endereco.CEP))
                 query = query.Where(x => x.Endereco.CEP == filtro.Endereco.CEP);
@@ -96,9 +124,9 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
             if (!string.IsNullOrWhiteSpace(filtro.Endereco.Bairro))
                 query = query.Where(x => x.Endereco.Bairro.ToLower().Contains(filtro.Endereco.Bairro.ToLower()));
         }
-        
 
-        return query.ToListAsync();
+
+        return query.AsSplitQuery().ToListAsync();
     }
 
     public async Task<List<Imovel>> ListarImoveisLocador(Guid locadorId, CancellationToken cancellationToken = default)
