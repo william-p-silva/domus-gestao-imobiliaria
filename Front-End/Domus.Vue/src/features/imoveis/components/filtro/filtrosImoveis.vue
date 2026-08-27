@@ -4,6 +4,7 @@ import RangeInput from '@/shared/components/inputs/rangeInput.vue';
 import { BedDouble, DollarSign, House, MapPin, PencilRuler, RefreshCcw } from '@lucide/vue';
 import { ref } from 'vue';
 import { useFiltro } from '../../hooks/filtro/useFiltro';
+import BaseButton from '@/shared/components/buttons/baseButton.vue';
 
 
 
@@ -37,6 +38,7 @@ function handleSubmit() {
                     </p>
                     <input type="text"
                         class="p-2 outline-none border border-primary/30 rounded-lg focus:ring focus:ring-primary-light/50"
+                        v-model="filtro.endereco.value"
                         placeholder="Ex: Delmiro Gouveia, AL, Fernandes Lima">
                 </div>
 
@@ -95,18 +97,22 @@ function handleSubmit() {
                     <div class="grid grid-cols-2 gap-2">
                        <input type="number" class="p-2 outline-none border border-primary/30 rounded-lg focus:ring focus:ring-primary-light/50
                        [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
-                       " placeholder="De">
+                       " 
+                       v-model="filtro.minArea.value"
+                       placeholder="De">
 
                        <input type="number" class="p-2 outline-none border border-primary/30 rounded-lg focus:ring focus:ring-primary-light/50 
                        [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
-                       " placeholder="Até">
+                       " 
+                       v-model="filtro.maxArea.value"
+                       placeholder="Até">
 
                     </div>
 
                 </div>
 
                 <div>
-                    
+                    <BaseButton value="Buscar Imóveis" :isLoading="false" />
                 </div>
 
             </form>
