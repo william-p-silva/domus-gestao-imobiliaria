@@ -1,8 +1,12 @@
+<script setup lang="ts">
+import FiltrosImoveis from '../components/filtro/filtrosImoveis.vue';
+
+</script>
+
 
 
 
 <template>
-    <div>
-        oi Imoveis aqui
-    </div>
+    <FiltrosImoveis />
+
 </template>
