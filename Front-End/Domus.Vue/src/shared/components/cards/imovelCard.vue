@@ -17,7 +17,8 @@ const sizeIcon = 14;
 
 
 <template>
-    <div class="bg-background shadow-sm shadow-primary-light/20 flex flex-col h-90 min-w-60 max-w-60 rounded-2xl border border-primary/20 bg-cover">
+    <div
+        class="bg-background shadow-sm shadow-primary-light/20 flex flex-col h-90 min-w-60 max-w-60 rounded-2xl border border-primary/20 bg-cover">
         <div class="h-[55%] bg-cover py-2 px-2 rounded-t-2xl" :style="{ backgroundImage: `url(${imovelImage})` }">
             <div class="flex w-full justify-between">
                 <p class="bg-white rounded-md p-1 text-primary text-sm">{{ imovel.tipoDoImovel }}</p>
@@ -42,7 +43,7 @@ const sizeIcon = 14;
 
             <div class="flex justify-between">
                 <p class="flex justify-start items-center gap-1 text-sm">
-                    <BedDouble :size="sizeIcon" /> 
+                    <BedDouble :size="sizeIcon" />
                     {{ imovel.comodos }}
                 </p>
 
@@ -53,13 +54,19 @@ const sizeIcon = 14;
 
                 <p class="flex justify-start items-center gap-1 text-sm">
                     <SquareDashed :size="sizeIcon" />
-                    {{ formatter.metrosQuadrados(imovel.metrosQuadrados) }} 
+                    {{ formatter.metrosQuadrados(imovel.metrosQuadrados) }}
                 </p>
             </div>
 
             <div>
                 <p class="font-bold text-primary text-lg"> {{ formatter.moeda(imovel.valorAluguel) }} /mês</p>
             </div>
+        </div>
+        <div class="w-full text-white font-medium p-3">
+            <RouterLink class="bg-primary p-2 text-center w-full flex justify-center rounded-lg"
+                :to="{ path: '/imovel', query: { imovel_id: props.imovel.imovel_ID } }">
+                Visitar
+            </RouterLink>
         </div>
     </div>
 </template>

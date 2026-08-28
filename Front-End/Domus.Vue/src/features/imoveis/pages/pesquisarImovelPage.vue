@@ -4,6 +4,7 @@ import FiltrosImoveis from '../components/filtro/filtrosImoveis.vue';
 import { useImovel } from '../hooks/useImovel.ts';
 import { onMounted, watch } from 'vue';
 import { useFiltro } from '../hooks/filtro/useFiltro.ts';
+import HeaderFiltro from '../components/filtro/headerFiltro.vue';
 
 
 
@@ -37,10 +38,14 @@ watch(
 
 
 <template>
-    <section class="flex ">
+    <section class="flex">
         <FiltrosImoveis class="hidden lg:flex" />
-        <article class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 space-x-6 space-y-6 mx-auto py-4">
+        <article class="flex flex-col  w-full border-l border-primary/20">
+          <HeaderFiltro />
+          <article class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 sm:gap-4 lg:gap-4 mx-auto py-4">
             <ImovelCard :imovel="imovelUnit" v-for="imovelUnit in imovel.imoveis.value" />
+
+          </article>
             
 
         </article>

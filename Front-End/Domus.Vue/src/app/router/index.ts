@@ -51,6 +51,19 @@ const router = createRouter({
       ]
     },
     {
+      path: "/imovel",
+      name: "Imovel",
+      component: () => import("@/shared/layouts/masterLayout.vue"),
+      children: [
+        {
+          path: "",
+          name: "VisaoImovel",
+          component: () => import("@/app/view/imoveis/ImovelView.vue")
+        }
+      ]
+
+    },
+    {
       path: "/locador",
       name: "Locador",
       component: () => import("@/shared/layouts/appLayout.vue"),
@@ -90,46 +103,46 @@ router.beforeEach(async (to) => {
   const authStore = useAuthStore();
 
   if (authStore.isCheckingAuth) {
-      await authStore.checkAuth();
+    await authStore.checkAuth();
   }
 
   const requiresAuth = to.matched.some(
-      record => record.meta.requiresAuth
+    record => record.meta.requiresAuth
   );
 
   const requiresGuest = to.matched.some(
-      record => record.meta.requiresGuest
+    record => record.meta.requiresGuest
   );
 
   // Usuário não autenticado tentando acessar rota protegida
   if (requiresAuth && !authStore.isLogged) {
-      return {
-          name: "Login",
-          query: {
-              redirect: to.fullPath
-          }
-      };
+    return {
+      name: "Login",
+      query: {
+        redirect: to.fullPath
+      }
+    };
   }
 
   // Usuário autenticado tentando acessar rota de convidado
   if (requiresGuest && authStore.isLogged) {
-      return {
-          name: "Login"
-      };
+    return {
+      name: "Login"
+    };
   }
 
   const allowedRoles = to.meta.roles as string[] | undefined;
 
   if (allowedRoles && authStore.isLogged) {
-      const hasPermission = authStore.userLogged.perfil.some(
-          role => allowedRoles.includes(role)
-      );
+    const hasPermission = authStore.userLogged.perfil.some(
+      role => allowedRoles.includes(role)
+    );
 
-      if (!hasPermission) {
-          return {
-              name: "Login"
-          };
-      }
+    if (!hasPermission) {
+      return {
+        name: "Login"
+      };
+    }
   }
 
   return true;

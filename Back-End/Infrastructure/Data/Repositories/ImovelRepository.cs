@@ -71,10 +71,14 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
 
 
         if (filtro.Comodos is not null && filtro.Comodos > 0 && filtro.Comodos < 4)
+            query = query.Where(x => x.Comodos == filtro.Comodos.Value);
+        if (filtro.Comodos is not null && filtro.Comodos > 0 && filtro.Comodos == 4)
             query = query.Where(x => x.Comodos >= filtro.Comodos.Value);
 
 
         if (filtro.Banheiros is not null && filtro.Banheiros >= 0 && filtro.Banheiros < 4)
+            query = query.Where(x => x.Banheiros == filtro.Banheiros.Value);
+        if (filtro.Banheiros is not null && filtro.Banheiros >= 0 && filtro.Banheiros == 4)
             query = query.Where(x => x.Banheiros >= filtro.Banheiros.Value);
 
         if (!string.IsNullOrWhiteSpace(filtro.TipoImovel))
@@ -94,9 +98,9 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
 
         // Filtro de Preço
         if (filtro.MinPreco is not null && filtro.MinPreco > 0)
-            query = query.Where(x => x.MetrosQuadrados >= filtro.MinPreco.Value);
+            query = query.Where(x => x.ValorAluguel >= filtro.MinPreco.Value);
         if (filtro.MaxPreco is not null && filtro.MaxPreco > 0)
-            query = query.Where(x => x.MetrosQuadrados <= filtro.MaxPreco.Value);
+            query = query.Where(x => x.ValorAluguel <= filtro.MaxPreco.Value);
 
         if (filtro.Endereco is not null)
         {

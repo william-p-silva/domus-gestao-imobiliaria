@@ -18,7 +18,7 @@ async function handleSubmit() {
 
 
 <template>
-    <aside class="flex w-80 h-full p-2">
+    <aside class="flex w-80 h-full p-2 ">
         <section
             class="flex flex-col h-full w-full text-primary border border-primary/20 p-4 rounded-2xl shadow-sm shadow-primary/20 gap-6">
 
@@ -66,7 +66,7 @@ async function handleSubmit() {
                     </p>
                     <div class="grid grid-cols-4 gap-2">
                         <div v-for="num in filtro.numObj" @click="filtro.numQuartos.value = num"
-                            class="rounded-lg border  px-4 py-2 cursor-pointer text-center transition-all duration-300"
+                            class="rounded-lg border  px-4 py-2 cursor-pointer text-center transition-all duration-300 flex"
                             :class="filtro.numQuartos.value === num ? ' border-accent' : 'border-primary/20'">
                             {{ num }} <span v-if="num === 4">+</span>
                         </div>
@@ -81,7 +81,7 @@ async function handleSubmit() {
                     </p>
                     <div class="grid grid-cols-4 gap-2">
                         <div v-for="num in filtro.numObj" @click="filtro.numBanheiros.value = num"
-                            class="rounded-lg border  px-4 py-2 cursor-pointer text-center transition-all duration-300"
+                            class="rounded-lg border  px-4 py-2 cursor-pointer text-center transition-all duration-300 flex "
                             :class="filtro.numBanheiros.value === num ? ' border-accent' : 'border-primary/20'">
                             {{ num }} <span v-if="num === 4">+</span>
                         </div>

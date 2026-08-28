@@ -3,8 +3,8 @@ import type { EnderecoResponse } from "../endereco/enderecoResponse";
 
 
 export interface ImovelResponse {
-    imovel_id: string,
-    usuario_id: string,
+    imovel_ID: string,
+    usuario_ID: string,
     titulo: string,
     descricao: string,
     comodos: number,

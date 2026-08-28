@@ -2,8 +2,8 @@ import type { ImovelResponse } from "@/shared/types/imovel/imovelResponse";
 
 // 1. Objeto Padrão (Cenário de Sucesso Completo)
 export const mockImovelCompleto: ImovelResponse = {
-    imovel_id: "550e8400-e29b-41d4-a716-446655440000",
-    usuario_id: "usr-987654321",
+    imovel_ID: "550e8400-e29b-41d4-a716-446655440000",
+    usuario_ID: "usr-987654321",
     titulo: "Apartamento Moderno no Centro",
     descricao: "Excelente apartamento com vista definitiva, próximo ao metrô e comércio.",
     comodos: 4,
@@ -29,8 +29,8 @@ export const mockImovelCompleto: ImovelResponse = {
 
 // 2. Objeto Opcional Ausente (Sem complemento no endereço)
 export const mockImovelSemComplemento: ImovelResponse = {
-    imovel_id: "6a2c9100-f19c-42a1-b816-112233445566",
-    usuario_id: "usr-123456789",
+    imovel_ID: "6a2c9100-f19c-42a1-b816-112233445566",
+    usuario_ID: "usr-123456789",
     titulo: "Casa de Bairro Tranquila",
     descricao: "Casa espaçosa com quintal grande, ideal para famílias com pets.",
     comodos: 6,
@@ -55,8 +55,8 @@ export const mockImovelSemComplemento: ImovelResponse = {
 
 // 3. Objeto em Análise / Pendente (Valores iniciais e aprovação pendente)
 export const mockImovelPendente: ImovelResponse = {
-    imovel_id: "7b3d0200-a38b-43d2-c917-998877665544",
-    usuario_id: "usr-456789123",
+    imovel_ID: "7b3d0200-a38b-43d2-c917-998877665544",
+    usuario_ID: "usr-456789123",
     titulo: "Studio Compacto",
     descricao: "Studio novo recém-entregue, ideal para estudantes.",
     comodos: 2,
@@ -82,8 +82,8 @@ export const mockImovelPendente: ImovelResponse = {
 
 // 5. Imóvel Comercial / Sala Comercial (Para testar tipos comerciais)
 export const mockImovelComercial: ImovelResponse = {
-    imovel_id: "8c4e1311-b49c-54e3-d028-112233445577",
-    usuario_id: "usr-001122334",
+    imovel_ID: "8c4e1311-b49c-54e3-d028-112233445577",
+    usuario_ID: "usr-001122334",
     titulo: "Sala Comercial Executive Tower",
     descricao: "Conjunto comercial moderno com recepção, piso elevado e 2 vagas de garagem.",
     comodos: 3,
@@ -109,8 +109,8 @@ export const mockImovelComercial: ImovelResponse = {
 
 // 6. Chácara / Imóvel Rural (Sem número tradicional e valores maiores de área)
 export const mockImovelRural: ImovelResponse = {
-    imovel_id: "9d5f2422-c50d-65f4-e139-223344556688",
-    usuario_id: "usr-556677889",
+    imovel_ID: "9d5f2422-c50d-65f4-e139-223344556688",
+    usuario_ID: "usr-556677889",
     titulo: "Chácara Recanto Verde",
     descricao: "Chácara com casa sede de 3 quartos, piscina, campo de futebol e área gourmet.",
     comodos: 8,
@@ -136,8 +136,8 @@ export const mockImovelRural: ImovelResponse = {
 
 // 7. Imóvel Inativo / Reprovado na Avaliação
 export const mockImovelReprovado: ImovelResponse = {
-    imovel_id: "0a6a3533-d61e-76a5-f240-334455667799",
-    usuario_id: "usr-998877665",
+    imovel_ID: "0a6a3533-d61e-76a5-f240-334455667799",
+    usuario_ID: "usr-998877665",
     titulo: "Sobrado Antigo para Reformar",
     descricao: "Sobrado com boa localização, necessitando de reparos na estrutura elétrica.",
     comodos: 5,
