@@ -36,14 +36,13 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
     public async Task<List<Imovel>> ListarAsync(bool aprovados = true, CancellationToken cancellationToken = default)
     {
         var query = context.Imoveis.AsNoTracking().AsQueryable();
-        if (aprovados)
-            query = query.Where(x => x.Aprovado);
-        if (!aprovados)
-            query = query.Where(x => !x.Aprovado);
+
+        query = query.Where(x => x.Aprovado);
 
         var imoveis = await query
             .Include(i => i.Endereco)
             .Include(i => i.Contratos)
+            .Where(x => x.Status == StatusImovel.Disponivel && x.Aprovado)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
         return imoveis;
@@ -56,15 +55,13 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
             .AsNoTracking()
             .AsQueryable();
 
-        if (avaliados)
-            query = query.Where(x => x.Avaliado);
-        if (!avaliados)
-            query = query.Where(x => !x.Avaliado);
+        query = query.Where(x => x.Avaliado);
+
 
         return query.ToListAsync();
     }
 
-    public Task<List<Imovel>> ListarComFiltroAsync(FiltroImovel filtro, CancellationToken cancellationToken = default)
+    public async Task<List<Imovel>> ListarComFiltroAsync(FiltroImovel filtro, CancellationToken cancellationToken = default)
     {
         var query = context.Imoveis
             .Include(x => x.Endereco)
@@ -73,17 +70,19 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
             .AsQueryable();
 
 
-        if (filtro.Comodos is not null && filtro.Comodos > 0)
+        if (filtro.Comodos is not null && filtro.Comodos > 0 && filtro.Comodos < 4)
             query = query.Where(x => x.Comodos >= filtro.Comodos.Value);
 
 
-        if (filtro.Banheiros is not null && filtro.Banheiros >= 0)
+        if (filtro.Banheiros is not null && filtro.Banheiros >= 0 && filtro.Banheiros < 4)
             query = query.Where(x => x.Banheiros >= filtro.Banheiros.Value);
 
-        if (filtro.TipoImovel is not null)
+        if (!string.IsNullOrWhiteSpace(filtro.TipoImovel))
         {
-            if(Enum.TryParse<TipoImovel>(filtro.TipoImovel, ignoreCase: true, out TipoImovel resultado))
-                query = query.Where(x => x.Tipo == resultado);
+            if (Enum.TryParse<TipoImovel>(filtro.TipoImovel, ignoreCase: true, out TipoImovel tipoEnum))
+            {
+                query = query.Where(x => x.Tipo == tipoEnum);
+            }
         }
 
 
@@ -110,7 +109,10 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
 
             // Remove a trava arbitrária de <= 8000
             if (maxPreco > 0 && maxPreco > minPreco)
-                query = query.Where(x => x.ValorAluguel <= maxPreco);
+            {
+                if (maxPreco <= 8000)
+                    query = query.Where(x => x.ValorAluguel <= maxPreco);
+            }
         }
 
         if (filtro.Endereco is not null)
@@ -126,7 +128,7 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
         }
 
 
-        return query.AsSplitQuery().ToListAsync();
+        return await query.ToListAsync();
     }
 
     public async Task<List<Imovel>> ListarImoveisLocador(Guid locadorId, CancellationToken cancellationToken = default)
