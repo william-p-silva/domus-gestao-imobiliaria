@@ -5,8 +5,10 @@ public class FiltroImovel
 {
     public int? Banheiros { get; set; }
     public int? Comodos { get; set; }
-    public decimal[]? FaixaPreco { get; set; } = new decimal[2];
-    public decimal[]? AreaM2 { get; set; } = new decimal[2];
-    public FiltroEnderecoImovel? Endereco { get; set; }
+    public decimal? MinPreco { get; set; }
+    public decimal? MaxPreco { get; set; }
+    public decimal? MinArea { get; set; }
+    public decimal? MaxArea { get; set; }
     public string? TipoImovel { get; set; }
+    public FiltroEnderecoImovel? Endereco { get; set; }
 }

@@ -6,23 +6,17 @@ export const FiltroImovelSchema = z.object({
 
     tipoImovel: z.string().optional(),
 
-    faixaPreco: z
-    .tuple([z.number().min(0), z.number().min(0)])
-    .refine(([min, max]) => min <= max, {
-      message: "O preço mínimo não pode ser maior que o preço máximo",
-    })
-    .optional(),
+    minPreco: z.number().optional(),
+
+    maxPreco: z.number().optional(),
 
     comodos: z.number().optional(),
 
     banheiros: z.number().optional(),
 
-    areaM2: z
-    .tuple([z.number().min(0).optional(), z.number().min(0).optional()])
-    .refine(([de, ate]) => !de || !ate || de <= ate, {
-      message: "A área mínima não pode ser maior que a área máxima",
-    })
-    .optional(),
+    minArea: z.number().optional(),
+
+    maxArea: z.number().optional(),
 });
 
 export type FiltroImovelType = z.infer<typeof FiltroImovelSchema>;

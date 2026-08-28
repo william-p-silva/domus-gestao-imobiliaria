@@ -77,7 +77,7 @@ async function handleSubmit() {
                 <div class="flex flex-col gap-2">
                     <p class="flex justify-start items-center gap-1">
                         <BedDouble :size="22" />
-                        Quartos
+                        Banheiros
                     </p>
                     <div class="grid grid-cols-4 gap-2">
                         <div v-for="num in filtro.numObj" @click="filtro.numBanheiros.value = num"

@@ -87,33 +87,16 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
 
 
         // Filtro de Área (m²)
-        if (filtro.AreaM2 != null && filtro.AreaM2.Length >= 2)
-        {
-            var minArea = filtro.AreaM2[0];
-            var maxArea = filtro.AreaM2[1];
+        if (filtro.MinArea is not null && filtro.MinArea > 0)
+            query = query.Where(x => x.MetrosQuadrados >= filtro.MinArea.Value);
+        if (filtro.MaxArea is not null && filtro.MaxArea > 0)
+            query = query.Where(x => x.MetrosQuadrados <= filtro.MaxArea.Value);
 
-            if (minArea > 0)
-                query = query.Where(x => x.MetrosQuadrados >= minArea);
-
-            if (maxArea > 0 && maxArea > minArea)
-                query = query.Where(x => x.MetrosQuadrados <= maxArea);
-        }
-
-        if (filtro.FaixaPreco != null && filtro.FaixaPreco.Length >= 2)
-        {
-            var minPreco = filtro.FaixaPreco[0];
-            var maxPreco = filtro.FaixaPreco[1];
-
-            if (minPreco > 0)
-                query = query.Where(x => x.ValorAluguel >= minPreco);
-
-            // Remove a trava arbitrária de <= 8000
-            if (maxPreco > 0 && maxPreco > minPreco)
-            {
-                if (maxPreco <= 8000)
-                    query = query.Where(x => x.ValorAluguel <= maxPreco);
-            }
-        }
+        // Filtro de Preço
+        if (filtro.MinPreco is not null && filtro.MinPreco > 0)
+            query = query.Where(x => x.MetrosQuadrados >= filtro.MinPreco.Value);
+        if (filtro.MaxPreco is not null && filtro.MaxPreco > 0)
+            query = query.Where(x => x.MetrosQuadrados <= filtro.MaxPreco.Value);
 
         if (filtro.Endereco is not null)
         {

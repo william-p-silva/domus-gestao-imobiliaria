@@ -33,20 +33,22 @@ const DEFAULT_TIPOS_IMOVEIS: TiposImovel[] = [
 
 const DEFAULT_FILTRO: FiltroImovelType = {
     endereco: "",
-    tipoImovel: "Apartamento",
-    faixaPreco: [0, 8000],
+    tipoImovel: "",
+    minPreco: 0,
+    maxPreco: 8000,
     comodos: 0,
     banheiros: 0,
-    areaM2: [0, 0],
+    minArea: 0,
+    maxArea: 0
 }
 
 const endereco = ref<string>(DEFAULT_FILTRO.endereco ?? "");
 const tipoImovel = ref<string>(DEFAULT_FILTRO.tipoImovel ?? "Apartamento");
-const faixaPreco = ref<[number, number]>(DEFAULT_FILTRO.faixaPreco ?? [800, 8000]);
+const faixaPreco = ref<[number, number]>([800, 8000]);
 const numQuartos = ref<number>(DEFAULT_FILTRO.comodos ?? 0);
 const numBanheiros = ref<number>(DEFAULT_FILTRO.banheiros ?? 0);
-const minArea = ref<number>(DEFAULT_FILTRO.areaM2?.[0] ?? 0);
-const maxArea = ref<number>(DEFAULT_FILTRO.areaM2?.[1] ?? 0);
+const minArea = ref<number>(DEFAULT_FILTRO.minArea ?? 0);
+const maxArea = ref<number>(DEFAULT_FILTRO.maxArea ?? 0);
 
 
 export const useFiltro = () => {
@@ -66,10 +68,12 @@ export const useFiltro = () => {
         filtro.value = {
             endereco: toValue(endereco),
             tipoImovel: toValue(tipoImovel),
-            faixaPreco: toValue(faixaPreco),
+            minPreco: faixaPreco.value[0],
+            maxPreco: faixaPreco.value[1],
             comodos: toValue(numQuartos),
             banheiros: toValue(numBanheiros),
-            areaM2: [toValue(minArea), toValue(maxArea)],
+            minArea: minArea.value,
+            maxArea: maxArea.value
         };
 
         if (!verifyFiltro())
@@ -81,15 +85,14 @@ export const useFiltro = () => {
         if (filtro.value.endereco) queryParams.endereco = filtro.value.endereco;
         if (filtro.value.tipoImovel) queryParams.tipoImovel = filtro.value.tipoImovel;
 
-        if (filtro.value.faixaPreco?.[0]) queryParams.faixaPreco = filtro.value.faixaPreco[0];
-        if (filtro.value.faixaPreco?.[1]) queryParams.faixaPreco = filtro.value.faixaPreco[1];
+        if (filtro.value.minPreco) queryParams.minPreco = filtro.value.minPreco;
+        if (filtro.value.maxPreco) queryParams.maxPreco = filtro.value.maxPreco;
 
         if (filtro.value.comodos) queryParams.comodos = filtro.value.comodos;
         if (filtro.value.banheiros) queryParams.banheiros = filtro.value.banheiros;
 
-        if (filtro.value.areaM2?.[0]) queryParams.faixaPreco = filtro.value.areaM2[0];
-        if (filtro.value.areaM2?.[1]) queryParams.faixaPreco = filtro.value.areaM2[1];
-
+        if (filtro.value.minArea) queryParams.minArea = filtro.value.minArea;
+        if (filtro.value.maxArea) queryParams.maxArea = filtro.value.maxArea;
         // Atualiza a URL e recarrega os dados através do evento/navegação
         await router.push({ path: "/imoveis", query: queryParams });
 
@@ -112,33 +115,36 @@ export const useFiltro = () => {
         const q = route.query;
         if (q.endereco) endereco.value = String(q.endereco);
         if (q.tipoImovel) tipoImovel.value = String(q.tipoImovel);
-        if (q.precoMin || q.precoMax) {
-          faixaPreco.value = [
-            q.precoMin ? Number(q.precoMin) : 0,
-            q.precoMax ? Number(q.precoMax) : 8000,
-          ];
+
+        if (q.minPreco || q.maxPreco) {
+            faixaPreco.value = [
+                q.minPreco ? Number(q.minPreco) : 0,
+                q.maxPreco ? Number(q.maxPreco) : 8000,
+            ];
         }
+
         if (q.comodos) numQuartos.value = Number(q.comodos);
         if (q.banheiros) numBanheiros.value = Number(q.banheiros);
-        if (q.areaMin || q.areaMax) {
-          minArea.value = q.areaMin ? Number(q.areaMin) : 0;
-          maxArea.value = q.areaMax ? Number(q.areaMax) : 0;
+
+        if (q.minArea || q.maxArea) {
+            minArea.value = q.minArea ? Number(q.minArea) : 0;
+            maxArea.value = q.maxArea ? Number(q.maxArea) : 0;
         }
-      }
-    
-      function limparFiltros() {
+    }
+
+    function limparFiltros() {
         endereco.value = DEFAULT_FILTRO.endereco ?? "";
-        tipoImovel.value = DEFAULT_FILTRO.tipoImovel ?? "Apartamento";
-        faixaPreco.value = [...(DEFAULT_FILTRO.faixaPreco ?? [800, 8000])];
+        tipoImovel.value = DEFAULT_FILTRO.tipoImovel ?? "";
+        faixaPreco.value = [800, 8000];
         numQuartos.value = DEFAULT_FILTRO.comodos ?? 0;
         numBanheiros.value = DEFAULT_FILTRO.banheiros ?? 0;
-        minArea.value = DEFAULT_FILTRO.areaM2?.[0] ?? 0;
-        maxArea.value = DEFAULT_FILTRO.areaM2?.[1] ?? 0;
-        
-        router.push({ path: "/imoveis" });
-      }
+        minArea.value = DEFAULT_FILTRO.minArea ?? 0;
+        maxArea.value = DEFAULT_FILTRO.maxArea ?? 0;
 
-      return {
+        router.push({ path: "/imoveis" });
+    }
+
+    return {
         isLoading,
         errorFiltro,
         tiposImoveis,
@@ -153,5 +159,5 @@ export const useFiltro = () => {
         limparFiltros,
         carregarFiltroDaUrl,
         submit,
-      };
+    };
 }
