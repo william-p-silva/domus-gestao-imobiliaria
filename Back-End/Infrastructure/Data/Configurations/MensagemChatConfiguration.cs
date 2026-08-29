@@ -2,6 +2,8 @@
 
 
 using Domus.Domain.Entity;
+using Domus.Domain.Enums.Chat;
+using Domus.Domain.Enums.Mensagem;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -19,14 +21,20 @@ public class MensagemChatConfiguration : IEntityTypeConfiguration<MensagemChat>
             .IsRequired()
             .HasMaxLength(4000);
 
-        builder.Property(mc => mc.DataEnvio)
+        builder.Property(m => m.Estado)
+            .HasConversion<string>()
             .IsRequired()
-            .HasColumnType("datetime2")
-            .HasDefaultValueSql("GETUTCDATE()");
+            .HasMaxLength(20);
 
-        builder.HasOne(mc => mc.Usuario)
+        builder.Property(m => m.DeletadaEm)
+            .IsRequired(false);
+
+        builder.Property(mc => mc.DataEnvio)
+            .IsRequired();
+
+        builder.HasOne(mc => mc.UsuarioChat)
             .WithMany(u => u.MensagensChat)
-            .HasForeignKey(mc => mc.Usuario_ID)
+            .HasForeignKey(mc => mc.UsuarioChat_ID)
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
 
@@ -35,5 +43,10 @@ public class MensagemChatConfiguration : IEntityTypeConfiguration<MensagemChat>
             .HasForeignKey(mc => mc.Chat_ID)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasQueryFilter(
+            m => m.Estado != EstadoMensagem.Apagada &&
+            m.UsuarioChat.Estado != EstadoUsuarioChat.Deletado
+            );
     }
 }

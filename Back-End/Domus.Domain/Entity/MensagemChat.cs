@@ -1,16 +1,19 @@
-﻿
+﻿using Domus.Domain.Enums.Mensagem;
+
 namespace Domus.Domain.Entity;
 
 public class MensagemChat
 {
     public Guid MensagemChat_ID { get; private set; }
-    public Guid Usuario_ID { get; private set; }
+    public Guid UsuarioChat_ID { get; private set; }
     public Guid Chat_ID { get; private set; }
     public string Texto { get; private set; }
+    public EstadoMensagem Estado { get; private set; }
+    public DateTime? DeletadaEm { get; private set; }
     public DateTime DataEnvio { get; private set; } = DateTime.UtcNow;
 
     //Relacionamentos
-    public Usuario Usuario { get; private set; }
+    public UsuarioChat UsuarioChat { get; private set; }
     public Chat Chat { get; private set; }
 
 
@@ -30,7 +33,7 @@ public class MensagemChat
             throw new ArgumentException("O texto da mensagem é obrigatório.", nameof(texto));
 
         MensagemChat_ID = Guid.NewGuid();
-        Usuario_ID = usuario_id;
+        UsuarioChat_ID = usuario_id;
         Chat_ID = chat_id;
         Texto = texto;
     }

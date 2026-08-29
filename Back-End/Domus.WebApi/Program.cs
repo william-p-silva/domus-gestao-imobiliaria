@@ -180,7 +180,7 @@ app.Run();
 // COMANDOS ÚTEIS PARA O TERMINAL:
 // 
 // Criar uma nova Migration:
-// dotnet ef migrations add AutualizandoUserChat --project ..\Infrastructure 
+// dotnet ef migrations add MensagemComFiltrosGlobais --project ..\Infrastructure 
 //
 // Atualizar o banco manualmente (Caso não queira depender do auto-migrate):
 // dotnet ef database update --project ..\Infrastructure  
@@ -188,6 +188,6 @@ app.Run();
 //
 // Salvar Chaves de configuração sensíveis (ex: JWT) usando Secret Manager (Desenvolvimento local):
 // dotnet user-secrets list // Listar chaves e valores atuais
-// dotnet dotnet user-secrets set chave valor // Adicionar ou atualizar uma chave-valor
+// dotnet user-secrets set chave valor // Adicionar ou atualizar uma chave-valor
 // dotnet user-secrets remove chave // Remover uma chave específica
 // =================================================================================================

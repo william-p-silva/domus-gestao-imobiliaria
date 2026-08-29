@@ -27,7 +27,6 @@ public class Usuario
     public ICollection<Avaliacao> Avaliacoes { get; private set; } = new List<Avaliacao>();
 
     public ICollection<Notificacao> Notificacoes { get; private set; } = new List<Notificacao>();
-    public ICollection<MensagemChat> MensagensChat { get; private set; } = new List<MensagemChat>();
 
     public ICollection<UsuarioChat> UsuarioChats { get; private set; } = new List<UsuarioChat>();
     public ICollection<Imovel> Imoveis { get; private set; } = new List<Imovel>();

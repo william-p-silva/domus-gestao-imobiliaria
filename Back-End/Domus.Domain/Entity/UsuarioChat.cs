@@ -1,5 +1,6 @@
 ﻿using Domus.Domain.Enums;
 using Domus.Domain.Enums.Chat;
+using Domus.Domain.Exceptions.Domain;
 using Domus.Domain.ValueObjects.Chat;
 
 namespace Domus.Domain.Entity;
@@ -18,6 +19,8 @@ public class UsuarioChat
     //Relacionamentos
     public Usuario Usuario { get; private set; }
     public Chat Chat { get; private set; }
+    public ICollection<MensagemChat> MensagensChat { get; private set; } = new List<MensagemChat>();
+
 
 
     /// <summary>
@@ -34,12 +37,12 @@ public class UsuarioChat
         )
     {
         if (usuario is null)
-            throw new ArgumentException("Usuário não encontrado. Verifique as informações.");
+            throw new NotFoundException("Usuário não encontrado. Verifique as informações.");
         if (chat is null)
-            throw new ArgumentException("Chat não encontrado. Verifique as informações.");
+            throw new NotFoundException("Chat não encontrado. Verifique as informações.");
 
         if (!usuario.PossuiFuncao(funcao))
-            throw new ArgumentException("Usuário não contempla a função exigida.");
+            throw new BusinessRuleException("Usuário não contempla a função exigida.");
 
         UsuarioChat_ID = Guid.NewGuid();
         Usuario_ID = usuario.Usuario_ID;
