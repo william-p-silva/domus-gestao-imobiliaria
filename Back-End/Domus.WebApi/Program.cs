@@ -180,7 +180,7 @@ app.Run();
 // COMANDOS ÚTEIS PARA O TERMINAL:
 // 
 // Criar uma nova Migration:
-// dotnet ef migrations add MensagemComFiltrosGlobais --project ..\Infrastructure 
+// dotnet ef migrations add AtualizandoUsuario --project ..\Infrastructure 
 //
 // Atualizar o banco manualmente (Caso não queira depender do auto-migrate):
 // dotnet ef database update --project ..\Infrastructure  

@@ -9,6 +9,8 @@ public sealed record Celular
 
     private Celular(string celular) {  Numero = celular; }
 
+    protected Celular() {  }
+
     public static Celular Create(string celular)
     {
         if (string.IsNullOrWhiteSpace(celular)) 

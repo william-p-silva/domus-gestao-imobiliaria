@@ -1,4 +1,5 @@
 ﻿using Domus.Domain.Enums;
+using Domus.Domain.ValueObjects.Usuario;
 
 namespace Domus.Domain.Entity;
 
@@ -6,15 +7,15 @@ public class Usuario
 {
     public Guid Usuario_ID { get; private set; }
     public Guid? Endereco_ID { get; private set; }
-    public string Nome { get; private set; }
-    public string Email { get; private set; }
-    public string? CPF { get; private set; }
-    public string? Celular { get; private set; }
+    public Nome Nome { get; private set; }
+    public Email Email { get; private set; } //
+    public CPF? CPF { get; private set; } // 
+    public Celular? Celular { get; private set; } //
     public bool Ativo { get; private set; }
     public string SenhaHash { get; private set; }
     public Guid TokenConfirmaEmail { get; private set; }
     public DateTime TokenEmailExpire { get; private set; } = DateTime.UtcNow.AddHours(2);
-    public string EmailAConfirmar { get; private set; }
+    public Email EmailAConfirmar { get; private set; } //
     public bool EmailConfirmado { get; private set; } = false;
     public DateTime CriadoEm { get; private set; } = DateTime.UtcNow;
     public DateTime? ExcluidoEm { get; private set; }
@@ -50,8 +51,6 @@ public class Usuario
         string nome,
         string emailAConfirmar,
         string senhaHash,
-        string? cpf = null,
-        string? celular = null,
         Guid? enderecoId = null)
     {
         if (string.IsNullOrWhiteSpace(nome))
@@ -63,10 +62,8 @@ public class Usuario
 
         Usuario_ID = Guid.NewGuid();
         TokenConfirmaEmail = Guid.NewGuid();
-        Nome = nome;
-        CPF = cpf;
-        Celular = celular;
-        EmailAConfirmar = emailAConfirmar;
+        Nome = Nome.Create(nome);
+        EmailAConfirmar = Email.Create(emailAConfirmar);
         SenhaHash = senhaHash;
         Ativo = false;
         Endereco_ID = enderecoId;
@@ -107,7 +104,8 @@ public class Usuario
             throw new ArgumentException("O CPF deve conter 11 dígitos.", nameof(cpf));
         if (cpf.Any(c => !char.IsDigit(c)))
             throw new ArgumentException("O CPF deve conter apenas números.", nameof(cpf));
-        CPF = cpf;
+
+        CPF = CPF.Create(cpf);
     }
 
     public void AdicionarCelular(string celular)
@@ -118,7 +116,8 @@ public class Usuario
             throw new ArgumentException("O celular deve conter 11 dígitos.", nameof(celular));
         if (celular.Any(c => !char.IsDigit(c)))
             throw new ArgumentException("O celular deve conter apenas números.", nameof(celular));
-        Celular = celular;
+
+        Celular = Celular.Create(celular);
     }
 
     public void AlterarCelular(string celular)
@@ -129,7 +128,8 @@ public class Usuario
             throw new ArgumentException("O celular deve conter 11 dígitos.", nameof(celular));
         if (celular.Any(c => !char.IsDigit(c)))
             throw new ArgumentException("O celular deve conter apenas números.", nameof(celular));
-        Celular = celular;
+
+        Celular = Celular.Create(celular);
     }
 
     public void AlterarEmail(string novoEmail)
@@ -137,14 +137,14 @@ public class Usuario
         if (string.IsNullOrWhiteSpace(novoEmail))
             throw new ArgumentException("O email do usuário é obrigatório.", nameof(novoEmail));
 
-        Email = novoEmail;
+        Email = Email.Create(novoEmail);
     }
 
     public void AlterarNome(string novoNome)
     {
         if (string.IsNullOrWhiteSpace(novoNome))
             throw new ArgumentException("O nome do usuário é obrigatório.", nameof(novoNome));
-        Nome = novoNome;
+        Nome = Nome.Create(novoNome);
     }
     public void AlterarSenha(string novaSenhaHash)
     {

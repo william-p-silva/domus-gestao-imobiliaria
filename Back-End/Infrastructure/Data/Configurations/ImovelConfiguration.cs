@@ -16,7 +16,7 @@ public class ImovelConfiguration : IEntityTypeConfiguration<Imovel>
 
         builder.Property(i => i.Titulo)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(200);
 
         builder.Property(i => i.Descricao)
             .IsRequired()

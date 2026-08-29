@@ -11,6 +11,8 @@ public sealed record CPF
         Numero = numero;
     }
 
+    protected CPF() { }
+
     public static CPF Create(string cpf)
     {
         if (string.IsNullOrWhiteSpace(cpf))

@@ -22,8 +22,8 @@ public class BuscarContratoUseCase(IContratoRepository contratoRepository)
             Locador = new ContratoLocadorResponse
             {
                 Locador_ID = contrato.Locador.Usuario_ID,
-                Email = contrato.Locador.Email,
-                Nome = contrato.Locador.Nome,
+                Email = contrato.Locador.Email.Endereco,
+                Nome = contrato.Locador.Nome.NomeCompleto,
             },
             Status = contrato.Status,
             Tipo = contrato.Tipo,

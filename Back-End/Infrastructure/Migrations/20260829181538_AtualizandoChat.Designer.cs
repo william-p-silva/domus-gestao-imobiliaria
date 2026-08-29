@@ -5,6 +5,7 @@ using Domus.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -12,9 +13,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domus.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260829181538_AtualizandoChat")]
+    partial class AtualizandoChat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -570,10 +573,27 @@ namespace Domus.Infrastructure.Migrations
                     b.Property<bool>("Ativo")
                         .HasColumnType("bit");
 
+                    b.Property<string>("CPF")
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
+                    b.Property<string>("Celular")
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
                     b.Property<DateTime>("CriadoEm")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("EmailAConfirmar")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<bool>("EmailConfirmado")
                         .HasColumnType("bit");
@@ -583,6 +603,11 @@ namespace Domus.Infrastructure.Migrations
 
                     b.Property<DateTime?>("ExcluidoEm")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("SenhaHash")
                         .IsRequired()
@@ -595,18 +620,22 @@ namespace Domus.Infrastructure.Migrations
                     b.Property<DateTime>("TokenEmailExpire")
                         .HasColumnType("datetime2");
 
-                    b.ComplexProperty<Dictionary<string, object>>("Nome", "Domus.Domain.Entity.Usuario.Nome#Nome", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<string>("NomeCompleto")
-                                .IsRequired()
-                                .HasMaxLength(150)
-                                .HasColumnType("nvarchar(150)")
-                                .HasColumnName("Nome");
-                        });
-
                     b.HasKey("Usuario_ID");
+
+                    b.HasIndex("CPF")
+                        .IsUnique()
+                        .HasFilter("[CPF] IS NOT NULL");
+
+                    b.HasIndex("Celular")
+                        .IsUnique()
+                        .HasFilter("[Celular] IS NOT NULL");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
+
+                    b.HasIndex("EmailAConfirmar")
+                        .IsUnique();
 
                     b.HasIndex("Endereco_ID")
                         .IsUnique()
@@ -879,108 +908,6 @@ namespace Domus.Infrastructure.Migrations
                         .WithOne()
                         .HasForeignKey("Domus.Domain.Entity.Usuario", "Endereco_ID")
                         .OnDelete(DeleteBehavior.SetNull);
-
-                    b.OwnsOne("Domus.Domain.ValueObjects.Usuario.Email", "Email", b1 =>
-                        {
-                            b1.Property<Guid>("Usuario_ID")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Endereco")
-                                .IsRequired()
-                                .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)")
-                                .HasColumnName("Email");
-
-                            b1.HasKey("Usuario_ID");
-
-                            b1.HasIndex("Endereco")
-                                .IsUnique()
-                                .HasFilter("[Email] IS NOT NULL AND [ExcluidoEm] IS NULL");
-
-                            b1.ToTable("Usuarios");
-
-                            b1.WithOwner()
-                                .HasForeignKey("Usuario_ID");
-                        });
-
-                    b.OwnsOne("Domus.Domain.ValueObjects.Usuario.Email", "EmailAConfirmar", b1 =>
-                        {
-                            b1.Property<Guid>("Usuario_ID")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Endereco")
-                                .IsRequired()
-                                .HasMaxLength(200)
-                                .HasColumnType("nvarchar(200)")
-                                .HasColumnName("EmailAConfirmar");
-
-                            b1.HasKey("Usuario_ID");
-
-                            b1.HasIndex("Endereco")
-                                .IsUnique()
-                                .HasFilter("[ExcluidoEm] IS NULL");
-
-                            b1.ToTable("Usuarios");
-
-                            b1.WithOwner()
-                                .HasForeignKey("Usuario_ID");
-                        });
-
-                    b.OwnsOne("Domus.Domain.ValueObjects.Usuario.CPF", "CPF", b1 =>
-                        {
-                            b1.Property<Guid>("Usuario_ID")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Numero")
-                                .IsRequired()
-                                .HasMaxLength(11)
-                                .HasColumnType("nvarchar(11)")
-                                .HasColumnName("CPF");
-
-                            b1.HasKey("Usuario_ID");
-
-                            b1.HasIndex("Numero")
-                                .IsUnique()
-                                .HasFilter("[CPF] IS NOT NULL AND [ExcluidoEm] IS NULL");
-
-                            b1.ToTable("Usuarios");
-
-                            b1.WithOwner()
-                                .HasForeignKey("Usuario_ID");
-                        });
-
-                    b.OwnsOne("Domus.Domain.ValueObjects.Usuario.Celular", "Celular", b1 =>
-                        {
-                            b1.Property<Guid>("Usuario_ID")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Numero")
-                                .IsRequired()
-                                .HasMaxLength(11)
-                                .HasColumnType("nvarchar(11)")
-                                .HasColumnName("Celular");
-
-                            b1.HasKey("Usuario_ID");
-
-                            b1.HasIndex("Numero")
-                                .IsUnique()
-                                .HasFilter("[Celular] IS NOT NULL AND [ExcluidoEm] IS NULL");
-
-                            b1.ToTable("Usuarios");
-
-                            b1.WithOwner()
-                                .HasForeignKey("Usuario_ID");
-                        });
-
-                    b.Navigation("CPF");
-
-                    b.Navigation("Celular");
-
-                    b.Navigation("Email")
-                        .IsRequired();
-
-                    b.Navigation("EmailAConfirmar")
-                        .IsRequired();
 
                     b.Navigation("EnderecoUsuario");
                 });

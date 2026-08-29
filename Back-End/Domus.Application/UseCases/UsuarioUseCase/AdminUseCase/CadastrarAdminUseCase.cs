@@ -49,7 +49,7 @@ public class CadastrarAdminUseCase(
         string linkConfirmaEmail = $"http://localhost:5038/domus/confirmar/{usuario.TokenConfirmaEmail}";
 
         await _emailService.EnviarAsync(
-            destinatario: usuario.EmailAConfirmar,
+            destinatario: usuario.EmailAConfirmar.Endereco,
             assunto: "Bem-vindo à Domus!",
             corpo: $"""
                 <h2>Olá, {usuario.Nome}!</h2>

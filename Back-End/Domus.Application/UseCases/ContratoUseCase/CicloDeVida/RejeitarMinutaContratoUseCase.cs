@@ -36,8 +36,8 @@ public class RejeitarMinutaContratoUseCase(
             Locador = new ContratoLocadorResponse()
             {
                 Locador_ID = locador.Usuario_ID,
-                Email = locador.Email.ToString(),
-                Nome = locador.Nome
+                Email = locador.Email.Endereco,
+                Nome = locador.Nome.NomeCompleto
             },
             Titulo = contrato.Titulo,
             Descricao = contrato.Descricao,

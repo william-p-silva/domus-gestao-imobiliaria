@@ -1,4 +1,5 @@
 ﻿using Domus.Domain.Entity;
+using Domus.Domain.ValueObjects.Usuario;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,27 +15,48 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
 
         builder.HasKey(u => u.Usuario_ID);
 
-        builder.Property(u => u.Nome)
-            .IsRequired()
-            .HasMaxLength(100);
+        builder.ComplexProperty(n => n.Nome, nomeBuilder =>
+        {
+            nomeBuilder.Property(un => un.NomeCompleto)
+                .HasColumnName("Nome")
+                .IsRequired()
+                .HasMaxLength(150);
+        });
 
-        builder.Property(u => u.Email)
-            .IsRequired(false)
-            .HasMaxLength(150);
-        builder.HasIndex(u => u.Email)
-            .IsUnique();
+        builder.OwnsOne(u => u.Email, emailBuilder =>
+        {
+            emailBuilder.Property(e => e.Endereco)
+                .HasColumnName("Email")
+                .HasMaxLength(200);
+            
+            emailBuilder.HasIndex(u => u.Endereco)
+                .IsUnique()
+                .HasFilter("[Email] IS NOT NULL AND [ExcluidoEm] IS NULL");
+        });
 
-        builder.Property(u => u.CPF)
-            .IsRequired(false)
-            .HasMaxLength(11);
-        builder.HasIndex(u => u.CPF)
-            .IsUnique();
+        builder.OwnsOne(c => c.CPF, cpfBuilder =>
+        {
+            cpfBuilder.Property(cn => cn.Numero)
+                .HasColumnName("CPF")
+                .HasMaxLength(11);
 
-        builder.Property(u => u.Celular)
-            .IsRequired(false)
-            .HasMaxLength(11);
-        builder.HasIndex(u => u.Celular)
-            .IsUnique();
+            cpfBuilder.HasIndex(u => u.Numero)
+                .IsUnique()
+                .HasFilter("[CPF] IS NOT NULL AND [ExcluidoEm] IS NULL");
+        });
+
+
+        builder.OwnsOne(c => c.Celular, celBuilder =>
+        {
+            celBuilder.Property(n => n.Numero)
+                .HasColumnName("Celular")
+                .HasMaxLength(11);
+
+            celBuilder.HasIndex(u => u.Numero)
+                .IsUnique()
+                .HasFilter("[Celular] IS NOT NULL AND [ExcluidoEm] IS NULL");
+        });
+
 
         builder.Property(u => u.SenhaHash)
             .IsRequired()
@@ -50,11 +72,17 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
         builder.Property(u => u.TokenConfirmaEmail)
             .IsRequired();
 
-        builder.Property(u => u.EmailAConfirmar)
-            .IsRequired()
-            .HasMaxLength(150);
-        builder.HasIndex(u => u.EmailAConfirmar)
-            .IsUnique();
+        builder.OwnsOne(u => u.EmailAConfirmar, emailBuilder =>
+        {
+            emailBuilder.Property(e => e.Endereco)
+            .HasColumnName("EmailAConfirmar")
+            .HasMaxLength(200);
+
+            emailBuilder.HasIndex(u => u.Endereco)
+                    .IsUnique()
+                    .HasFilter("[ExcluidoEm] IS NULL");
+        });
+
 
         builder.Property(u => u.TokenEmailExpire)
             .IsRequired()

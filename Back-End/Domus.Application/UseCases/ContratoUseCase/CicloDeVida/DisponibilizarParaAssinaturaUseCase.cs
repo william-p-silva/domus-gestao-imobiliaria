@@ -59,14 +59,14 @@ public class DisponibilizarParaAssinaturaUseCase(
             Locador = new ContratoLocadorResponse()
             {
                 Locador_ID = locador.Usuario_ID,
-                Email = locador.Email.ToString(),
-                Nome = locador.Nome
+                Email = locador.Email.Endereco,
+                Nome = locador.Nome.NomeCompleto
             },
             Locatario = new ContratoLocatarioResponse()
             {
                 Locatario_ID = locatario.Usuario_ID,
-                Email = locatario.Email.ToString(),
-                Nome = locatario.Nome
+                Email = locatario.Email.Endereco,
+                Nome = locatario.Nome.NomeCompleto
             },
             CriadoEm = contrato.CriadoEm,
             Descricao = contrato.Descricao,

@@ -16,16 +16,16 @@ public class BuscarPerfilUseCase(IUsuarioRepository usuarioRepository)
             throw new ArgumentException("Usuário não encontrado.", nameof(usuarioId));
 
 
-        var cpfMascarado = string.IsNullOrEmpty(usuario.CPF) ? "" : (usuario.CPF.Substring(0, 3) + "****" + usuario.CPF.Substring(7));
+        var cpfMascarado = string.IsNullOrEmpty(usuario.CPF.Numero) ? "" : (usuario.CPF.Numero.Substring(0, 3) + "****" + usuario.CPF.Numero.Substring(7));
 
 
         return new PerfilUsuarioResponse
         {
             Usuario_Id = usuario.Usuario_ID,
-            Celular = usuario.Celular ?? "",
-            Email = usuario.Email,
+            Celular = usuario.Celular.Numero ?? "",
+            Email = usuario.Email.Endereco,
             CriadoEm = usuario.CriadoEm,
-            Nome = usuario.Nome,
+            Nome = usuario.Nome.NomeCompleto,
             Endereco = usuario.Endereco_ID is null ? null : new EnderecoResponse
             {
                 Endereco_ID = usuario.EnderecoUsuario.Endereco_ID,

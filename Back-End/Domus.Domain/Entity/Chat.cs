@@ -1,11 +1,18 @@
 ﻿
 
+using Domus.Domain.Enums.Chat;
+using Domus.Domain.Exceptions.Domain;
+
 namespace Domus.Domain.Entity;
 
 public class Chat
 {
     public Guid Chat_ID { get; private set; }
     public Guid Imovel_ID { get; private set; }
+    public string Nome { get; private set; }
+    public EstadoChat Estado { get; private set; }
+    public DateTime? DeletadoEm { get; private set; }
+    public DateTime CriadoEm { get; private set; } = DateTime.UtcNow;
 
     //Relacionamentos
     public Imovel Imovel { get; private set; }
@@ -19,12 +26,14 @@ public class Chat
     /// </summary>
     protected Chat() { }
 
-    public Chat( Guid imovel_id)
+    public Chat(Imovel imovel)
     {
-        if (imovel_id == Guid.Empty)
-            throw new ArgumentException("O ID do imóvel é obrigatório.", nameof(imovel_id));
+        if (imovel is null)
+            throw new NotFoundException("Imóvel não encontrado.");
 
         Chat_ID = Guid.NewGuid();
-        Imovel_ID = imovel_id;
+        Imovel_ID = imovel.Imovel_ID;
+        Nome = imovel.Titulo;
+        Estado = EstadoChat.Ativo;
     }
 }
