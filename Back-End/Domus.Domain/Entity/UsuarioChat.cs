@@ -1,10 +1,19 @@
-﻿namespace Domus.Domain.Entity;
+﻿using Domus.Domain.Enums;
+using Domus.Domain.Enums.Chat;
+using Domus.Domain.ValueObjects.Chat;
+
+namespace Domus.Domain.Entity;
 
 public class UsuarioChat
 {
     public Guid UsuarioChat_ID { get; private set; }
     public Guid Usuario_ID { get; private set; }
     public Guid Chat_ID { get; private set; }
+    public NomeChat ChatNome { get; private set; }
+    public FuncaoUser Funcao { get; private set; }
+    public DateTime CriadoEm { get; private set; }
+    public DateTime? DeletadoEm { get; private set; }
+    public EstadoUsuarioChat Estado { get; private set; }
 
     //Relacionamentos
     public Usuario Usuario { get; private set; }
@@ -17,15 +26,27 @@ public class UsuarioChat
     /// </summary>
     protected UsuarioChat() { }
 
-    public UsuarioChat(Guid usuarioId, Guid chatId)
+    public UsuarioChat(
+        Usuario usuario, 
+        FuncaoUser funcao,
+        Chat chat,
+        string nome
+        )
     {
-        if (usuarioId == Guid.Empty)
-            throw new ArgumentException("O ID do usuário é obrigatório.", nameof(usuarioId));
-        if (chatId == Guid.Empty)
-            throw new ArgumentException("O ID do chat é obrigatório.", nameof(chatId));
+        if (usuario is null)
+            throw new ArgumentException("Usuário não encontrado. Verifique as informações.");
+        if (chat is null)
+            throw new ArgumentException("Chat não encontrado. Verifique as informações.");
+
+        if (!usuario.PossuiFuncao(funcao))
+            throw new ArgumentException("Usuário não contempla a função exigida.");
 
         UsuarioChat_ID = Guid.NewGuid();
-        Usuario_ID = usuarioId;
-        Chat_ID = chatId;
+        Usuario_ID = usuario.Usuario_ID;
+        Chat_ID = chat.Chat_ID;
+        Estado = EstadoUsuarioChat.Ativo;
+        CriadoEm = DateTime.Now;
+        Funcao = funcao;
+        ChatNome = NomeChat.Create(nome);
     }
 }

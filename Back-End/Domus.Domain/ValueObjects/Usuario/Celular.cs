@@ -1,9 +1,7 @@
-﻿
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace Domus.Domain.ValueObjects;
+namespace Domus.Domain.ValueObjects.Usuario;
 
 public sealed record Celular
 {

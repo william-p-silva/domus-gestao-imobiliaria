@@ -1,7 +1,6 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Domus.Domain.ValueObjects;
+namespace Domus.Domain.ValueObjects.Usuario;
 
 public sealed record Email
 {

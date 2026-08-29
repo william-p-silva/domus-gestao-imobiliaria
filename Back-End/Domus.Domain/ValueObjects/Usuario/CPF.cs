@@ -1,8 +1,6 @@
-﻿
+﻿using System.Text.RegularExpressions;
 
-using System.Text.RegularExpressions;
-
-namespace Domus.Domain.ValueObjects;
+namespace Domus.Domain.ValueObjects.Usuario;
 
 public sealed record CPF
 {
