@@ -1,5 +1,6 @@
 ﻿
 using Domus.Domain.Entity;
+using Domus.Domain.Enums.Chat;
 using Domus.Domain.ValueObjects.Chat;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,13 +15,13 @@ public class UsuarioChatConfiguration : IEntityTypeConfiguration<UsuarioChat>
 
         builder.HasKey(uc => uc.UsuarioChat_ID);
 
-        builder.Property(uc => uc.ChatNome)
-            .HasConversion(
-                nomeVO => nomeVO.Nome,
-                dbValue => NomeChat.Create(dbValue))
+        builder.ComplexProperty(uc => uc.ChatNome, nomeBuilder =>
+        {
+            nomeBuilder.Property(n => n.Nome)
             .HasColumnName("NomeChat")
-            .IsRequired()
-            .HasMaxLength(150);
+            .HasMaxLength(150)
+            .IsRequired();
+        });
 
         builder.Property(uc => uc.Funcao)
             .IsRequired()
@@ -47,6 +48,9 @@ public class UsuarioChatConfiguration : IEntityTypeConfiguration<UsuarioChat>
             .WithMany(c => c.UsuarioChats)
             .HasForeignKey(uc => uc.Chat_ID)
             .OnDelete(DeleteBehavior.Restrict);
+
+
+        builder.HasQueryFilter(uc => uc.Estado != EstadoUsuarioChat.Deletado);
 
     }
 }
