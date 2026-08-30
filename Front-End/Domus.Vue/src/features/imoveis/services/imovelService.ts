@@ -12,4 +12,11 @@ export class imovelService {
 
         return response;
     }
+
+    async getImovel(idImovel: string) : Promise<ImovelResponse> {
+        const response = await this.httpService.GetAsync<ImovelResponse>(
+            `imovel/get/buscar/${idImovel}`);
+
+        return response;
+    }
 }

@@ -7,7 +7,7 @@ namespace Domus.Application.DTOs.Imovel;
 public class ImovelResponse
 {
     public Guid Imovel_ID { get; set; }
-    public Guid Usuario_ID { get; set; }
+    public ResponseUsuarioImovel Locador { get; set; }
     public string Titulo { get; set; }
     public string Descricao { get; set; }
     public int Comodos { get; set; }

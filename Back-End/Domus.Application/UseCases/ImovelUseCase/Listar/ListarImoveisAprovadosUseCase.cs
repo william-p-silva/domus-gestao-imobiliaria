@@ -1,6 +1,7 @@
 ﻿using Domus.Application.DTOs.Endereco;
 using Domus.Application.DTOs.Imovel;
 using Domus.Application.Interfaces.Repositories;
+using Domus.Domain.Entity;
 
 namespace Domus.Application.UseCases.ImovelUseCase.Listar;
 
@@ -32,7 +33,12 @@ public class ListarImoveisAprovadosUseCase(IImovelRepository imovelRepository)
             Imovel_ID = x.Imovel_ID,
             Status = x.Status.ToString(),
             Titulo = x.Titulo,
-            Usuario_ID = x.Usuario_ID,
+            Locador = new ResponseUsuarioImovel
+            {
+                Usuario_ID = x.Usuario.Usuario_ID,
+                Email = x.Usuario.Email.Endereco,
+                Nome = x.Usuario.Nome.NomeCompleto
+            },
             ValorAluguel = x.ValorAluguel,
             Banheiros = x.Banheiros,
             MetrosQuadrados = x.MetrosQuadrados,

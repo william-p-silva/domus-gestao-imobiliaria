@@ -4,7 +4,7 @@ import type { EnderecoResponse } from "../endereco/enderecoResponse";
 
 export interface ImovelResponse {
     imovel_ID: string,
-    usuario_ID: string,
+    locador: UsuarioImovelResponse,
     titulo: string,
     descricao: string,
     comodos: number,
@@ -19,3 +19,9 @@ export interface ImovelResponse {
     endereco: EnderecoResponse
 }
 
+
+export interface UsuarioImovelResponse {
+    usuario_ID: string,
+    email: string,
+    nome: string
+}

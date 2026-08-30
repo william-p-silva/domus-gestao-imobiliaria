@@ -19,7 +19,12 @@ public class BuscarImovelPorIdUseCase(
         return new ImovelResponse
         {
             Imovel_ID = imovel.Imovel_ID,
-            Usuario_ID = imovel.Usuario_ID,
+            Locador = new ResponseUsuarioImovel
+            {
+                Usuario_ID = imovel.Usuario.Usuario_ID,
+                Email = imovel.Usuario.Email.Endereco,
+                Nome = imovel.Usuario.Nome.NomeCompleto
+            },
             Titulo = imovel.Titulo,
             Descricao = imovel.Descricao,
             Comodos = imovel.Comodos,

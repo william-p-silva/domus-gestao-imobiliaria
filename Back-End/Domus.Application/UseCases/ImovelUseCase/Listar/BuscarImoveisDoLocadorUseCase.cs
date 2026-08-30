@@ -3,6 +3,7 @@
 using Domus.Application.DTOs.Endereco;
 using Domus.Application.DTOs.Imovel;
 using Domus.Application.Interfaces.Repositories;
+using Domus.Domain.Entity;
 
 namespace Domus.Application.UseCases.ImovelUseCase.Listar;
 
@@ -25,7 +26,12 @@ public class BuscarImoveisDoLocadorUseCase(
         return imoveis.Select(i => new ImovelResponse
         {
             Imovel_ID = i.Imovel_ID,
-            Usuario_ID = i.Usuario_ID,
+            Locador = new ResponseUsuarioImovel
+            {
+                Usuario_ID = i.Usuario.Usuario_ID,
+                Email = i.Usuario.Email.Endereco,
+                Nome = i.Usuario.Nome.NomeCompleto
+            },
             Titulo = i.Titulo,
             Descricao = i.Descricao,
             Comodos = i.Comodos,

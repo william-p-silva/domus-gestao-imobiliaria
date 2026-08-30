@@ -33,6 +33,7 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
     {
         return await context.Imoveis
             .Include(i => i.Endereco)
+            .Include(i => i.Usuario)
             .AsNoTracking().ToListAsync(cancellationToken);
     }
 
@@ -45,6 +46,7 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
         var imoveis = await query
             .Include(i => i.Endereco)
             .Include(i => i.Contratos)
+            .Include(i => i.Usuario)
             .Where(x => x.Status == StatusImovel.Disponivel && x.Aprovado)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
@@ -55,6 +57,7 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
     {
         var query = context.Imoveis
             .Include(x => x.Endereco)
+            .Include(i => i.Usuario)
             .AsNoTracking()
             .AsQueryable();
 
@@ -68,6 +71,7 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
     {
         var query = context.Imoveis
             .Include(x => x.Endereco)
+            .Include(i => i.Usuario)
             .Where(x => x.Status == StatusImovel.Disponivel && x.Aprovado)
             .AsNoTracking()
             .AsQueryable();
@@ -127,6 +131,7 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
             .Where(i => i.Usuario_ID == locadorId)
             .Include(i => i.Endereco)
             .Include(i => i.Contratos)
+            .Include(i => i.Usuario)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
         return imovesLocador;

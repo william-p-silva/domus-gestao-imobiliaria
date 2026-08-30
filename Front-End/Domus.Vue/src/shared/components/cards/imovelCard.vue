@@ -66,6 +66,7 @@ const sizeIcon = 14;
             <RouterLink class="bg-primary p-2 text-center w-full flex justify-center rounded-lg"
                 :to="{ path: '/imovel', query: { imovel_id: props.imovel.imovel_ID } }">
                 Visitar
+                
             </RouterLink>
         </div>
     </div>

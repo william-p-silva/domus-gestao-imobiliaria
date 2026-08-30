@@ -12,7 +12,7 @@ const service = new imovelService();
 
 export const useImovel = () => {
   const router = useRouter();
-  const imoveis = ref<ImovelResponse[]>(mockListaImoveis);
+  const imoveis = ref<ImovelResponse[]>();
 
   const route = useRoute();
 
