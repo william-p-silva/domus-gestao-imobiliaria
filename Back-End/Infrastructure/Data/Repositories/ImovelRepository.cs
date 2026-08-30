@@ -22,6 +22,9 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
         var imovel = await context.Imoveis
             .Include(i => i.Endereco)
             .Include(i => i.Contratos)
+            .Include(i => i.Usuario)
+                .ThenInclude(uf => uf.UsuarioFuncao)
+                    .ThenInclude(f => f.Funcao)
             .FirstOrDefaultAsync(i => i.Imovel_ID == id, cancellationToken);
         return imovel;
     }

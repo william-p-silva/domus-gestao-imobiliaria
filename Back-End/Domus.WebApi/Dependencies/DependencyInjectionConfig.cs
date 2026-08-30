@@ -2,6 +2,7 @@
 using Domus.Application.Interfaces.Repositories;
 using Domus.Application.Interfaces.Security;
 using Domus.Application.UseCases.AvaliacaoUseCases;
+using Domus.Application.UseCases.ChatUseCase;
 using Domus.Application.UseCases.ContratoUseCase;
 using Domus.Application.UseCases.ContratoUseCase.CicloDeVida;
 using Domus.Application.UseCases.ContratoUseCase.Listar;
@@ -35,6 +36,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IImovelRepository, ImovelRepository>();
         services.AddScoped<IEnderecoRepository, EnderecoRepository>();
         services.AddScoped<IContratoRepository, ContratoRepository>();
+        services.AddScoped<IChatRepository, ChatRepository>();
 
 
         //Segurança
@@ -86,6 +88,9 @@ public static class DependencyInjectionConfig
         services.AddScoped<AssinarContratoUseCase>();
         services.AddScoped<DisponibilizarParaAssinaturaUseCase>();
         services.AddScoped<BuscarContratoUseCase>();
+
+        //Chat
+        services.AddScoped<CadastrarChatImovel>();
 
         //Auth
         services.AddScoped<LoginUseCase>();

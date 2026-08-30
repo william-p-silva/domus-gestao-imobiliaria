@@ -1,5 +1,6 @@
 ﻿
 
+using Domus.Domain.Enums;
 using Domus.Domain.Enums.Chat;
 using Domus.Domain.Exceptions.Domain;
 
@@ -30,10 +31,31 @@ public class Chat
     {
         if (imovel is null)
             throw new NotFoundException("Imóvel não encontrado.");
+        if (imovel.Imovel_ID == Guid.Empty)
+            throw new NotFoundException("Erro ao carregar informações do imóvel.");
 
         Chat_ID = Guid.NewGuid();
         Imovel_ID = imovel.Imovel_ID;
         Nome = imovel.Titulo;
         Estado = EstadoChat.Ativo;
+        Imovel = imovel;
+    }
+
+    public void AdicionarUsuarios(Usuario locador, Usuario locatario, string nome)
+    {
+        if (locador is null)
+            throw new NotFoundException("Locador não encontrado.");
+        if (locatario is null)
+            throw new NotFoundException("Locatário não encontrado");
+        if (locador.Usuario_ID == locatario.Usuario_ID)
+            throw new BusinessRuleException("Locador e locatário não podem ser o mesmo usuário.");
+
+        UsuarioChat usuarioLocador = new UsuarioChat(
+            usuario: locador, funcao: FuncaoUser.Locador, chat: this, nome: nome);
+        UsuarioChats.Add(usuarioLocador);
+
+        UsuarioChat usuarioLocatario = new UsuarioChat(
+            usuario: locatario, funcao: FuncaoUser.Locatario, chat: this, nome: nome);
+        UsuarioChats.Add(usuarioLocatario);
     }
 }

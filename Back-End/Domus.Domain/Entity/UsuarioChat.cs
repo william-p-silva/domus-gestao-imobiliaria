@@ -48,7 +48,7 @@ public class UsuarioChat
         Usuario_ID = usuario.Usuario_ID;
         Chat_ID = chat.Chat_ID;
         Estado = EstadoUsuarioChat.Ativo;
-        CriadoEm = DateTime.Now;
+        CriadoEm = DateTime.UtcNow;
         Funcao = funcao;
         ChatNome = NomeChat.Create(nome);
     }
