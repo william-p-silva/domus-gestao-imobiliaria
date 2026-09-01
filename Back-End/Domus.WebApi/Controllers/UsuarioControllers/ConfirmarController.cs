@@ -11,13 +11,14 @@ namespace Domus.WebApi.Controllers.UsuarioControllers;
 public class ConfirmarController(ConfirmarEmailUseCase confirmarEmailUseCase) : ControllerBase
 {
     [HttpGet("{token:guid}")]
+    [ProducesResponseType<SuccessApiResponse<string>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> ConfirmarEmailUser(
-    [FromRoute] string token, CancellationToken cancellationToken)
+        [FromRoute] string token, CancellationToken cancellationToken)
     {
-        var usuario = await confirmarEmailUseCase.Execute(token, cancellationToken);
+        var result = await confirmarEmailUseCase.Execute(token, cancellationToken);
         return Ok(new SuccessApiResponse<string>()
         {
-            Data = usuario,
+            Data = result,
             Success = true
         });
     }

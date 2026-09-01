@@ -22,22 +22,24 @@ public class ImovelPutController(
 {
     [HttpPut("infos")]
     [Authorize(Roles = "Locador")]
+    [ProducesResponseType<SuccessApiResponse<string>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> AlterarInfos(
         RequestAlterarInfosImovel request, CancellationToken cancellationToken)
     {
         var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-        var imovel = await alterarInfosImovelUseCase.Execute(request, userId, cancellationToken);
+        var result = await alterarInfosImovelUseCase.Execute(request, userId, cancellationToken);
 
         return Ok(new SuccessApiResponse<string>
         {
             Success = true,
-            Data = imovel
+            Data = result
         });
     }
 
 
     [Authorize(Roles = "Administrador")]
     [HttpPut("avaliar")]
+    [ProducesResponseType<SuccessApiResponse<ImovelResponse>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> AdmAvaliarImovel(
         [FromBody] RequestAprovarImovel request,
         CancellationToken cancellationToken

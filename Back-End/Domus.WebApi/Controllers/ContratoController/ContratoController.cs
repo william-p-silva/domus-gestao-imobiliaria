@@ -21,6 +21,7 @@ public class ContratoController(
 {
     [Authorize(Roles = "Locador")]
     [HttpPost("post/contrato")]
+    [ProducesResponseType<SuccessApiResponse<ContratoResponse>>(StatusCodes.Status201Created)]
     public async Task<IActionResult> CadastrarContrato([FromBody] ContratoRequest request, CancellationToken cancellationToken)
     {
         var userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -34,6 +35,7 @@ public class ContratoController(
 
     [Authorize(Roles = "Locador")]
     [HttpPut("put/assinatura/locador")]
+    [ProducesResponseType<SuccessApiResponse<ResponseMinutaContrato>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> DisponibilizarParaAssinaturaDoLocatario(
         [FromBody] RequestDisponibilizarAssinatura request,
         CancellationToken cancellationToken)
@@ -50,6 +52,7 @@ public class ContratoController(
 
     [Authorize(Roles = "Locatario")]
     [HttpPut("put/assinatura/locatario")]
+    [ProducesResponseType<SuccessApiResponse<ResponseMinutaContrato>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> LocatarioAssinaContrato(
         [FromBody] RequestAssinarContrato request,
         CancellationToken cancellationToken
@@ -68,6 +71,7 @@ public class ContratoController(
 
     [Authorize(Roles = "Locador,Locatario")]
     [HttpPut("put/cancelar-minuta")]
+    [ProducesResponseType<SuccessApiResponse<ContratoResponse>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> CancelarMinutaContrato(
         [FromBody] Guid contrato_id,
         CancellationToken cancellationToken

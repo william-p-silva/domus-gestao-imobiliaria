@@ -3,6 +3,7 @@ import { useRoute } from 'vue-router';
 import NavLinkImovel from '../components/navLinkImovel.vue';
 import { usePageImovel } from '../hooks/usePageImovel.ts';
 import { onMounted } from 'vue';
+import MainImovel from '../components/mainImovel.vue';
 
 
 const pageImovel = usePageImovel();
@@ -17,5 +18,8 @@ onMounted(async () => {
 
 <template>
     <NavLinkImovel  />
+    <main class="px-4">
+        <MainImovel /> 
+    </main>
     oi imovel {{ id }}
 </template>

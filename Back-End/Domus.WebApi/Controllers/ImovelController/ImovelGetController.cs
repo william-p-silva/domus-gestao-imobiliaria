@@ -25,6 +25,7 @@ public class ImovelGetController(
 
 
     [HttpGet("listar/todos")]
+    [ProducesResponseType<SuccessApiResponse<List<ImovelResponse>>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> ListarTodosImoveis(CancellationToken cancellationToken)
     {
         var imoveis = await listarTodosImoveisUseCase.Execute(cancellationToken);
@@ -38,6 +39,7 @@ public class ImovelGetController(
 
     [HttpGet("listar/locador")]
     [Authorize(Roles = "Locador")]
+    [ProducesResponseType<SuccessApiResponse<List<ImovelResponse>>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> ListarImoveisLocador(
         CancellationToken cancellationToken)
     {
@@ -53,6 +55,7 @@ public class ImovelGetController(
 
 
     [HttpGet("listar/aprovados")]
+    [ProducesResponseType<SuccessApiResponse<List<ImovelResponse>>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> ListarimoveisAprovados(
     CancellationToken cancellationToken)
     {
@@ -66,6 +69,7 @@ public class ImovelGetController(
 
 
     [HttpGet("buscar/{imovelId:guid}")]
+    [ProducesResponseType<SuccessApiResponse<ImovelResponse>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> BuscarPorId(
         [FromRoute] Guid imovelId,
         CancellationToken cancellationToken
@@ -81,6 +85,7 @@ public class ImovelGetController(
 
 
     [HttpGet("listar/pesquisa")]
+    [ProducesResponseType<SuccessApiResponse<List<ImovelResponse>>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> ListarComFiltro(
         [FromQuery] FiltroImovel filtro,
         CancellationToken cancellationToken)
@@ -96,6 +101,7 @@ public class ImovelGetController(
 
 
     [HttpGet("listar/sem-avaliacao")]
+    [ProducesResponseType<SuccessApiResponse<List<ImovelResponse>>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> ListarNaoAvaliados(CancellationToken cancellationToken)
     {
         var imoveis = await listarImoveisNaoAvaliados.Execute(cancellationToken);
@@ -108,6 +114,7 @@ public class ImovelGetController(
     }
 
     [HttpGet("listar/nao-aprovados")]
+    [ProducesResponseType<SuccessApiResponse<List<ImovelResponse>>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> ListarNaoAprovados(CancellationToken cancellationToken)
     {
         var imoveis = await listarImoveisNaoAprovadosUseCase.Execute(cancellationToken);

@@ -12,6 +12,7 @@ namespace Domus.WebApi.Controllers.UsuarioControllers;
 public class AuthController(LoginUseCase loginUseCase) : ControllerBase
 {
     [HttpPost("login")]
+    [ProducesResponseType<SuccessApiResponse<PerfilLoginResponse>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
         var usuario = await loginUseCase.Execute(request, cancellationToken);
@@ -24,10 +25,10 @@ public class AuthController(LoginUseCase loginUseCase) : ControllerBase
             Expires = DateTimeOffset.UtcNow.AddHours(3)
         });
 
-        return Ok(new SuccessApiResponse<Object>
+        return Ok(new SuccessApiResponse<PerfilLoginResponse>
         {
             Success = true,
-            Data = new
+            Data = new PerfilLoginResponse
             {
                 Nome = usuario.Nome,
                 Email = usuario.Email,
@@ -39,6 +40,7 @@ public class AuthController(LoginUseCase loginUseCase) : ControllerBase
 
     [HttpPost("logout")]
     [Authorize]
+    [ProducesResponseType<SuccessApiResponse<string>>(StatusCodes.Status200OK)]
     public IActionResult Logout()
     {
         Response.Cookies.Delete("token");
@@ -52,6 +54,7 @@ public class AuthController(LoginUseCase loginUseCase) : ControllerBase
 
     [HttpPost("me")]
     [Authorize]
+    [ProducesResponseType<SuccessApiResponse<AuthResponse>>(StatusCodes.Status200OK)]
     public IActionResult Me()
     {
         var email = User.FindFirst(ClaimTypes.Email)?.Value;

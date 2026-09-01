@@ -18,6 +18,7 @@ public class ImovelDeleteController(
 {
     [HttpDelete]
     [Authorize(Roles = "Locador")]
+    [ProducesResponseType<SuccessApiResponse<string>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> DeletarImovel(
        [FromBody] RequestExcluirImovel request,
        CancellationToken cancellationToken

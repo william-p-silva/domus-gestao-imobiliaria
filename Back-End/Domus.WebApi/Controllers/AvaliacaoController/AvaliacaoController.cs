@@ -10,6 +10,7 @@ namespace Domus.WebApi.Controllers.AvaliacaoController;
 public class AvaliacaoController(CriarAvaliacaoUseCase criarAvaliacaoUseCase) : ControllerBase
 {
     [HttpPost("post/avaliacao")]
+    [ProducesResponseType<SuccessApiResponse<AvaliacaoResponse>>(StatusCodes.Status201Created)]
     public async Task<IActionResult> CadastrarAvaliacao(AvaliacaoRequest request, CancellationToken cancellationToken)
     {
         var avaliacao = await criarAvaliacaoUseCase.Execute(request, cancellationToken);

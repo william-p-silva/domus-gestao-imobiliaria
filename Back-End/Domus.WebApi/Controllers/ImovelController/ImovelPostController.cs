@@ -16,6 +16,7 @@ public class ImovelPostController(
 {
     [HttpPost("imovel")]
     [Authorize(Roles = "Locador")]
+    [ProducesResponseType<SuccessApiResponse<ImovelResponse>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> PostImovel([FromBody] ImovelRequest request, CancellationToken cancellationToken)
     {
         var imovel = await cadastrarImovelUseCase.Execute(request, cancellationToken);

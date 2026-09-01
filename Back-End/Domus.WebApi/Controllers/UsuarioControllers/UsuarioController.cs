@@ -24,6 +24,7 @@ public class UsuarioController(
 
     [HttpPut("put/adicionar/infos-extras")]
     [Authorize]
+    [ProducesResponseType<SuccessApiResponse<string>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> AdicionarInfosExtra(
         [FromBody] RequestInfosExtras request,
         CancellationToken cancellationToken
@@ -42,6 +43,7 @@ public class UsuarioController(
 
     [HttpPut("put/alterar/infos")]
     [Authorize]
+    [ProducesResponseType<SuccessApiResponse<string>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> AlterarInfos(
         [FromBody] RequestAtualizarDTO request,
         CancellationToken cancellationToken
@@ -59,6 +61,7 @@ public class UsuarioController(
 
     [HttpGet("get/perfil")]
     [Authorize]
+    [ProducesResponseType<SuccessApiResponse<PerfilUsuarioResponse>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> BuscarPerfilUsuario(
         CancellationToken cancellationToken
         )
@@ -75,6 +78,7 @@ public class UsuarioController(
 
     [HttpDelete("delete/usuario")]
     [Authorize]
+    [ProducesResponseType<SuccessApiResponse<bool>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> ExcluirConta(
         string confirmarSenha,
         CancellationToken cancellationToken

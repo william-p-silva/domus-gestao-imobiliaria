@@ -10,6 +10,7 @@ namespace Domus.WebApi.Controllers.UsuarioControllers;
 public class AdminController(CadastrarAdminUseCase cadastrarAdminUseCase) : ControllerBase
 {
     [HttpPost("post/admin")]
+    [ProducesResponseType<SuccessApiResponse<string>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> PostAdmin([FromBody] UsuarioRequest request, CancellationToken cancellationToken)
     {
         var usuario = await cadastrarAdminUseCase.Execute(request, cancellationToken);

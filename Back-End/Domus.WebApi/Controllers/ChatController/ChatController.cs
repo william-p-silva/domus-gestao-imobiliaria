@@ -16,6 +16,7 @@ public class ChatController(
     ) : ControllerBase
 {
     [HttpPost("post")]
+    [ProducesResponseType<SuccessApiResponse<Guid>>(StatusCodes.Status201Created)]
     public async Task<IActionResult> CadastrarChatDoImovel(
         [FromBody] RequestNewChat request, CancellationToken cancellationToken)
     {
