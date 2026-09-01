@@ -22,7 +22,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // ============================================================================
 builder.Services.AddProjectDependencies(builder.Configuration); // Método de extensão para organizar a DI em um único local (DependencyInjectionConfig.cs)
 
-
 // ============================================================================
 // 3. TokenService - Implementação de geração de tokens JWT para autenticação e autorização
 // ============================================================================
@@ -120,14 +119,18 @@ builder.Services.AddOpenApi(options =>
     });
 });
 
-var app = builder.Build();
 
-app.UseHttpsRedirection();
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<DomusExceptionHandler>();
+
+var app = builder.Build();
 
 // ============================================================================
 // 5. Middleware global para tratamento de exceções personalizadas (ExceptionMiddleware.cs)
 // ============================================================================
-app.UseMiddleware<ExceptionMiddleware>();
+app.UseExceptionHandler();
+
+app.UseHttpsRedirection();
 
 // ============================================================================
 // 6. PIPELINE DE REQUISIÇÕES HTTP (MIDDLEWARES)
