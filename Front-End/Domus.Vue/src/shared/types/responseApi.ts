@@ -6,6 +6,8 @@ export type ResponseSuccess<T> = {
 }
 
 export type ResponseError = {
-    success: boolean,
-    message: string
+    status: number,
+    title: string,
+    detail: string,
+    instance: string,
 }

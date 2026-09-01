@@ -7,7 +7,13 @@ export class HttpService{
     private async HandleResponse<TResponse>(response: Response): Promise<TResponse> {
         if(!response.ok){
             const errorResponse = await response.json() as ResponseError;
-            const errorMessage: string = `HTTP Error! Status: ${response.status} (${response.statusText}). \n${errorResponse.message}`;
+            const errorMessage: string = 
+                `HTTP Error! Status: ${response.status} (${response.statusText}).
+                \nStatus: { ${errorResponse.status} }
+                \nTitle: { ${errorResponse.title} }
+                \nMessage: { ${errorResponse.detail} }
+                \nInstance: { ${errorResponse.instance} }`;
+            
             throw new Error(errorMessage);
         }
 
