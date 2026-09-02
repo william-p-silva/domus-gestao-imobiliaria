@@ -3,6 +3,7 @@
 
 using Domus.Application.DTOs.ApiResponse;
 using Domus.Application.DTOs.Chat.Request;
+using Domus.Application.DTOs.Chat.Response;
 using Domus.Application.UseCases.ChatUseCase;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -12,7 +13,8 @@ namespace Domus.WebApi.Controllers.ChatController;
 [ApiController]
 [Route("domus/[controller]")]
 public class ChatController(
-    CadastrarChatImovel cadastrarChatImovel
+    CadastrarChatImovel cadastrarChatImovel, 
+    EnviarMensagemUseCase enviarMensagem
     ) : ControllerBase
 {
     [HttpPost("post")]
@@ -28,6 +30,22 @@ public class ChatController(
         {
             Success = true,
             Data = resposne
+        });
+    }
+
+    [HttpPost("post/send-message")]
+    [ProducesResponseType<SuccessApiResponse<EnviarMensagemResponse>>(StatusCodes.Status201Created)]
+    public async Task<IActionResult> EnviarMensagem(
+        [FromBody] EnviarMensagemRequest request, CancellationToken cancellationToken)
+    {
+        var usuario_id = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+        var response = await enviarMensagem.ExecuteAsync(usuario_id, request, cancellationToken);
+
+        return Ok(new SuccessApiResponse<EnviarMensagemResponse>
+        {
+            Success = true,
+            Data = response
         });
     }
 }

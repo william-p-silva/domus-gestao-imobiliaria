@@ -1,4 +1,5 @@
 ﻿using Domus.Domain.Enums.Mensagem;
+using Domus.Domain.Exceptions.Domain;
 
 namespace Domus.Domain.Entity;
 
@@ -23,18 +24,27 @@ public class MensagemChat
     /// </summary>
     protected MensagemChat() { }
 
-    public MensagemChat(Guid usuario_id, Guid chat_id, string texto)
+    public MensagemChat(UsuarioChat usuarioChat, Chat chat, string texto)
     {
-        if (usuario_id == Guid.Empty)
-            throw new ArgumentException("O ID do usuário é obrigatório.", nameof(usuario_id));
-        if (chat_id == Guid.Empty)
-            throw new ArgumentException("O ID do chat é obrigatório.", nameof(chat_id));
+        if (usuarioChat is null)
+            throw new ValidationException("O usuário é obrigatório.");
+        if (chat is null)
+            throw new ValidationException("O chat é obrigatório.");
         if (string.IsNullOrWhiteSpace(texto))
-            throw new ArgumentException("O texto da mensagem é obrigatório.", nameof(texto));
+            throw new BusinessRuleException("O texto da mensagem é obrigatório.");
+        if(texto.Length > 4000)
+            throw new BusinessRuleException("O texto da mensagem não pode exceder 4000 caracteres.");
+
+        if(usuarioChat.Chat_ID != chat.Chat_ID)
+            throw new ValidationException("O usuário não pertence a este chat.");
 
         MensagemChat_ID = Guid.NewGuid();
-        UsuarioChat_ID = usuario_id;
-        Chat_ID = chat_id;
+        UsuarioChat_ID = usuarioChat.UsuarioChat_ID;
+        Chat_ID = chat.Chat_ID;
         Texto = texto;
+        Estado = EstadoMensagem.Enviada;
+
+        Chat = chat;
+        UsuarioChat = usuarioChat;
     }
 }

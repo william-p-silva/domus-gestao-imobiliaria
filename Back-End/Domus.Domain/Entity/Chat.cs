@@ -58,4 +58,22 @@ public class Chat
             usuario: locatario, funcao: FuncaoUser.Locatario, chat: this, nome: nome);
         UsuarioChats.Add(usuarioLocatario);
     }
+
+    public void AdicionarMensagem(MensagemChat mensagem)
+    {
+        if (mensagem is null)
+            throw new BusinessRuleException("Mensagem inválida.");
+
+        if (mensagem.Chat_ID != Chat_ID)
+            throw new BusinessRuleException("Mensagem não pertence a este chat.");
+
+        if(mensagem.UsuarioChat_ID != UsuarioChats
+            .FirstOrDefault(u => u.Usuario_ID == mensagem.UsuarioChat.Usuario_ID)?.UsuarioChat_ID)
+            throw new BusinessRuleException("Mensagem não pertence a este chat.");
+
+        if (mensagem.DeletadaEm != null)
+            throw new BusinessRuleException("Mensagem não pode ser adicionada, pois está deletada.");
+
+        MensagensChat.Add(mensagem);
+    }
 }

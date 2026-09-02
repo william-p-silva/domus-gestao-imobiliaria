@@ -1,71 +1,70 @@
 ﻿using Domus.Application.DTOs.ApiResponse;
 
-namespace Domus.WebApi.Middlewares
+namespace Domus.WebApi.Middlewares;
+
+public class ExceptionMiddleware(RequestDelegate next)
 {
-    public class ExceptionMiddleware(RequestDelegate next)
+    public async Task InvokeAsync(HttpContext httpContext)
     {
-        public async Task InvokeAsync(HttpContext httpContext)
+        try
         {
-            try
+            await next(httpContext);
+        }
+        catch (ArgumentException ex)
+        {
+            httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+            httpContext.Response.ContentType = "application/json";
+
+            var errorResponse = new ErroApiResponseDTO
             {
-                await next(httpContext);
-            }
-            catch (ArgumentException ex)
+                StatusCode = httpContext.Response.StatusCode,
+                Success = false,
+                Message = ex.Message
+            };
+            
+            await httpContext.Response.WriteAsJsonAsync(errorResponse);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            httpContext.Response.ContentType = "application/json";
+
+            var errorResponse = new ErroApiResponseDTO
             {
-                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                httpContext.Response.ContentType = "application/json";
+                StatusCode = httpContext.Response.StatusCode,
+                Success = false,
+                Message = ex.Message
+            };
 
-                var errorResponse = new ErroApiResponseDTO
-                {
-                    StatusCode = httpContext.Response.StatusCode,
-                    Success = false,
-                    Message = ex.Message
-                };
-                
-                await httpContext.Response.WriteAsJsonAsync(errorResponse);
-            }
-            catch (UnauthorizedAccessException ex)
+            await httpContext.Response.WriteAsJsonAsync(errorResponse);
+        }
+        catch (InvalidOperationException ex)
+        {
+            httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+            httpContext.Response.ContentType = "application/json";
+
+            var errorResponse = new ErroApiResponseDTO
             {
-                httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                httpContext.Response.ContentType = "application/json";
+                StatusCode = httpContext.Response.StatusCode,
+                Success = false,
+                Message = ex.Message
+            };
 
-                var errorResponse = new ErroApiResponseDTO
-                {
-                    StatusCode = httpContext.Response.StatusCode,
-                    Success = false,
-                    Message = ex.Message
-                };
+            await httpContext.Response.WriteAsJsonAsync(errorResponse);
+        }
+        catch (Exception ex)
+        {
+            httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            httpContext.Response.ContentType = "application/json";
 
-                await httpContext.Response.WriteAsJsonAsync(errorResponse);
-            }
-            catch (InvalidOperationException ex)
+            var errorResponse = new ErroApiResponseDTO
             {
-                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-                httpContext.Response.ContentType = "application/json";
+                StatusCode = httpContext.Response.StatusCode,
+                Success = false,
+                Message = "Ocorreu um erro inesperado. Por favor, tente novamente mais tarde." + ex.Message
+            };
 
-                var errorResponse = new ErroApiResponseDTO
-                {
-                    StatusCode = httpContext.Response.StatusCode,
-                    Success = false,
-                    Message = ex.Message
-                };
-
-                await httpContext.Response.WriteAsJsonAsync(errorResponse);
-            }
-            catch (Exception ex)
-            {
-                httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                httpContext.Response.ContentType = "application/json";
-
-                var errorResponse = new ErroApiResponseDTO
-                {
-                    StatusCode = httpContext.Response.StatusCode,
-                    Success = false,
-                    Message = "Ocorreu um erro inesperado. Por favor, tente novamente mais tarde." + ex.Message
-                };
-
-                await httpContext.Response.WriteAsJsonAsync(errorResponse);
-            }
+            await httpContext.Response.WriteAsJsonAsync(errorResponse);
         }
     }
 }

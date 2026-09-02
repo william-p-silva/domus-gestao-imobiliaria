@@ -18,4 +18,18 @@ public class ChatRepository(AppDbContext context) : IChatRepository
         return await context.Chats.FirstOrDefaultAsync(
             c => c.Imovel_ID == imovel_id && c.UsuarioChats.Any(x => x.Usuario_ID == locatario_id));
     }
+
+    public async Task<Chat?> BuscarPorIdAsync(Guid chatId, CancellationToken cancellationToken = default)
+    {
+        return await context.Chats
+            .Include(c => c.UsuarioChats)
+                .ThenInclude(uc => uc.Usuario)
+            .Include(c => c.MensagensChat)
+            .FirstOrDefaultAsync(c => c.Chat_ID == chatId, cancellationToken);
+    }
+
+    public async Task AddMensagemAsync(MensagemChat mensagem, CancellationToken cancellationToken = default)
+    {
+        await context.MensagensChat.AddAsync(mensagem, cancellationToken);
+    }
 }

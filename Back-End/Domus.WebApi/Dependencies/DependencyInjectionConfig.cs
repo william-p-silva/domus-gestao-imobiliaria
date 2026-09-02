@@ -1,4 +1,5 @@
 ﻿using Domus.Application.Interfaces.Email;
+using Domus.Application.Interfaces.Notifications;
 using Domus.Application.Interfaces.Repositories;
 using Domus.Application.Interfaces.Security;
 using Domus.Application.UseCases.AvaliacaoUseCases;
@@ -20,7 +21,7 @@ using Domus.Application.UseCases.UsuarioUseCase.LocatarioUseCase;
 using Domus.Infrastructure.Data.Email;
 using Domus.Infrastructure.Data.Repositories;
 using Domus.Infrastructure.Data.Security;
-using Microsoft.Extensions.DependencyInjection;
+using Domus.WebApi.Services.Chat;
 
 namespace Domus.WebApi.Dependencies;
 
@@ -91,9 +92,14 @@ public static class DependencyInjectionConfig
 
         //Chat
         services.AddScoped<CadastrarChatImovel>();
+        services.AddScoped<EnviarMensagemUseCase>();
 
         //Auth
         services.AddScoped<LoginUseCase>();
+
+        //Services
+        services.AddScoped<IChatHubNotifier, ChatHubNotifier>();
+
 
         return services;
     }
