@@ -9,7 +9,7 @@ const pageImovel = usePageImovel();
 
 
 <template>
-    <nav class="w-full p-4 flex justify-between items-center">
+    <nav class="w-full py-4 flex justify-between items-center">
         <div class="flex gap-4 sm:gap-8 justify-start w-full ">
             <RouterLink to="/imoveis" class="flex gap-2 text-primary justify-center items-center">
                 <ArrowLeft class="" />

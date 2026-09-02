@@ -4,6 +4,7 @@ import NavLinkImovel from '../components/navLinkImovel.vue';
 import { usePageImovel } from '../hooks/usePageImovel.ts';
 import { onMounted } from 'vue';
 import MainImovel from '../components/mainImovel.vue';
+import ImovelNaoEncontrado from '../components/ImovelNaoEncontrado.vue';
 
 
 const pageImovel = usePageImovel();
@@ -17,9 +18,12 @@ onMounted(async () => {
 </script>
 
 <template>
-    <NavLinkImovel  />
-    <main class="px-4">
-        <MainImovel /> 
+    <main v-if="pageImovel.imovel.value" class="px-4">
+        <NavLinkImovel />
+        <MainImovel />
+        oi imovel {{ id }}
     </main>
-    oi imovel {{ id }}
+    <main v-else >
+        <ImovelNaoEncontrado />
+    </main>
 </template>
