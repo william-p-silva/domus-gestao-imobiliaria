@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domus.Infrastructure\Domus.Infrastructure.csproj" />
-    <ProjectReference Include="..\Infrastructure\Domus.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

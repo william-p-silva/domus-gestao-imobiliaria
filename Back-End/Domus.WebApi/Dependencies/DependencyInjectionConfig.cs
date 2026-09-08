@@ -21,6 +21,7 @@ using Domus.Application.UseCases.UsuarioUseCase.LocatarioUseCase;
 using Domus.Infrastructure.Data.Email;
 using Domus.Infrastructure.Data.Repositories;
 using Domus.Infrastructure.Data.Security;
+using Domus.WebApi.Hubs;
 using Domus.WebApi.Services.Chat;
 
 namespace Domus.WebApi.Dependencies;
@@ -30,7 +31,7 @@ public static class DependencyInjectionConfig
     public static IServiceCollection AddProjectDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         //Interfaces & Repositories
-        services.AddScoped<IUnitOfWork, IUnitOfWork>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<IFuncaoRepository, FuncaoRepository>();
         services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
@@ -90,6 +91,8 @@ public static class DependencyInjectionConfig
         services.AddScoped<DisponibilizarParaAssinaturaUseCase>();
         services.AddScoped<BuscarContratoUseCase>();
 
+        //SignalR
+        services.AddSignalR();
         //Chat
         services.AddScoped<CadastrarChatImovel>();
         services.AddScoped<EnviarMensagemUseCase>();

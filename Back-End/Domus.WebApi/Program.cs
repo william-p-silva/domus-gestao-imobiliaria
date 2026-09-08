@@ -1,5 +1,6 @@
 using Domus.Infrastructure.Data.Context;
 using Domus.WebApi.Dependencies;
+using Domus.WebApi.Hubs;
 using Domus.WebApi.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -119,7 +120,6 @@ builder.Services.AddOpenApi(options =>
     });
 });
 
-
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<DomusExceptionHandler>();
 
@@ -162,6 +162,8 @@ app.UseAuthorization();
 
 
 app.MapControllers();
+
+app.MapHub<ChatImovelHub>("/hubs/chat-imovel");
 
 // ============================================================================
 // 7. INICIALIZAÇÃO E AUTO-MIGRATION (Executado de forma isolada e segura)
