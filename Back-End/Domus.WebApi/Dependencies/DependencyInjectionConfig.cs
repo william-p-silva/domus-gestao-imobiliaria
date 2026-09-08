@@ -30,7 +30,7 @@ public static class DependencyInjectionConfig
     public static IServiceCollection AddProjectDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         //Interfaces & Repositories
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUnitOfWork, IUnitOfWork>();
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<IFuncaoRepository, FuncaoRepository>();
         services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
