@@ -13,6 +13,8 @@ export class HttpService{
                 \nTitle: { ${errorResponse.title} }
                 \nMessage: { ${errorResponse.detail} }
                 \nInstance: { ${errorResponse.instance} }`;
+
+            const message = errorResponse.detail;
             
             throw new Error(errorMessage);
         }

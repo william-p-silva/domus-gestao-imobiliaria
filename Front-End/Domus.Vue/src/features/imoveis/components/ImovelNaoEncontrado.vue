@@ -5,8 +5,18 @@ import VoltarBuscaButton from '@/shared/components/buttons/voltarButton.vue';
 
 const router = useRouter();
 
+const props = withDefaults(defineProps<{
+    title?: string,
+    text?: string,
+    route?: string
+}>(), {
+    title: "Imóvel não encontrado",
+    text: 'Esse imóvel pode ter sido removido ou o link que você acessou está incorreto.',
+    route: '/imoveis'
+});
+
 function voltarParaBusca() {
-    router.push({ path: '/imoveis' });
+    router.push({ path: props.route });
 }
 </script>
 
@@ -18,10 +28,10 @@ function voltarParaBusca() {
 
         <div class="flex flex-col gap-1">
             <h2 class="text-primary-dark text-xl sm:text-2xl font-bold">
-                Imóvel não encontrado
+                {{ title }}
             </h2>
             <p class="text-sm sm:text-base text-text-muted max-w-sm">
-                Esse imóvel pode ter sido removido ou o link que você acessou está incorreto.
+                {{ text }}
             </p>
         </div>
 

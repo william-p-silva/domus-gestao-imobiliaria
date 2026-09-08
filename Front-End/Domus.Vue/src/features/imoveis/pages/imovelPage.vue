@@ -3,22 +3,30 @@ import { useRoute } from 'vue-router';
 import NavLinkImovel from '../components/navLinkImovel.vue';
 import { usePageImovel } from '../hooks/usePageImovel.ts';
 import { onMounted } from 'vue';
-import MainImovel from '../components/mainImovel.vue';
 import ImovelNaoEncontrado from '../components/ImovelNaoEncontrado.vue';
+import PageLoading from '@/shared/components/loading/pageLoading.vue';
+import MainImovel from '../components/imovel/mainImovel.vue';
 
 
-const pageImovel = usePageImovel();
+const {
+        isLoading,
+        erro,
+        imovel,
+        route,
+        getImovelId
+    } = usePageImovel();
 
-const id = pageImovel.route.query.imovel_id
+const id = route.query.imovel_id
 
 
 onMounted(async () => {
-    pageImovel.getImovelId();
+    await getImovelId();
 })
 </script>
 
 <template>
-    <main v-if="pageImovel.imovel.value" class="px-4">
+    <PageLoading :visible="isLoading" />
+    <main v-if="imovel" class="px-4">
         <NavLinkImovel />
         <MainImovel />
         oi imovel {{ id }}

@@ -6,11 +6,10 @@ import { useRoute, useRouter } from "vue-router";
 import type { FiltroImovelType } from "../schemas/filtro/filtroImovelSchema";
 
 
-const imoveis = mockListaImoveis
-
 const service = new imovelService();
 
 export const useImovel = () => {
+  const isLoading = ref(true);
   const router = useRouter();
   const imoveis = ref<ImovelResponse[]>();
 
@@ -43,6 +42,7 @@ export const useImovel = () => {
   async function setImoveisNotFiltro() {
     const imoveisResponse = await service.getImoveis(`imovel/get/listar/aprovados`);
     imoveis.value = imoveisResponse;
+    isLoading.value = false;
   }
 
   function getFiltroUrl(): FiltroImovelType {
@@ -61,6 +61,7 @@ export const useImovel = () => {
   }
 
   return {
+    isLoading,
     route,
     imoveis,
     temFiltroAtivo,

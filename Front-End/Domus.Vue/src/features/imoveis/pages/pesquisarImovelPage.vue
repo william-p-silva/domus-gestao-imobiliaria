@@ -5,6 +5,7 @@ import { useImovel } from '../hooks/useImovel.ts';
 import { onMounted, watch } from 'vue';
 import { useFiltro } from '../hooks/filtro/useFiltro.ts';
 import HeaderFiltro from '../components/filtro/headerFiltro.vue';
+import PageLoading from '@/shared/components/loading/pageLoading.vue';
 
 
 
@@ -38,16 +39,18 @@ watch(
 
 
 <template>
-    <section class="flex">
-        <FiltrosImoveis class="hidden lg:flex" />
-        <article class="flex flex-col  w-full border-l border-primary/20">
-          <HeaderFiltro />
-          <article class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 sm:gap-4 lg:gap-4 mx-auto py-4">
-            <ImovelCard :imovel="imovelUnit" v-for="imovelUnit in imovel.imoveis.value" />
+  <section class="flex">
+    <FiltrosImoveis class="hidden lg:flex" />
+    <article class="flex flex-col  w-full border-l border-primary/20">
+      <HeaderFiltro />
+      <article
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 sm:gap-4 lg:gap-4 mx-auto py-4">
+        <PageLoading :visible="imovel.isLoading.value" />
+        <ImovelCard v-if="imovel.imoveis.value" :imovel="imovelUnit" v-for="imovelUnit in imovel.imoveis.value" />
+        <div v-else>Sem imoveis no momento</div>
+      </article>
 
-          </article>
-            
 
-        </article>
-    </section>
+    </article>
+  </section>
 </template>
