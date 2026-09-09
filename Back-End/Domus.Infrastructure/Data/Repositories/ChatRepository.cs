@@ -15,7 +15,12 @@ public class ChatRepository(AppDbContext context) : IChatRepository
 
     public async Task<Chat?> BuscarPorImovelELocatarioAsync(Guid imovel_id, Guid locatario_id, CancellationToken cancellationToken = default)
     {
-        return await context.Chats.FirstOrDefaultAsync(
+        return await context.Chats
+            .AsSplitQuery()
+            .Include(c => c.MensagensChat)
+            .Include(c => c.UsuarioChats)
+                .ThenInclude(u => u.Usuario)
+            .FirstOrDefaultAsync(
             c => c.Imovel_ID == imovel_id && c.UsuarioChats.Any(x => x.Usuario_ID == locatario_id));
     }
 
