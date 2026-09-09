@@ -24,10 +24,10 @@ export class imovelService {
         return response;
     }
 
-    async postChatImovel(request: CreateImovelChat): Promise<{ response: string; success: boolean }> {
+    async getChatImovel(request: CreateImovelChat): Promise<{ response: string; success: boolean }> {
         try {
-            const response = await this.httpService.PostAsync<string, CreateImovelChat>(
-                "Chat/post", request)
+            const response = await this.httpService.GetAsync<string>(
+                `Chat/get/${request.imovel_ID}`)
 
             return { response, success: true };
         } catch (error: unknown) {

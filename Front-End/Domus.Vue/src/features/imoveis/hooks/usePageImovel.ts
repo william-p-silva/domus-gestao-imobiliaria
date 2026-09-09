@@ -28,22 +28,10 @@ export const usePageImovel = () => {
     }
 
     async function createChatImovel() {
-        isLoading.value = true;
-        if(imovel.value?.imovel_ID !== undefined){
-            const request: CreateImovelChat = {
-                imovel_ID: imovel.value?.imovel_ID
-            }
-            const { response, success } = await service.postChatImovel(request)
-
-            if(!success){
-                erro.value = response
-                isLoading.value = false;
-                return;
-            }
-
-            router.push({path: `/chat?${response}`})
-        }
-        isLoading.value = false;
+        router.push({
+            path: '/chat',
+            query: { imovel_ID: imovel.value?.imovel_ID }
+        })
     }
 
 

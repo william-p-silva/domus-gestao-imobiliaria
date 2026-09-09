@@ -64,6 +64,20 @@ const router = createRouter({
 
     },
     {
+      path: "/chat",
+      name: "ChatUsuario",
+      component: () => import("@/shared/layouts/masterLayout.vue"),
+      meta: {requiresAuth: true, roles: ["Locador", "Locatario", "Administrador"]},
+      children: [
+        {
+          path: "",
+          name: "ChatImovel",
+          component: () => import("@/app/view/chat/ChatView.vue"),
+          meta: {requiresAuth: true, roles: ["Locatario"]},
+        }
+      ]
+    },
+    {
       path: "/locador",
       name: "Locador",
       component: () => import("@/shared/layouts/appLayout.vue"),
