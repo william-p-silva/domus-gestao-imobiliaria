@@ -18,13 +18,20 @@ export const usePageImovel = () => {
     async function getImovelId() {
         const id = route.query.imovel_id;
 
-        if(id != null)
-        {
-            const result = await service.getImovel(id.toString());
-            imovel.value = result;
+        try{
+            if(id != null)
+            {
+                const result = await service.getImovel(id.toString());
+                imovel.value = result;
+            }
+        }catch(err){
+            if(err instanceof Error){
+                erro.value = err.message;
+            }
+        }finally{
+            isLoading.value = false;
         }
 
-        isLoading.value = false;
     }
 
     async function createChatImovel() {

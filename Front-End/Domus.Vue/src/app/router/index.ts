@@ -16,6 +16,7 @@ const router = createRouter({
         },
       ]
     },
+
     {
       path: "/auth",
       name: "Auth",
@@ -38,6 +39,7 @@ const router = createRouter({
         },
       ]
     },
+
     {
       path: "/imoveis",
       name: "Imoveis",
@@ -50,6 +52,7 @@ const router = createRouter({
         }
       ]
     },
+
     {
       path: "/imovel",
       name: "Imovel",
@@ -63,20 +66,20 @@ const router = createRouter({
       ]
 
     },
+
     {
       path: "/chat",
       name: "ChatUsuario",
       component: () => import("@/shared/layouts/masterLayout.vue"),
-      meta: {requiresAuth: true, roles: ["Locador", "Locatario", "Administrador"]},
       children: [
         {
           path: "",
           name: "ChatImovel",
           component: () => import("@/app/view/chat/ChatView.vue"),
-          meta: {requiresAuth: true, roles: ["Locatario"]},
         }
       ]
     },
+
     {
       path: "/locador",
       name: "Locador",
@@ -91,6 +94,7 @@ const router = createRouter({
         }
       ],
     },
+
     {
       path: "/locatario",
       name: "Locatario",
@@ -105,10 +109,11 @@ const router = createRouter({
         }
       ]
     },
+
     {
       // Rota coringa para capturar URLs inexistentes (404)
       path: "/:pathMatch(.*)*",
-      redirect: "/"
+      component: () => import("@/app/view/NotFoundView.vue")
     }
   ],
 })

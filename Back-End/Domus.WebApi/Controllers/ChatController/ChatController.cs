@@ -7,6 +7,7 @@ using Domus.Application.DTOs.Chat.Request;
 using Domus.Application.DTOs.Chat.Response;
 using Domus.Application.UseCases.ChatUseCase;
 using Domus.Application.UseCases.ChatUseCase.Listar;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -14,6 +15,7 @@ namespace Domus.WebApi.Controllers.ChatController;
 
 [ApiController]
 [Route("domus/[controller]")]
+[Authorize]
 public class ChatController(
     CadastrarChatImovel cadastrarChatImovel, 
     EnviarMensagemUseCase enviarMensagem,
@@ -31,6 +33,7 @@ public class ChatController(
 
 
     [HttpPost("post")]
+    [Authorize(Roles = "Locatario")]
     [ProducesResponseType<SuccessApiResponse<Guid>>(StatusCodes.Status201Created)]
     public async Task<IActionResult> CadastrarChatDoImovel(
         [FromBody] RequestNewChat request, CancellationToken cancellationToken)
@@ -55,6 +58,7 @@ public class ChatController(
     }
 
     [HttpGet("get/{imovel_id:guid}")]
+    [Authorize(Roles = "Locatario")]
     [EndpointSummary("Obter ou criar chat do imóvel")]
     [EndpointDescription("Busca a conversa ativa entre o locatário autenticado e o imóvel informado. Caso o chat ainda não exista, ele será criado automaticamente.")]
     [ProducesResponseType<SuccessApiResponse<ResponseChat>>(StatusCodes.Status200OK)]

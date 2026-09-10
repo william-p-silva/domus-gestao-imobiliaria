@@ -12,6 +12,7 @@ export const useImovel = () => {
   const isLoading = ref(true);
   const router = useRouter();
   const imoveis = ref<ImovelResponse[]>();
+  const error = ref<string>('');
 
   const route = useRoute();
 
@@ -21,6 +22,7 @@ export const useImovel = () => {
   }
 
   async function setImoveis(filtro: FiltroImovelType) {
+    isLoading.value = true;
     const queryParams = new URLSearchParams();
 
     if (filtro.tipoImovel) queryParams.append("tipoImovel", filtro.tipoImovel);
@@ -32,17 +34,37 @@ export const useImovel = () => {
     if (filtro.minArea !== undefined && filtro.minArea > 0) queryParams.append("minArea", filtro.minArea.toString());
     if (filtro.maxArea !== undefined && filtro.maxArea > 0) queryParams.append("maxArea", filtro.maxArea.toString());
 
-    const imoveisResponse = await service.getImoveis(
-      `imovel/get/listar/pesquisa?${queryParams.toString()}`
-    );
+    try{
+      const imoveisResponse = await service.getImoveis(
+        `imovel/get/listar/pesquisa?${queryParams.toString()}`
+      );
 
-    imoveis.value = imoveisResponse;
+      imoveis.value = imoveisResponse;
+
+    }catch(err){
+      if(err instanceof Error){
+        error.value = err.message
+      }
+    }finally{
+      isLoading.value = false;
+    }
+
   }
 
   async function setImoveisNotFiltro() {
-    const imoveisResponse = await service.getImoveis(`imovel/get/listar/aprovados`);
-    imoveis.value = imoveisResponse;
-    isLoading.value = false;
+    
+    try{
+      const imoveisResponse = await service.getImoveis(`imovel/get/listar/aprovados`);
+      imoveis.value = imoveisResponse;
+    }catch(err){
+      if(err instanceof Error){
+        error.value = err.message.toString()
+      }
+    }finally{
+
+      isLoading.value = false;
+    }
+
   }
 
   function getFiltroUrl(): FiltroImovelType {

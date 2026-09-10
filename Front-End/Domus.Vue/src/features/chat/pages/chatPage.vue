@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useChat } from '../hooks/useChat';
+import SemChat from '../components/semChat.vue';
 
 
 
@@ -21,7 +22,8 @@ onMounted(async () => {
 
 
 <template>
-    <p>{{ chat?.nome ?? "sem chat" }}</p>
+    <p v-if="chat">{{ chat.nome }}</p>
+    <SemChat v-else />
     <p>{{ error }}</p>
 
 </template>
