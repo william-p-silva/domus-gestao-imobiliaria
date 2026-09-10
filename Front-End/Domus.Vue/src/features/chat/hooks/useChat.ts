@@ -6,7 +6,7 @@ import { ChatService } from "../service/chatService";
 
 const isLoading = ref<boolean>(false)
 const error = ref<string>('');
-const chat = ref<ResponseChat>();
+const chatActive = ref<ResponseChat>();
 
 const service = new ChatService();
 
@@ -22,7 +22,7 @@ export const useChat = () => {
         try{
             const result = await service.getChatByImovelId(imovel_ID.toString());
 
-            chat.value = result;
+            chatActive.value = result;
         }catch(erro){
             if(erro instanceof Error){
                 error.value = erro.message;
@@ -36,7 +36,7 @@ export const useChat = () => {
     return {
         isLoading,
         error,
-        chat,
+        chatActive,
         setChatByImovelId,
     }
 }

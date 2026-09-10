@@ -5,6 +5,7 @@ using Azure;
 using Domus.Application.DTOs.ApiResponse;
 using Domus.Application.DTOs.Chat.Request;
 using Domus.Application.DTOs.Chat.Response;
+using Domus.Application.DTOs.UsuarioChat.Response;
 using Domus.Application.UseCases.ChatUseCase;
 using Domus.Application.UseCases.ChatUseCase.Listar;
 using Microsoft.AspNetCore.Authorization;
@@ -19,7 +20,8 @@ namespace Domus.WebApi.Controllers.ChatController;
 public class ChatController(
     CadastrarChatImovel cadastrarChatImovel, 
     EnviarMensagemUseCase enviarMensagem,
-    BuscarImovelChatUseCase buscarImovelChatUseCase
+    BuscarImovelChatUseCase buscarImovelChatUseCase,
+    ListarChatsUsuarioUseCase listarChatsUsuarioUseCase
     ) : ControllerBase
 {
 
@@ -71,5 +73,19 @@ public class ChatController(
         var chat = await buscarImovelChatUseCase.ExecuteAsync(imovel_id, locatario_id, cancellationToken);
 
         return Ok(ApiResponse.Success(chat));
+    }
+
+
+    [HttpGet("get/listar")]
+    [EndpointSummary("Listar chats do usuário")]
+    [EndpointDescription("Retorna todos os chats ativos do usuário autenticado, incluindo metadados para facilitar a identificação e exibição na interface.")]
+    [ProducesResponseType<SuccessApiResponse<ResponseUserChats>>(StatusCodes.Status200OK)]
+    public async Task<IActionResult> ListarChatsDoUsuario(CancellationToken cancellationToken)
+    {
+        var user_id = GetUserId();
+
+        var userChats = await listarChatsUsuarioUseCase.ExecuteAsync(user_id, cancellationToken);
+
+        return Ok(SuccessApiResponse<ResponseUserChats>.ToResponse(userChats));
     }
 }

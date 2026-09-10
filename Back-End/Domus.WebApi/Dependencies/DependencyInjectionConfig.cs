@@ -39,6 +39,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IEnderecoRepository, EnderecoRepository>();
         services.AddScoped<IContratoRepository, ContratoRepository>();
         services.AddScoped<IChatRepository, ChatRepository>();
+        services.AddScoped<IUsuarioChatRepository, UsuarioChatRepository>();
 
 
         //Segurança
@@ -97,6 +98,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<CadastrarChatImovel>();
         services.AddScoped<EnviarMensagemUseCase>();
         services.AddScoped<BuscarImovelChatUseCase>();
+        services.AddScoped<ListarChatsUsuarioUseCase>();
 
         //Auth
         services.AddScoped<LoginUseCase>();

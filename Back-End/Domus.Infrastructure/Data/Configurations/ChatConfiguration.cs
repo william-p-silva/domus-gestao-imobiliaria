@@ -35,6 +35,7 @@ public class ChatConfiguration : IEntityTypeConfiguration<Chat>
             .HasForeignKey(c => c.Imovel_ID)
             .OnDelete(DeleteBehavior.Restrict);
 
+
         builder.HasQueryFilter(c => c.Estado != EstadoChat.Deletado);
     }
 }
