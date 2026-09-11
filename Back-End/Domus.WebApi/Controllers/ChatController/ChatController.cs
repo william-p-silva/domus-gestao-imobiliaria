@@ -1,7 +1,6 @@
 ﻿
 
 
-using Azure;
 using Domus.Application.DTOs.ApiResponse;
 using Domus.Application.DTOs.Chat.Request;
 using Domus.Application.DTOs.Chat.Response;
@@ -21,7 +20,8 @@ public class ChatController(
     CadastrarChatImovel cadastrarChatImovel, 
     EnviarMensagemUseCase enviarMensagem,
     BuscarImovelChatUseCase buscarImovelChatUseCase,
-    ListarChatsUsuarioUseCase listarChatsUsuarioUseCase
+    ListarChatsUsuarioUseCase listarChatsUsuarioUseCase,
+    BuscarImovelByChatIdUseCase buscarImovelByChatIdUseCase
     ) : ControllerBase
 {
 
@@ -59,7 +59,7 @@ public class ChatController(
         return Ok(ApiResponse.Success(response));
     }
 
-    [HttpGet("get/{imovel_id:guid}")]
+    [HttpGet("get/imovel/{imovel_id:guid}")]
     [Authorize(Roles = "Locatario")]
     [EndpointSummary("Obter ou criar chat do imóvel")]
     [EndpointDescription("Busca a conversa ativa entre o locatário autenticado e o imóvel informado. Caso o chat ainda não exista, ele será criado automaticamente.")]
@@ -71,6 +71,18 @@ public class ChatController(
         var locatario_id = GetUserId();
 
         var chat = await buscarImovelChatUseCase.ExecuteAsync(imovel_id, locatario_id, cancellationToken);
+
+        return Ok(ApiResponse.Success(chat));
+    }
+
+    [HttpGet("get/{chat_id:guid}")]
+    [ProducesResponseType<SuccessApiResponse<ResponseChat>>(StatusCodes.Status200OK)]
+    public async Task<IActionResult> BuscarChatPorId([FromRoute] Guid chat_id, CancellationToken cancellationToken)
+    {
+        var user_id = GetUserId();
+
+        var chat = await buscarImovelByChatIdUseCase.ExecuteAsync
+            (chat_id: chat_id, user_id: user_id, cancellationToken: cancellationToken);
 
         return Ok(ApiResponse.Success(chat));
     }

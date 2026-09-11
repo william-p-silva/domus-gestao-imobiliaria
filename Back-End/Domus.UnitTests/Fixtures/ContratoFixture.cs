@@ -45,7 +45,9 @@ public class ContratoFixture
                 descricao: "Teste de descricao de contrato",
                 comodos: 5,
                 status: Domain.Enums.StatusImovel.Disponivel,
-                valorAluguel: 1500
+                valorAluguel: 1500,
+                endereco: new Endereco("fjdgfdg", "fdjfgdj", "fjgdfgj", "fsghfgjfdj", "asdfdhfyijk", "sadasdasd", "aasd"),
+                usuario: GerarUsuarioContrato()
             );
     }
 

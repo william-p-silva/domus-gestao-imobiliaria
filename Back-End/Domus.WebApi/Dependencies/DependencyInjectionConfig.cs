@@ -99,6 +99,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<EnviarMensagemUseCase>();
         services.AddScoped<BuscarImovelChatUseCase>();
         services.AddScoped<ListarChatsUsuarioUseCase>();
+        services.AddScoped<BuscarImovelByChatIdUseCase>();
 
         //Auth
         services.AddScoped<LoginUseCase>();

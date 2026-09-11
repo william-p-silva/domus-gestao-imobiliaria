@@ -53,8 +53,8 @@ public class Imovel
         TipoImovel tipo,
         decimal metrosQuadrados,
 
-        Endereco endereco,
-        Usuario usuario
+        Endereco? endereco,
+        Usuario? usuario
         )
     {
         if (usuario_id == Guid.Empty)

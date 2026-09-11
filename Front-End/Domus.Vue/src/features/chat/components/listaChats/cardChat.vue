@@ -22,7 +22,8 @@ async function handleChat() {
 
 
 <template>
-    <div class="w-full  px-4 py-4  border-y gap-2 cursor-pointer hover:bg-primary-light/10 border-primary/10 flex flex-row justify-between" @click="handleChat" :class="chat.chat_ID == chatActive?.chat_ID ? 'border-primary-light bg-primary-light/10 hover:bg-primary-light/20' : ''">
+    <div @click="handleChat"
+    class="w-full  px-4 py-4  border-y gap-2 cursor-pointer hover:bg-primary-light/10 border-primary/10 flex flex-row justify-between"  :class="chat.chat_ID == chatActive?.chat_ID ? 'border-primary-light bg-primary-light/10 hover:bg-primary-light/20' : ''">
         <div class="flex items-center">
             <div class="border border-primary/60 w-12 h-12 rounded-2xl flex justify-center items-center">
                 {{ chat.nomeChat[0] }}

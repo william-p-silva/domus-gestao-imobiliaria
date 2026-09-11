@@ -11,7 +11,7 @@ export class ChatService {
 
     public async getChatByImovelId(imovel_ID: string) : Promise<ResponseChat>{
         const response = await this.httpService.GetAsync<ResponseChat>(
-            `chat/get/${imovel_ID}`)
+            `chat/get/imovel/${imovel_ID}`)
 
         return response;
     }
