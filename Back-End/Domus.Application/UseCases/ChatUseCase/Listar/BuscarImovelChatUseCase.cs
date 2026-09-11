@@ -24,7 +24,7 @@ public class BuscarImovelChatUseCase(
 
         if (chatExist is not null)
         {
-            return chatExist.ToResponse();
+            return chatExist;
         }
 
         var locatario = await usuarioRepository.BuscarPorIdAsync(locatario_id, cancellationToken)

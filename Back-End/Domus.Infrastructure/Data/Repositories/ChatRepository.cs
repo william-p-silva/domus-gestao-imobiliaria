@@ -31,27 +31,22 @@ public class ChatRepository(AppDbContext context) : IChatRepository
                         Nome = chat.Nome,
 
                         // Abordagem direta e traduzível para o imóvel do chat
-                        imovel = chat.UsuarioChats
-                            .Where(uc => uc.Usuario_ID != locatario_id)
-                            .Select(uc => uc.Usuario.Imoveis.FirstOrDefault(i => i.Imovel_ID == imovel_id))
-                            .Where(i => i != null)
-                            .Select(i => new ResponseImovelChat
+                        imovel = new ResponseImovelChat
+                        {
+                            Imovel_ID = chat.Imovel_ID,
+                            Banheiros = chat.Imovel.Banheiros,
+                            Comodos = chat.Imovel.Comodos,
+                            Descricao = chat.Imovel.Descricao,
+                            MetrosQuadrados = chat.Imovel.MetrosQuadrados,
+                            Titulo = chat.Imovel.Titulo,
+                            ValorAluguel = chat.Imovel.ValorAluguel,
+                            Imagens = chat.Imovel.Imagens.Select(i => new ResponseImagemImovel
                             {
-                                Imovel_ID = i.Imovel_ID,
-                                Descricao = i.Descricao,
-                                Comodos = i.Comodos,
-                                Banheiros = i.Banheiros,
-                                MetrosQuadrados = i.MetrosQuadrados,
+                                ImagemImovel_ID = i.ImagemImovel_ID,
                                 Titulo = i.Titulo,
-                                ValorAluguel = i.ValorAluguel,
-                                Imagens = i.Imagens.Select(im => new ResponseImagemImovel
-                                {
-                                    ImagemImovel_ID = im.ImagemImovel_ID,
-                                    Titulo = im.Titulo,
-                                    UrlImagem = im.UrlImagem
-                                }).ToList()
-                            })
-                            .FirstOrDefault(),
+                                UrlImagem = i.UrlImagem
+                            }).ToList()
+                        },
 
                         Participantes = chat.UsuarioChats.Select(uc => new ResponseUsuariosChat
                         {
