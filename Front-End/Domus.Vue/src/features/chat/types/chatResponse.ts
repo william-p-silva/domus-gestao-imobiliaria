@@ -1,5 +1,5 @@
 
-
+// Adicionar Imovel response junto :)
 
 
 export interface ResponseChat {

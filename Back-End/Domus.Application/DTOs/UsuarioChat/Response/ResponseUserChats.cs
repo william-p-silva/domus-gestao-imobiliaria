@@ -19,5 +19,5 @@ public sealed record ResponseUserChats
 
     public DateTime? DataUltimaMensagem { get; set; }
 
-    public string ImgagemUrl { get; set; } = string.Empty;
+    public string ImagemUrl { get; set; } = string.Empty;
 }

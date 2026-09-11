@@ -31,14 +31,15 @@ export const FormatterDate = () => {
         }).format(date);
     }
 
-    function dataHora(dateUTC:string | Date | null): string{
-        if(!dateUTC) return "";
+    function dataHora(dateUTC: string | Date | null): string {
+        if (!dateUTC) return "";
 
-        const date = data(dateUTC);
-        const hour = hora(dateUTC);
+        const formattedDate = data(dateUTC);
+        const formattedHour = hora(dateUTC);
 
-        if (!data) return "";
-        return `${data} às ${hora}`;
+        if (!formattedDate || !formattedHour) return "";
+        
+        return `${formattedDate} às ${formattedHour}`;
     }
 
     return {

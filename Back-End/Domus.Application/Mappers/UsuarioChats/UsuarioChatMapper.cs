@@ -18,7 +18,9 @@ public static class UsuarioChatMapper
             NomeUsuario = userChat.Usuario.Nome.NomeCompleto,
             Email = userChat.Usuario.Email.Endereco,
             EstadoMensagem = userChat.MensagensChat.FirstOrDefault().Estado.ToString(),
-            TextoMensagem = userChat.MensagensChat.FirstOrDefault().Texto
+            TextoMensagem = userChat.MensagensChat.FirstOrDefault().Texto,
+            DataUltimaMensagem = userChat.MensagensChat.FirstOrDefault().DataEnvio,
+            ImagemUrl = ""
         };
     }
 }

@@ -42,7 +42,7 @@ public class UsuarioChatRepository(AppDbContext context) : IUsuarioChatRepositor
                     .Select(m => m.DataEnvio)
                     .FirstOrDefault(),
 
-                ImgagemUrl = string.Empty
+                ImagemUrl = string.Empty
             }).ToListAsync();
     }
 }
