@@ -4,6 +4,7 @@ using Domus.Application.DTOs.Imovel;
 using Domus.Application.Interfaces.Repositories;
 using Domus.Domain.Enums;
 using Domus.Domain.Entity;
+using Domus.Domain.Exceptions.Domain;
 
 namespace Domus.Application.UseCases.ImovelUseCase;
 
@@ -33,14 +34,14 @@ public class CadastrarImovelUseCase(
     /// <exception cref="ArgumentException">
     /// Lançada caso o identificador do usuário não seja encontrado ou se o usuário não possuir o perfil <see cref="FuncaoUser.Locador"/>.
     /// </exception>
-    public async Task<ImovelResponse> Execute(ImovelRequest request, CancellationToken cancellationToken)
+    public async Task<ImovelResponse> Execute(ImovelRequest request, Guid user_id, CancellationToken cancellationToken)
     {
-        var user = await _usuarioRepository.BuscarPorIdAsync(request.Usuario_ID, cancellationToken);
+        var user = await _usuarioRepository.BuscarPorIdAsync(user_id, cancellationToken);
         if (user == null)
-            throw new ArgumentException("Usuário não encontrado", nameof(request.Usuario_ID));
+            throw new NotFoundException("Usuário não encontrado");
 
         if (!user.PossuiFuncao(FuncaoUser.Locador))
-            throw new ArgumentException("Usuário não tem permissão para cadastrar um imóvel", nameof(request.Usuario_ID));
+            throw new BusinessRuleException("Usuário não tem permissão para cadastrar um imóvel");
 
 
         var endereco = new Endereco(
@@ -54,7 +55,7 @@ public class CadastrarImovelUseCase(
         );
 
         var imovel = new Imovel(
-            usuario_id: request.Usuario_ID,
+            usuario_id: user.Usuario_ID,
             endereco_id: endereco.Endereco_ID,
             titulo: request.Titulo,
             descricao: request.Descricao,
@@ -63,11 +64,11 @@ public class CadastrarImovelUseCase(
             valorAluguel: request.ValorAluguel,
             banheiros: request.Banheiros,
             metrosQuadrados: request.MetrosQuadrados,
-            tipo: request.TipoDoImovel
+            tipo: request.TipoDoImovel,
+            endereco: endereco,
+            usuario: user
         );
 
-
-        await _enderecoRepository.AddAsync(endereco, cancellationToken);
         await _imovelRepository.AddAsync(imovel, cancellationToken);
 
         await _commit.CommitAsync(cancellationToken);

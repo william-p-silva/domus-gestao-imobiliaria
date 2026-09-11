@@ -7,7 +7,6 @@ namespace Domus.Application.DTOs.Imovel;
 
 public sealed record ImovelRequest
 {
-    public Guid Usuario_ID { get; set; }
     public string Titulo { get; set; } = string.Empty;
     public string Descricao { get; set; } = string.Empty;
     public int Comodos { get; set; }

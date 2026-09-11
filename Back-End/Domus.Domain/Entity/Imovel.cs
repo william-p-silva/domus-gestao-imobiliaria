@@ -1,5 +1,6 @@
 ﻿
 using Domus.Domain.Enums;
+using Domus.Domain.Exceptions.Domain;
 
 namespace Domus.Domain.Entity;
 
@@ -50,25 +51,34 @@ public class Imovel
         decimal valorAluguel,
         int banheiros,
         TipoImovel tipo,
-        decimal metrosQuadrados
+        decimal metrosQuadrados,
+
+        Endereco endereco,
+        Usuario usuario
         )
     {
         if (usuario_id == Guid.Empty)
-            throw new ArgumentException("O ID do usuário é obrigatório.", nameof(usuario_id));
+            throw new ValidationException("O ID do usuário é obrigatório.");
         if (endereco_id == Guid.Empty)
-            throw new ArgumentException("O ID do endereço é obrigatório.", nameof(endereco_id));
+            throw new ValidationException("O ID do endereço é obrigatório.");
         if (string.IsNullOrWhiteSpace(titulo))
-            throw new ArgumentException("O título do imóvel é obrigatório.", nameof(titulo));
+            throw new ValidationException("O título do imóvel é obrigatório.");
         if (string.IsNullOrWhiteSpace(descricao))
-            throw new ArgumentException("A descrição do imóvel é obrigatória.", nameof(descricao));
+            throw new ValidationException("A descrição do imóvel é obrigatória.");
         if (metrosQuadrados <= 0)
-            throw new ArgumentException("A metragem deve ser maior que zero", nameof(metrosQuadrados));
+            throw new ValidationException("A metragem deve ser maior que zero");
         if (comodos <= 0)
-            throw new ArgumentException("O número de cômodos deve ser maior que zero.", nameof(comodos));
+            throw new ValidationException("O número de cômodos deve ser maior que zero.");
         if(banheiros <= 0)
-            throw new ArgumentException("O número de Banheiros deve ser maior que zero.", nameof(banheiros));
+            throw new ValidationException("O número de Banheiros deve ser maior que zero.");
         if (valorAluguel <= 0)
-            throw new ArgumentException("O valor do aluguel deve ser maior que zero.", nameof(valorAluguel));
+            throw new ValidationException("O valor do aluguel deve ser maior que zero.");
+
+        if (endereco is null)
+            throw new ValidationException("O endereço não pode ser nulo.");
+
+        if (usuario is null)
+            throw new ValidationException("O usuário não pode ser nulo.");
 
         Imovel_ID = Guid.NewGuid();
         Usuario_ID = usuario_id;
@@ -81,6 +91,9 @@ public class Imovel
         Banheiros = banheiros;
         Status = status;
         ValorAluguel = valorAluguel;
+
+        Endereco = endereco;
+        Usuario = usuario;
     }
 
 
