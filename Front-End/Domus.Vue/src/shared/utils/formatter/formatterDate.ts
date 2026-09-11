@@ -18,6 +18,21 @@ export const FormatterDate = () => {
         }).format(date);
     }
 
+    function dayMoth(dateUTC:string | Date | null): string{
+        if(!dateUTC) return "";
+
+        const date = new Date(dateUTC)
+
+        if(isNaN(date.getTime())) return "";
+
+        return new Intl.DateTimeFormat("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+            timeZone: "UTC"
+        }).format(date);
+
+    }
+
     function hora(dateUTC:string | Date | null): string{
         if(!dateUTC) return "";
 
@@ -45,6 +60,7 @@ export const FormatterDate = () => {
     return {
         data,
         hora,
+        dayMoth,
         dataHora
     }
 }

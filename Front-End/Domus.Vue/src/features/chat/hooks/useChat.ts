@@ -3,6 +3,7 @@ import type { ResponseChat } from "../types/chatResponse";
 import { useRoute } from "vue-router";
 import { ChatService } from "../service/chatService";
 import { type UserChatsResponse } from "../types/userChatsResponse";
+import type { InputBuscaImovel } from "@/features/landingPage/types/common";
 
 
 const isLoading = ref<boolean>(false)
@@ -14,6 +15,12 @@ const service = new ChatService();
 
 export const useChat = () => {
     const route = useRoute();
+
+    const inputFiltro: InputBuscaImovel = {
+        text: "",
+        placeholder: "Buscar conversas...",
+        icon: "location"
+    }
 
 
     async function setUserChats() {
@@ -55,11 +62,18 @@ export const useChat = () => {
         }
     }
 
+
+    async function selectChat(chat_id: string) {
+        console.log("oi", chat_id)
+    }
+
     return {
         isLoading,
         error,
         chatActive,
         chatsUser,
+        selectChat,
+        inputFiltro,
         setUserChats,
         setChatByImovelId,
     }

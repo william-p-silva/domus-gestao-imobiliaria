@@ -44,7 +44,7 @@ const DEFAULT_LINKS_PROFILE: LinksHeaderModal[] = [
     },
     {
         label: "Conversas",
-        route: "/chats",
+        route: "/chat",
         profile: "User"
     },
     {

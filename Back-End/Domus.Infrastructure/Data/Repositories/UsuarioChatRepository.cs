@@ -20,8 +20,12 @@ public class UsuarioChatRepository(AppDbContext context) : IUsuarioChatRepositor
                 Usuario_ID = x.Usuario_ID,
                 Chat_ID = x.Chat_ID,
 
-                Email = x.Usuario.Email.Endereco,
-                NomeUsuario = x.Usuario.Nome.NomeCompleto,
+                Email = x.Chat.UsuarioChats
+                    .FirstOrDefault(x => x.Usuario_ID != user_id)
+                        .Usuario.Email.Endereco ?? "",
+                NomeUsuario = x.Chat.UsuarioChats
+                    .FirstOrDefault(x => x.Usuario_ID != user_id)
+                        .Usuario.Nome.NomeCompleto ?? "",
 
                 NomeChat = x.Chat.Nome,
 
@@ -43,6 +47,6 @@ public class UsuarioChatRepository(AppDbContext context) : IUsuarioChatRepositor
                     .FirstOrDefault(),
 
                 ImagemUrl = string.Empty
-            }).ToListAsync();
+            }).ToListAsync(cancellationToken);
     }
 }

@@ -2,6 +2,8 @@
 import { onMounted } from 'vue';
 import { useChat } from '../../hooks/useChat';
 import { FormatterDate } from '@/shared/utils/formatter/formatterDate';
+import HeaderListaChats from './headerListaChats.vue';
+import CardChat from './cardChat.vue';
 
 
 const {
@@ -22,18 +24,12 @@ onMounted(async () => {
 
 
 <template>
-    <aside class="w-[30vw] bg-primary h-full ">
+    <aside class="w-88 w py-6 h-screen  overflow-y-auto border-r border-primary/10 ">
+        <HeaderListaChats />
+
+        <CardChat v-for="chat in chatsUser" :chat="chat" />
+
 
     </aside>
-
-    <div class="flex flex-col gap-4 ">
-
-        <div v-for="chat in chatsUser" class="flex flex-col gap-1 bg-accent">
-            <p>{{ chat.nomeChat }}</p>
-            <p>{{ chat.funcao }}</p>
-            <p>{{ chat.textoMensagem }}</p>
-            <p>{{ formatter.dataHora(chat.dataUltimaMensagem) }}</p>
-        </div>
-    </div>
 
 </template>
