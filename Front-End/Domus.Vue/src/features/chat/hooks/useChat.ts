@@ -21,10 +21,7 @@ const service = new ChatService();
 
 
 function handleNovaMensagem(mensagem: ResponseMensagens){
-    console.log('recebido do hub:', mensagem);
-    console.log('chat ativo:', chatActive.value?.chat_ID);
     if(chatActive.value && chatActive.value.chat_ID === mensagem.chat_ID){
-        console.log('bateu! inserindo...');
         chatActive.value.mensagens.push(mensagem);
     } else {
         console.log('NÃO bateu — ids diferentes');
@@ -38,7 +35,7 @@ async function garantirConexao() {
             chatHub.onReceberMensagem(handleNovaMensagem);
             await chatHub.start();
             hubIniciado.value = true;
-            console.log('SignalR conectado com sucesso!');
+
         } catch (err) {
             console.error('Falha ao conectar no SignalR:', err);
         }
@@ -51,42 +48,18 @@ async function trocarChatAtivo(
 ) {
     await garantirConexao();
 
-    console.log('[CHAT] Trocando chat');
-    console.log('[CHAT] Atual:', chatActive.value?.chat_ID);
-    console.log('[CHAT] Novo:', novoChatId);
-
     if (
         chatActive.value &&
         chatActive.value.chat_ID !== novoChatId
     ) {
-        console.log(
-            '[CHAT] Saindo do grupo:',
-            chatActive.value.chat_ID
-        );
-
         await chatHub.leaveGroupChat(
             chatActive.value.chat_ID
         );
     }
 
-    console.log(
-        '[CHAT] Entrando no grupo:',
-        novoChatId
-    );
-
     await chatHub.joinGroupChat(novoChatId);
 
-    console.log(
-        '[CHAT] Entrou no grupo:',
-        novoChatId
-    );
-
     chatActive.value = novoChat;
-
-    console.log(
-        '[CHAT] Chat ativo atualizado:',
-        chatActive.value.chat_ID
-    );
 }
 export const useChat = () => {
     const route = useRoute();
@@ -172,8 +145,6 @@ export const useChat = () => {
 
     async function enviarMensagem() {
         request.value.chat_ID = chatActive.value?.chat_ID ?? '';
-
-        console.log("\n\n\nreques: ", request.value)
     
         try {
             await service.enviarMensagemAsync(request.value);

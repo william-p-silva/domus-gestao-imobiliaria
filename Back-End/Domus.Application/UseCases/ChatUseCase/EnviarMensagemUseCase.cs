@@ -53,15 +53,9 @@ public class EnviarMensagemUseCase(
             Estado = mensagem.Estado.ToString()
         };
 
-        Console.WriteLine(
-            $"\n\n\n [CHAT] Chamando notifier. Chat={response.Chat_ID} \n\n\n"
-        );
 
-        await chatHubNotifier.NotifyNewMessageAsync(response, cancellationToken);
+        await chatHubNotifier.NotifyNewMessageAsync(response);
 
-        Console.WriteLine(
-            $"\n\n\n [CHAT] Notifier finalizado. Chat={response.Chat_ID} \n\n\n"
-        );
 
         return response;
     }

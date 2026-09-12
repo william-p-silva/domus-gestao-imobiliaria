@@ -17,7 +17,6 @@ class ChatHub {
             .build();
 
             this.connection.on("ReceberMensagem", (message: ResponseMensagens) => {
-                console.log('%c[SignalR RAW] ReceberMensagem:', 'color: lime; font-weight: bold', message);
                 this.mensagemCallbacks.forEach((cb) => cb(message));
             })
 
@@ -46,17 +45,7 @@ class ChatHub {
         }
     }
 
-    async joinGroupChat(chatId: string): Promise<void> {
-        console.log(
-            '[SignalR] Tentando entrar no grupo:',
-            chatId
-        );
-    
-        console.log(
-            '[SignalR] Estado:',
-            this.connection.state
-        );
-    
+    async joinGroupChat(chatId: string): Promise<void> {  
         if (
             this.connection.state !== HubConnectionState.Connected
         ) {
@@ -67,26 +56,11 @@ class ChatHub {
             "JoinChatGroup",
             chatId
         );
-    
-        console.log(
-            '[SignalR] Entrou no grupo:',
-            chatId
-        );
     }
 
-    async leaveGroupChat(chatId: string): Promise<void> {
-        console.log(
-            '[SignalR] Saindo do grupo:',
-            chatId
-        );
-    
+    async leaveGroupChat(chatId: string): Promise<void> {   
         await this.connection.invoke(
             "LeaveChatGroup",
-            chatId
-        );
-    
-        console.log(
-            '[SignalR] Saiu do grupo:',
             chatId
         );
     }
