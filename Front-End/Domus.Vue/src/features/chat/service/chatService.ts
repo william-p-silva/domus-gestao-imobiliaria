@@ -1,6 +1,7 @@
 import { HttpService } from "@/core/http/httpService";
-import type { ResponseChat } from "../types/chatResponse";
+import type { ResponseMensagens, ResponseChat } from "../types/chatResponse";
 import type { UserChatsResponse } from "../types/userChatsResponse";
+import type { EnviarMensagem } from "../types/chatRequest";
 
 
 
@@ -16,8 +17,22 @@ export class ChatService {
         return response;
     }
 
-    public async getUserChats(){
+    public async getUserChats() : Promise<UserChatsResponse[]> {
         const response = await this.httpService.GetAsync<UserChatsResponse[]>("chat/get/listar");
+
+        return response;
+    }
+
+    public async getChat(chat_id: string) : Promise<ResponseChat>{
+        const response = await this.httpService.GetAsync<ResponseChat>(`chat/get/${chat_id}`);
+
+        return response;
+    }
+
+    public async enviarMensagemAsync(requestPost: EnviarMensagem){
+        const response = await this.httpService.PostAsync<ResponseMensagens, EnviarMensagem>(
+            "chat/post/send-message", requestPost
+        )
 
         return response;
     }

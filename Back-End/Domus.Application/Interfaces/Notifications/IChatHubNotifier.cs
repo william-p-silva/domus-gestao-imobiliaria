@@ -4,5 +4,5 @@ namespace Domus.Application.Interfaces.Notifications;
 
 public interface IChatHubNotifier
 {
-    Task NotifyNewMessageAsync(EnviarMensagemResponse mensagem, CancellationToken cancellationToken = default);
+    Task NotifyNewMessageAsync(ResponseMensagemChat mensagem, CancellationToken cancellationToken = default);
 }

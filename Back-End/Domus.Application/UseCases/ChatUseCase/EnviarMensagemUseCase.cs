@@ -17,10 +17,10 @@ public class EnviarMensagemUseCase(
     IChatHubNotifier chatHubNotifier
     )
 {
-    public async Task<EnviarMensagemResponse> ExecuteAsync(Guid usuario_id, EnviarMensagemRequest request, CancellationToken cancellationToken)
+    public async Task<ResponseMensagemChat> ExecuteAsync(Guid usuario_id, EnviarMensagemRequest request, CancellationToken cancellationToken)
     {
         if (request is null)
-            throw new ValidationException("Requisição inválida.");        
+            throw new ValidationException("Requisição inválida.");
 
         var chat = await chatRepository.BuscarPorIdAsync(request.Chat_ID, cancellationToken)
             ?? throw new NotFoundException("Chat não encontrado.");
@@ -39,26 +39,29 @@ public class EnviarMensagemUseCase(
 
         await unitOfWork.CommitAsync(cancellationToken);
 
-        var response = new EnviarMensagemResponse
+        Console.WriteLine(
+            $"[CHAT] Mensagem salva. Chat={mensagem.Chat_ID} Mensagem={mensagem.MensagemChat_ID}"
+        );
+
+        var response = new ResponseMensagemChat
         {
             MensagemChat_ID = mensagem.MensagemChat_ID,
             Chat_ID = mensagem.Chat_ID,
-            UsuarioChat_ID = mensagem.UsuarioChat_ID,
             Usuario_ID = usuario.Usuario_ID,
             Texto = mensagem.Texto,
-            DataEnvio = mensagem.DataEnvio
+            DataEnvio = mensagem.DataEnvio,
+            Estado = mensagem.Estado.ToString()
         };
 
-        // Dispara notificação ao hub (implementação concreta será provida pelo projeto Web/API)
-        try
-        {
-            if (chatHubNotifier is not null)
-                await chatHubNotifier.NotifyNewMessageAsync(response, cancellationToken);
-        }
-        catch
-        {
-            // Não deve impedir o fluxo principal em caso de falha na notificação
-        }
+        Console.WriteLine(
+            $"\n\n\n [CHAT] Chamando notifier. Chat={response.Chat_ID} \n\n\n"
+        );
+
+        await chatHubNotifier.NotifyNewMessageAsync(response, cancellationToken);
+
+        Console.WriteLine(
+            $"\n\n\n [CHAT] Notifier finalizado. Chat={response.Chat_ID} \n\n\n"
+        );
 
         return response;
     }

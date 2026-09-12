@@ -17,7 +17,7 @@ public class AuthController(LoginUseCase loginUseCase) : ControllerBase
     {
         var usuario = await loginUseCase.Execute(request, cancellationToken);
 
-        Response.Cookies.Append("token", usuario.Token, new CookieOptions
+        Response.Cookies.Append("auth_token", usuario.Token, new CookieOptions
         {
             HttpOnly = true,
             Secure = false,
@@ -43,7 +43,7 @@ public class AuthController(LoginUseCase loginUseCase) : ControllerBase
     [ProducesResponseType<SuccessApiResponse<string>>(StatusCodes.Status200OK)]
     public IActionResult Logout()
     {
-        Response.Cookies.Delete("token");
+        Response.Cookies.Delete("auth_token");
 
         return Ok(new SuccessApiResponse<string>
         {

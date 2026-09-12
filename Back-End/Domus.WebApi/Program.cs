@@ -57,7 +57,7 @@ builder.Services.AddAuthentication(options =>
     {
         OnMessageReceived = context =>
         {
-            context.Token = context.Request.Cookies["token"];
+            context.Token = context.Request.Cookies["auth_token"];
 
             return Task.CompletedTask;
         }
@@ -163,7 +163,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHub<ChatImovelHub>("/hubs/chat-imovel");
+app.MapHub<ChatImovelHub>("/domus/hubs/chat-imovel");
 
 // ============================================================================
 // 7. INICIALIZAÇÃO E AUTO-MIGRATION (Executado de forma isolada e segura)

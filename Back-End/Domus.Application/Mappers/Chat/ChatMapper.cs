@@ -47,6 +47,8 @@ public static class ChatMapper
 
             Mensagens = chat.MensagensChat.Select(m => new ResponseMensagemChat
             {
+                Usuario_ID = m.UsuarioChat.Usuario_ID,
+                Chat_ID = m.Chat_ID,
                 DataEnvio = m.DataEnvio,
                 Estado = m.Estado.ToString(),
                 MensagemChat_ID = m.MensagemChat_ID,
