@@ -28,10 +28,10 @@ onMounted(async () => {
 <template>
     <PageLoading :visible="isLoading" />
     
-    <main class="flex flex-row">
+    <main class="flex flex-row w-full h-full ">
         <BaseListaChats />
-        <ChatActive />
-        <InfosImovelChat />
+        <ChatActive v-if="chatActive" />
+        <SemChat v-else />
     </main>
 
 

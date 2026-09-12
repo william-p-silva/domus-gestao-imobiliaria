@@ -11,7 +11,7 @@ const { chatsUser,inputFiltro } = useChat();
 
 
 <template>
-    <header class="flex flex-col gap-2 px-4 mb-3">
+    <header class="flex flex-col gap-2 px-4 ">
         <div class="flex gap-2">
             <h1 class="text-2xl font-bold text-primary-dark">Meus Chats</h1>
             <span class="flex justify-center items-center rounded-full bg-primary-light/30 w-8 h-8">

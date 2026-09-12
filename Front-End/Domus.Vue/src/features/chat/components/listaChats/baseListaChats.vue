@@ -24,12 +24,28 @@ onMounted(async () => {
 
 
 <template>
-    <aside class="w-88 w py-6 h-screen  overflow-y-auto border-r border-primary/10 ">
+    <aside
+        class="
+            w-88
+            shrink-0
+            h-full
+            min-h-0
+            flex
+            flex-col
+            border-r
+            border-primary/10
+            overflow-hidden
+            pt-4
+        "
+    >
         <HeaderListaChats />
 
-        <CardChat v-for="chat in chatsUser" :chat="chat" />
-
-
+        <div class="flex-1 min-h-0 overflow-y-auto py-6">
+            <CardChat
+                v-for="chat in chatsUser"
+                :key="chat.chat_ID"
+                :chat="chat"
+            />
+        </div>
     </aside>
-
 </template>

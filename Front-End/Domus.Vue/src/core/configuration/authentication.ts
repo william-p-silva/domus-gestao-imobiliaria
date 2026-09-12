@@ -4,7 +4,7 @@ import { ref } from "vue";
 import { AuthService } from "./authService";
 
 const DEFAULT_USER: ResponseLogin = {
-    usuario_id: "",
+    usuario_ID: "",
     nome: "",
     email: "",
     perfil: [],

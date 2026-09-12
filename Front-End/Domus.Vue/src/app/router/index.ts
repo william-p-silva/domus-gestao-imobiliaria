@@ -70,7 +70,7 @@ const router = createRouter({
     {
       path: "/chat",
       name: "ChatUsuario",
-      component: () => import("@/shared/layouts/masterLayout.vue"),
+      component: () => import("@/shared/layouts/chatLayout.vue"),
       children: [
         {
           path: "",

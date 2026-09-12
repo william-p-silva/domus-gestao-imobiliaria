@@ -1,6 +1,6 @@
 
 <template>
-  <div class="flex h-full flex-col items-center justify-center px-6 text-center">
+  <div class="flex h-full w-full flex-col items-center justify-center px-6 text-center">
     <!-- Ícone -->
     <div
       class="mb-5 flex h-20 w-20 items-center justify-center rounded-full

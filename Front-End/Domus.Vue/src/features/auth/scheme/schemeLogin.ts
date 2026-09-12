@@ -9,7 +9,7 @@ export const SchemeLoginRequest = z.object({
 
 
 export const SchemeLoginResponse = z.object({
-    usuario_id: z.uuid({ message: "UUID inválido" }),
+    usuario_ID: z.uuid({ message: "UUID inválido" }),
 
     nome: z.string({ message: "Nome inválido" }).min(3, { message: "Nome deve ter no mínimo 3 caracteres" }),
 

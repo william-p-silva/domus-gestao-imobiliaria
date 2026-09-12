@@ -67,7 +67,9 @@ public class ChatRepository(AppDbContext context) : IChatRepository
                             Estado = m.Estado.ToString(),
                             MensagemChat_ID = m.MensagemChat_ID,
                             Texto = m.Texto,
-                        }).ToList()
+                        })
+                        .OrderBy(x => x.DataEnvio)
+                        .ToList()
                     }
                 ).FirstOrDefaultAsync();
     }
@@ -140,7 +142,9 @@ public class ChatRepository(AppDbContext context) : IChatRepository
                             Estado = m.Estado.ToString(),
                             MensagemChat_ID = m.MensagemChat_ID,
                             Texto = m.Texto,
-                        }).ToList()
+                        })
+                        .OrderBy(x => x.DataEnvio)
+                        .ToList()
                     }
                 ).FirstOrDefaultAsync();
     }

@@ -1,33 +1,75 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/core/configuration/authentication';
 import { useChat } from '../../hooks/useChat';
 import { nextTick, ref, watch } from 'vue';
-
-const { chatActive, request, enviarMensagem } = useChat();
-const { userLogged } = useAuthStore()
+import BolhaMsg from './bolhaMsg.vue';
+import InputChat from './inputChat.vue';
 
 const mensagensRef = ref<HTMLElement>();
+const { chatActive } = useChat();
 
-watch(() => chatActive.value?.mensagens.length, async () => {
-    await nextTick();
-    mensagensRef.value?.scrollTo({ top: mensagensRef.value.scrollHeight, behavior: 'smooth' });
-});
+function scrollToBottom(smooth = true) {
+    mensagensRef.value?.scrollTo({
+        top: mensagensRef.value.scrollHeight,
+        behavior: smooth ? 'smooth' : 'auto',
+    });
+}
+
+// dispara ao trocar de chat (abre já na última msg, sem animação)
+// e também quando chegam novas mensagens no chat ativo (com animação)
+watch(
+    () => chatActive.value?.chat_ID,
+    async () => {
+        await nextTick();
+        scrollToBottom(false);
+    },
+    { immediate: true }
+);
+
+watch(
+    () => chatActive.value?.mensagens.length,
+    async () => {
+        await nextTick();
+        scrollToBottom(true);
+    }
+);
 </script>
 
 <template>
-    <main>
-        <div ref="mensagensRef" class="overflow-y-auto flex-1">
-            <div v-for="mensagem in chatActive?.mensagens" :key="mensagem.mensagemChat_ID">
-                <p class="text-primary text-end">
-                    {{ mensagem.texto }}
-                </p>
-
-            </div>
+    <main
+        class="
+            flex-1
+            min-w-0
+            min-h-0
+            h-full
+            flex
+            flex-col
+            overflow-hidden
+            bg-background
+        "
+    >
+        <!-- Mensagens -->
+        <div
+            ref="mensagensRef"
+            class="
+                flex-1
+                min-h-0
+                w-full
+                overflow-y-auto
+                overflow-x-hidden
+                p-4
+                flex
+                flex-col
+                gap-3
+            "
+        >
+            <BolhaMsg
+                v-for="mensagem in chatActive?.mensagens"
+                :key="mensagem.mensagemChat_ID"
+                :mensagem="mensagem"
+            />
         </div>
 
-        <input type="text" v-model="request.texto">
-        <button type="button" @click="enviarMensagem">
-            Enviar msg
-        </button>
+        <!-- Input -->
+        <InputChat />
     </main>
 </template>
