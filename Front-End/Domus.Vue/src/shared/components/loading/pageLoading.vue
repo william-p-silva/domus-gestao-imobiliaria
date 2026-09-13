@@ -286,16 +286,6 @@ onBeforeUnmount(() => {
 }
 
 
-:global(html.loading-active),
-:global(body.loading-active) {
-  overflow: hidden !important;
-}
 
-/*
- * Evita que o layout "pule" quando a scrollbar desaparece.
- */
-:global(html) {
-  scrollbar-gutter: stable;
-}
 </style>
 

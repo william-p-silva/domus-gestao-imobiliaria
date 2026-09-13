@@ -13,10 +13,13 @@ export interface ResponseChat {
 }
 
 
-interface ResponseParticipantes {
+export interface ResponseParticipantes {
     usuarioChat_ID: string,
     usuario_ID: string,
     nome: string,
+    bio: string,
+    qntImoveis: number,
+    mediaAvaliacao: string,
     email: string,
     funcao: string,
     estado: string,
@@ -36,7 +39,7 @@ export interface ResponseMensagens {
 export interface ResponseImovelChat {
     imovel_ID: string,
     titulo: string,
-    Descricao: string,
+    descricao: string,
     comodos: string,
     banheiros: string,
     metrosQuadrados: string,

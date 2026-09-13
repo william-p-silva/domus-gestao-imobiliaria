@@ -2,6 +2,10 @@
 import { FormatterDate } from '@/shared/utils/formatter/formatterDate';
 import { useChat } from '../../hooks/useChat';
 import type { UserChatsResponse } from '../../types/userChatsResponse';
+import imovelSemImagem from '@/assets/imgs/Imovel/imovel_sem_imagem_card.png'
+
+
+
 
 const props = defineProps<{
     chat: UserChatsResponse,
@@ -35,8 +39,8 @@ async function handleChat() {
             : ''">
         <!-- Avatar -->
         <div class="flex items-center shrink-0">
-            <div class="border border-primary/60 w-12 h-12 rounded-2xl flex justify-center items-center">
-                {{ chat.nomeChat[0] }}
+            <div class=" w-16 h-16 rounded-2xl flex justify-center items-center bg-cover">
+                <img :src="imovelSemImagem" alt="">
             </div>
         </div>
 

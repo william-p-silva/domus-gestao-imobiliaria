@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { ImovelResponse } from '@/shared/types/imovel/imovelResponse';
-import { BedDouble, Heart, MapPin, SquareDashed, Toilet } from '@lucide/vue';
+import { Heart, MapPin } from '@lucide/vue';
 import imovelImage from '@/assets/imgs/LandingPage/contratoImovel.jpeg'
 import { FormatterNumber } from '@/shared/utils/formatter/formatterNumber';
+import { IconComodos, IconBanheiros, IconMetros } from '@/shared/UI/icons/imovel';
 
 
 const props = defineProps<{
@@ -43,17 +44,17 @@ const sizeIcon = 14;
 
             <div class="flex justify-between">
                 <p class="flex justify-start items-center gap-1 text-sm">
-                    <BedDouble :size="sizeIcon" />
+                    <IconComodos :size="sizeIcon" />
                     {{ imovel.comodos }}
                 </p>
 
                 <p class="flex justify-start items-center gap-1 text-sm">
-                    <Toilet :size="sizeIcon" />
+                    <IconBanheiros :size="sizeIcon" />
                     {{ imovel.banheiros }}
                 </p>
 
                 <p class="flex justify-start items-center gap-1 text-sm">
-                    <SquareDashed :size="sizeIcon" />
+                    <IconMetros :size="sizeIcon" />
                     {{ formatter.metrosQuadrados(imovel.metrosQuadrados) }}
                 </p>
             </div>

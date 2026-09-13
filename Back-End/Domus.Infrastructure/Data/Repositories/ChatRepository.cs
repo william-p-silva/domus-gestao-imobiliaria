@@ -56,7 +56,7 @@ public class ChatRepository(AppDbContext context) : IChatRepository
                             Funcao = uc.Funcao.ToString(),
                             UsuarioChat_ID = uc.UsuarioChat_ID,
                             Usuario_ID = uc.Usuario_ID,
-                            Nome = uc.ChatNome.Nome
+                            Nome = uc.Usuario.Nome.NomeCompleto
                         }).ToList(),
 
                         Mensagens = chat.MensagensChat.Select(m => new ResponseMensagemChat
@@ -131,7 +131,7 @@ public class ChatRepository(AppDbContext context) : IChatRepository
                             Funcao = uc.Funcao.ToString(),
                             UsuarioChat_ID = uc.UsuarioChat_ID,
                             Usuario_ID = uc.Usuario_ID,
-                            Nome = uc.ChatNome.Nome
+                            Nome = uc.Usuario.Nome.NomeCompleto
                         }).ToList(),
 
                         Mensagens = chat.MensagensChat.Select(m => new ResponseMensagemChat
