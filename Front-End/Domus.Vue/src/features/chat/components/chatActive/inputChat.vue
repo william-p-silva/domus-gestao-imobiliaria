@@ -6,7 +6,7 @@ const { request, enviarMensagem } = useChat();
 </script>
 
 <template>
-    <div class="w-full p-2 sm:p-4">
+    <div class="w-full p-2 sm:p-4 mb-9 lg:mb-0">
         <div class="shrink-0 border border-primary/15 p-2 sm:p-4 rounded-2xl shadow-2xl shadow-primary/15">
             <div class="flex gap-2 sm:gap-4 items-center ">
                 <button

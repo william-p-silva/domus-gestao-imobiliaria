@@ -41,7 +41,7 @@ const formatter = FormatterDate();
                             flex-col
                             max-w-85
                         " :class="userLogged.usuario_ID === mensagem.usuario_ID
-                            ? 'bg-primary text-white rounded-br-sm'
+                            ? 'bg-primary text-white rounded-br-sm selection:bg-white selection:text-text'
                             : 'bg-primary-soft text-text rounded-bl-sm'">
                 <p class="text-sm whitespace-pre-wrap wrap-break-word">
                     {{ mensagem.texto }}

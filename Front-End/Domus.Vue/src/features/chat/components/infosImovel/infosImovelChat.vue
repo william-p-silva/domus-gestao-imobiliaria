@@ -18,7 +18,7 @@ const props = defineProps<{
 function handleSubmit() {
     router.push({
         path: "/imovel",
-        query: { imovel_ID: props.chatActive?.imovel.imovel_ID }
+        query: { imovel_id: props.chatActive?.imovel.imovel_ID }
     });
 }
 </script>
