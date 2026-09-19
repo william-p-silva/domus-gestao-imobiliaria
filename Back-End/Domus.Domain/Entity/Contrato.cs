@@ -1,6 +1,7 @@
 ﻿
 
 using Domus.Domain.Enums;
+using Domus.Domain.Exceptions.Domain;
 using System.Diagnostics.Contracts;
 
 namespace Domus.Domain.Entity;
@@ -47,38 +48,69 @@ public class Contrato
     /// <param name="tipo">O tipo de contrato (ex: Residencial, Comercial).</param>
     /// <param name="urlContrato">O endereço de armazenamento do documento físico ou PDF.</param>
     /// <param name="imovel">A instância opcional do <see cref="Imovel"/> para validação de vínculo com o locador.</param>
-    /// <exception cref="ArgumentException">
+    /// <exception cref="ValidationException">
     /// Lançada se qualquer um dos campos obrigatórios estiver vazio, nulo ou inválido, 
     /// ou se o <paramref name="locador_id"/> não for o proprietário do <paramref name="imovel"/> informado.
     /// </exception>
-    public Contrato
-        (Guid imovel_id, Guid locador_id, string titulo, string descricao,
-          string tipo, string urlContrato, Imovel imovel)
+    public Contrato(
+        Usuario locador,
+        Imovel imovel,
+        string titulo,
+        string descricao,
+        string tipo,
+        string urlContrato
+        )
     {
-        if (imovel_id == Guid.Empty)
-            throw new ArgumentException("O ID do imóvel é obrigatório.", nameof(imovel_id));
-        if (locador_id == Guid.Empty)
-            throw new ArgumentException("O ID do locador é obrigatório.", nameof(locador_id));
-        if (string.IsNullOrWhiteSpace(titulo))
-            throw new ArgumentException("O título do contrato é obrigatório.", nameof(titulo));
-        if (string.IsNullOrWhiteSpace(descricao))
-            throw new ArgumentException("A descrição do contrato é obrigatória.", nameof(descricao));
-        if (string.IsNullOrWhiteSpace(tipo))
-            throw new ArgumentException("O tipo do contrato é obrigatório.", nameof(tipo));
-        if (string.IsNullOrWhiteSpace(urlContrato))
-            throw new ArgumentException("A URL do contrato é obrigatória.", nameof(urlContrato));
+        if (locador == null)
+            throw new ValidationException("Locador não informado.");
 
-        if (imovel != null && imovel.Usuario_ID != locador_id)
-            throw new ArgumentException("O locador deve ser o proprietário do imóvel.", nameof(locador_id));
+        if (!locador.PossuiFuncao(FuncaoUser.Locador))
+            throw new BusinessRuleException("Usuario não é um locador.");
+
+        if (imovel == null)
+            throw new ValidationException("Imóvel não informado.");
+
+        if (imovel.Usuario_ID != locador.Usuario_ID)
+            throw new ValidationException("O locador deve ser o proprietário do imóvel.");
+
+        if (imovel.Status == StatusImovel.Indisponivel || !imovel.Aprovado)
+            throw new ValidationException($"Imovel Indisponivel {imovel.Imovel_ID}");
+
+        if (imovel.Contratos.Any(c =>
+            c.Status == StatusContrato.Ativo
+            || c.Status == StatusContrato.Pendente
+            || c.Status == StatusContrato.Rascunho))
+            throw new ValidationException("Imovel já possui contrato");
+
+        if (imovel.Imovel_ID == Guid.Empty)
+            throw new ValidationException("O ID do imóvel é obrigatório.");
+
+        if (locador.Usuario_ID == Guid.Empty)
+            throw new ValidationException("O ID do locador é obrigatório.");
+
+        if (string.IsNullOrWhiteSpace(titulo))
+            throw new ValidationException("O título do contrato é obrigatório.");
+
+        if (string.IsNullOrWhiteSpace(descricao))
+            throw new ValidationException("A descrição do contrato é obrigatória.");
+
+        if (string.IsNullOrWhiteSpace(tipo))
+            throw new ValidationException("O tipo do contrato é obrigatório.");
+
+        if (string.IsNullOrWhiteSpace(urlContrato))
+            throw new ValidationException("A URL do contrato é obrigatória.");
+
 
         Contrato_ID = Guid.NewGuid();
-        Imovel_ID = imovel_id;
-        Locador_ID = locador_id;
+        Imovel_ID = imovel.Imovel_ID;
+        Locador_ID = locador.Usuario_ID;
         Titulo = titulo;
         Descricao = descricao;
         Tipo = tipo;
         UrlContrato = urlContrato;
         Status = StatusContrato.Rascunho;
+        Imovel = imovel;
+        Locador = locador;
     }
 
 
@@ -100,7 +132,7 @@ public class Contrato
             throw new InvalidOperationException("O contrato só pode ser disponibilizado para assinatura se estiver em rascunho.");
         if (AssinaturaLocador == true)
             throw new InvalidOperationException("Contrato já assinado");
-        if (Locatario_ID != Guid.Empty || Locatario_ID == null)
+        if (Locatario_ID != Guid.Empty || Locatario_ID != null)
             throw new InvalidOperationException("Já existe um locatario para este contrato ");
 
         Locatario_ID = locatario_id;
@@ -151,7 +183,7 @@ public class Contrato
         DataInicio = DateTime.UtcNow;
         DataTermino = dataTermino;
         Status = StatusContrato.Ativo;
-        
+
         GerarParcelasContrato(valorAluguel: valorAluguel);
     }
 
@@ -185,7 +217,7 @@ public class Contrato
         if (valorAluguel <= 0)
             throw new InvalidOperationException("Valor do aluguel incoerente ");
 
-        int mesesContrato = ((DataTermino.Value.Year - DataInicio.Value.Year) * 12 ) + 
+        int mesesContrato = ((DataTermino.Value.Year - DataInicio.Value.Year) * 12) +
                                 DataTermino.Value.Month - DataInicio.Value.Month;
 
         if (mesesContrato <= 0) mesesContrato = 1;
