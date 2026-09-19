@@ -3,6 +3,7 @@ using Domus.Application.DTOs.Endereco;
 using Domus.Application.DTOs.Imovel;
 using Domus.Application.DTOs.Imovel.CicloDeVida;
 using Domus.Application.Interfaces.Repositories;
+using Domus.Application.Mappers.Imovel;
 using Domus.Domain.Enums;
 
 namespace Domus.Application.UseCases.ImovelUseCase.CicloDeVida;
@@ -31,37 +32,6 @@ public class AprovarImovelUseCase(
 
         await commit.CommitAsync(cancellationToken);
 
-        return new ImovelResponse()
-        {
-            Imovel_ID = imovel.Imovel_ID,
-            Locador = new ResponseUsuarioImovel
-            {
-                Usuario_ID = imovel.Usuario.Usuario_ID,
-                Email = imovel.Usuario.Email.Endereco,
-                Nome = imovel.Usuario.Nome.NomeCompleto
-            },
-            Titulo = imovel.Titulo,
-            Descricao = imovel.Descricao,
-            Comodos = imovel.Comodos,
-            Status = imovel.Status.ToString(),
-            ValorAluguel = imovel.ValorAluguel,
-            CriadoEm = imovel.CriadoEm,
-            Endereco = new EnderecoResponse()
-            {
-                CEP = imovel.Endereco.CEP,
-                UF = imovel.Endereco.UF,
-                Cidade = imovel.Endereco.Cidade,
-                Bairro = imovel.Endereco.Bairro,
-                Rua = imovel.Endereco.Rua,
-                Numero = imovel.Endereco.Numero,
-                Complemento = imovel.Endereco.Complemento,
-                Endereco_ID = imovel.Endereco_ID,
-            },
-            Aprovado = imovel.Aprovado,
-            Avaliado = imovel.Avaliado,
-            Banheiros = imovel.Banheiros,
-            MetrosQuadrados = imovel.MetrosQuadrados,
-            TipoDoImovel = imovel.Tipo.ToString()
-        };
+        return imovel.ToResponse();
     }
 }

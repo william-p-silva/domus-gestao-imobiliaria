@@ -1,6 +1,7 @@
 ﻿using Domus.Application.DTOs.Endereco;
 using Domus.Application.DTOs.Imovel;
 using Domus.Application.Interfaces.Repositories;
+using Domus.Application.Mappers.Imovel;
 using Domus.Domain.Entity;
 
 namespace Domus.Application.UseCases.ImovelUseCase.Listar;
@@ -12,37 +13,6 @@ public class ListarImoveisAprovadosUseCase(IImovelRepository imovelRepository)
     {
         var imoveis = await imovelRepository.ListarAsync(aprovados: true, cancellationToken);
 
-        return imoveis.Select(x => new ImovelResponse
-        {
-            Aprovado = x.Aprovado,
-            Avaliado = x.Avaliado,
-            Comodos = x.Comodos,
-            CriadoEm = x.CriadoEm,
-            Descricao = x.Descricao,
-            Endereco = new EnderecoResponse
-            {
-                CEP = x.Endereco.CEP,
-                UF = x.Endereco.UF,
-                Cidade = x.Endereco.Cidade,
-                Bairro = x.Endereco.Bairro,
-                Rua = x.Endereco.Rua,
-                Numero = x.Endereco.Numero,
-                Complemento = x.Endereco.Complemento,
-                Endereco_ID = x.Endereco_ID
-            },
-            Imovel_ID = x.Imovel_ID,
-            Status = x.Status.ToString(),
-            Titulo = x.Titulo,
-            Locador = new ResponseUsuarioImovel
-            {
-                Usuario_ID = x.Usuario.Usuario_ID,
-                Email = x.Usuario.Email.Endereco,
-                Nome = x.Usuario.Nome.NomeCompleto
-            },
-            ValorAluguel = x.ValorAluguel,
-            Banheiros = x.Banheiros,
-            MetrosQuadrados = x.MetrosQuadrados,
-            TipoDoImovel = x.Tipo.ToString()
-        }).ToList();
+        return imoveis.Select(x => x.ToResponse()).ToList();
     }
 }
