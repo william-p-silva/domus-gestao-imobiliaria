@@ -11,9 +11,8 @@ public class ContratoFixture
     public Contrato GerarContrato()
     {
         return new Contrato(
-            imovel_id: Guid.NewGuid(),
             imovel: null,
-            locador_id: Guid.NewGuid(),
+            locador: null,
             titulo: "Contrato de Locação",
             descricao: "Contrato de locação para o imóvel X",
             urlContrato: "http://exemplo.com/contrato.pdf",

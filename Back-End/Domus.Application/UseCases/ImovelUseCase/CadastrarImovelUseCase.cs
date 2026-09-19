@@ -1,22 +1,20 @@
 ﻿
-using Domus.Application.DTOs.Endereco;
 using Domus.Application.DTOs.Imovel;
 using Domus.Application.Interfaces.Repositories;
 using Domus.Domain.Enums;
 using Domus.Domain.Entity;
 using Domus.Domain.Exceptions.Domain;
+using Domus.Application.Mappers.Imovel;
 
 namespace Domus.Application.UseCases.ImovelUseCase;
 
 public class CadastrarImovelUseCase(
     IImovelRepository imovelRepository, 
     IUsuarioRepository usuarioRepository, 
-    IUnitOfWork commit, 
-    IEnderecoRepository enderecoRepository)
+    IUnitOfWork commit)
 {
     private readonly IImovelRepository _imovelRepository = imovelRepository;
     private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
-    private readonly IEnderecoRepository _enderecoRepository = enderecoRepository;
     private readonly IUnitOfWork _commit = commit;
 
 
@@ -73,37 +71,6 @@ public class CadastrarImovelUseCase(
 
         await _commit.CommitAsync(cancellationToken);
 
-        return new ImovelResponse()
-        {
-            Imovel_ID = imovel.Imovel_ID,
-            Locador = new ResponseUsuarioImovel
-            {
-                Usuario_ID = imovel.Usuario.Usuario_ID,
-                Email = imovel.Usuario.Email.Endereco,
-                Nome = imovel.Usuario.Nome.NomeCompleto
-            },
-            Titulo = imovel.Titulo,
-            Descricao = imovel.Descricao,
-            Comodos = imovel.Comodos,
-            Status = imovel.Status.ToString(),
-            ValorAluguel = imovel.ValorAluguel,
-            CriadoEm = imovel.CriadoEm,
-            Endereco = new EnderecoResponse()
-            {
-                Endereco_ID = endereco.Endereco_ID,
-                CEP = endereco.CEP,
-                UF = endereco.UF,
-                Cidade = endereco.Cidade,
-                Bairro = endereco.Bairro,
-                Rua = endereco.Rua,
-                Numero = endereco.Numero,
-                Complemento = endereco.Complemento
-            },
-            Aprovado = imovel.Aprovado,
-            Avaliado = imovel.Avaliado,
-            Banheiros = imovel.Banheiros,
-            MetrosQuadrados = imovel.MetrosQuadrados,
-            TipoDoImovel = imovel.Tipo.ToString()
-        };
+        return imovel.ToResponse();
     }
 }
