@@ -13,5 +13,6 @@ public sealed record ResponseImovelChat
     public int Banheiros { get; set; }
     public decimal MetrosQuadrados { get; set; }
     public decimal ValorAluguel { get; set; }
+    public string Status { get; set; } = string.Empty;
     public List<ResponseImagemImovel> Imagens { get; set; } = new List<ResponseImagemImovel>();
 }

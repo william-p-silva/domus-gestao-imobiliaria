@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { FormatterNumber } from '@/shared/utils/formatter/formatterNumber';
 import { IconBanheiros, IconComodos, IconMetros } from '@/shared/UI/icons/imovel';
-import AppButton from '@/shared/components/buttons/appButton.vue';
 import { ArrowRight, Heart, MapPin } from '@lucide/vue';
 import imovelSemImagem from '@/assets/imgs/Imovel/imovel_sem_imagem_card.png'
 import type { ResponseChat } from '../../types/chatResponse';
 import { useRouter } from 'vue-router';
+import AppButton from '@/shared/components/buttons/appButton.vue';
 
 const formatter = FormatterNumber();
 const sizeIcon = 18;
@@ -25,7 +25,8 @@ function handleSubmit() {
 
 <template>
 
-    <div class="flex flex-col w-full bg-white rounded-2xl shadow-lg shadow-primary/10 overflow-hidden">
+    <div class="flex flex-col w-full bg-white border-2 rounded-2xl shadow-lg shadow-primary/10 overflow-hidden"
+        :class="chatActive?.imovel.status === 'Alugado' ? 'border-red-500/50' : 'border-white'">
 
         <div class="relative">
             <img :src="chatActive?.imovel.imagens[0]?.UrlImagem ?? imovelSemImagem" alt=""
@@ -84,7 +85,9 @@ function handleSubmit() {
                 <span class="text-sm text-text-muted font-normal"> /mês</span>
             </p>
 
-            <AppButton variant="outline" class="rounded-full" :action="handleSubmit">
+            <AppButton variant="outline" :isDisable="chatActive?.imovel.status === 'Alugado'"
+                :class="`rounded-full ${chatActive?.imovel.status === 'Alugado' ? 'border-red-500/50' : ''}`"
+                :action="handleSubmit">
                 <span class="flex items-center justify-center gap-2">
                     Ver detalhes do aluguel
                     <ArrowRight :size="16" />

@@ -40,12 +40,14 @@ public class ChatRepository(AppDbContext context) : IChatRepository
                             MetrosQuadrados = chat.Imovel.MetrosQuadrados,
                             Titulo = chat.Imovel.Titulo,
                             ValorAluguel = chat.Imovel.ValorAluguel,
+                            Status = chat.Imovel.Status.ToString(),
                             Imagens = chat.Imovel.Imagens.Select(i => new ResponseImagemImovel
                             {
                                 ImagemImovel_ID = i.ImagemImovel_ID,
                                 Titulo = i.Titulo,
                                 UrlImagem = i.UrlImagem
-                            }).ToList()
+                            }).ToList(),
+
                         },
 
                         Participantes = chat.UsuarioChats.Select(uc => new ResponseUsuariosChat
@@ -56,7 +58,19 @@ public class ChatRepository(AppDbContext context) : IChatRepository
                             Funcao = uc.Funcao.ToString(),
                             UsuarioChat_ID = uc.UsuarioChat_ID,
                             Usuario_ID = uc.Usuario_ID,
-                            Nome = uc.Usuario.Nome.NomeCompleto
+                            Nome = uc.Usuario.Nome.NomeCompleto,
+
+                            // Correção aqui:
+                            TotalImoveis = chat.UsuarioChats
+                                .Where(p => p.Funcao == Domain.Enums.FuncaoUser.Locador)
+                                .Select(
+                                    p => p.Usuario.Imoveis.Count(
+                                        i => i.Status != Domain.Enums.StatusImovel.Indisponivel
+                                          && i.Status != Domain.Enums.StatusImovel.Excluido
+                                          && i.Aprovado
+                                    )
+                                )
+                                .FirstOrDefault()
                         }).ToList(),
 
                         Mensagens = chat.MensagensChat.Select(m => new ResponseMensagemChat
@@ -71,7 +85,7 @@ public class ChatRepository(AppDbContext context) : IChatRepository
                         .OrderBy(x => x.DataEnvio)
                         .ToList()
                     }
-                ).FirstOrDefaultAsync();
+                ).FirstOrDefaultAsync(cancellationToken);
     }
 
 
@@ -115,6 +129,7 @@ public class ChatRepository(AppDbContext context) : IChatRepository
                             MetrosQuadrados = chat.Imovel.MetrosQuadrados,
                             Titulo = chat.Imovel.Titulo,
                             ValorAluguel = chat.Imovel.ValorAluguel,
+                            Status = chat.Imovel.Status.ToString(),
                             Imagens = chat.Imovel.Imagens.Select(i => new ResponseImagemImovel
                             {
                                 ImagemImovel_ID = i.ImagemImovel_ID,
@@ -131,7 +146,18 @@ public class ChatRepository(AppDbContext context) : IChatRepository
                             Funcao = uc.Funcao.ToString(),
                             UsuarioChat_ID = uc.UsuarioChat_ID,
                             Usuario_ID = uc.Usuario_ID,
-                            Nome = uc.Usuario.Nome.NomeCompleto
+                            Nome = uc.Usuario.Nome.NomeCompleto,
+
+                            TotalImoveis = chat.UsuarioChats
+                                .Where(p => p.Funcao == Domain.Enums.FuncaoUser.Locador)
+                                .Select(
+                                    p => p.Usuario.Imoveis.Count(
+                                        i => i.Status != Domain.Enums.StatusImovel.Indisponivel
+                                          && i.Status != Domain.Enums.StatusImovel.Excluido
+                                          && i.Aprovado
+                                    )
+                                )
+                                .FirstOrDefault()
                         }).ToList(),
 
                         Mensagens = chat.MensagensChat.Select(m => new ResponseMensagemChat

@@ -1,5 +1,10 @@
 
 // Adicionar Imovel response junto :)
+export type StatusImovel = 
+    'Alugado' |
+    'Disponivel' |
+    'Indisponivel' |
+    'Excluido' 
 
 
 export interface ResponseChat {
@@ -18,7 +23,7 @@ export interface ResponseParticipantes {
     usuario_ID: string,
     nome: string,
     bio: string,
-    qntImoveis: number,
+    totalImoveis: number,
     mediaAvaliacao: string,
     email: string,
     funcao: string,
@@ -42,6 +47,7 @@ export interface ResponseImovelChat {
     descricao: string,
     comodos: string,
     banheiros: string,
+    status: StatusImovel,
     metrosQuadrados: string,
     valorAluguel:string,
     imagens: ResponseImagensImovel[]

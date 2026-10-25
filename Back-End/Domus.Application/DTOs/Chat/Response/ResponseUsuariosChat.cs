@@ -12,6 +12,6 @@ public sealed record ResponseUsuariosChat
     public string Email { get; set; } = string.Empty;
     public string Funcao { get; set; } = string.Empty;
     public string Estado { get; set; } = string.Empty;
+    public int TotalImoveis { get; set; }
     public DateTime CriadoEm { get; set; }
-
 }

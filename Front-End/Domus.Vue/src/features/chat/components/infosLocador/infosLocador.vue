@@ -63,7 +63,7 @@ function handleSubmit() {
 
         <div class="flex justify-between border-y border-primary/10 py-3">
             <div class="flex flex-col items-center gap-0.5">
-                <p class="font-bold text-text text-base">{{ locador?.qntImoveis }}</p>
+                <p class="font-bold text-text text-base">{{ locador?.totalImoveis }}</p>
                 <span class="text-text-muted text-xs">Imóveis anunciados</span>
             </div>
 
