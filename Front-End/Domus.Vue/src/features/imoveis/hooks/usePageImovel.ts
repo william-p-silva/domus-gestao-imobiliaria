@@ -1,8 +1,7 @@
 import { type ImovelResponse } from "@/shared/types/imovel/imovelResponse";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { imovelService } from "../services/imovelService";
-import type { CreateImovelChat } from "../types/createChatImovel";
 
 
 const service = new imovelService()
@@ -33,6 +32,10 @@ export const usePageImovel = () => {
         }
 
     }
+
+    onMounted(async () => {
+        await getImovelId();
+    })
 
     async function createChatImovel() {
         router.push({

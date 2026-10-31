@@ -1,5 +1,4 @@
 <script setup>
-import { type } from 'os';
 
 
 
