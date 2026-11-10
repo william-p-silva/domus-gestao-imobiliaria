@@ -51,6 +51,5 @@ public class UsuarioChatConfiguration : IEntityTypeConfiguration<UsuarioChat>
 
 
         builder.HasQueryFilter(uc => uc.Estado != EstadoUsuarioChat.Deletado);
-
     }
 }

@@ -1,6 +1,5 @@
 ﻿
 using Domus.Application.DTOs.Endereco;
-using Domus.Domain.Enums;
 
 namespace Domus.Application.DTOs.Imovel;
 
@@ -21,4 +20,5 @@ public class ImovelResponse
     public ResponseUsuarioImovel Locador { get; set; } = new ResponseUsuarioImovel();
     public EnderecoResponse Endereco { get; set; } = new EnderecoResponse();
     public ResponseContratoImovel? Contrato { get; set; } = new ResponseContratoImovel();
+    public int Avaliacao { get; set; }
 }

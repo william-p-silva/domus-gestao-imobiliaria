@@ -1,5 +1,4 @@
-﻿
-using Domus.Domain.Entity;
+﻿using Domus.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domus.Infrastructure.Data.Context;
@@ -9,6 +8,8 @@ public class AppDbContext : DbContext
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     public DbSet<Avaliacao> Avaliacoes { get; set; }
+    public DbSet<Caracteristica> Caracteristicas { get; set; }
+    public DbSet<CaracteristicaImovel> CaracteristicasImovel { get; set; }
     public DbSet<Chat> Chats { get; set; }
     public DbSet<Contrato> Contratos { get; set; }
     public DbSet<Endereco> Enderecos { get; set; }

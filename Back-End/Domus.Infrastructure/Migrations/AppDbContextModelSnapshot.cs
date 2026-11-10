@@ -67,6 +67,66 @@ namespace Domus.Infrastructure.Migrations
                     b.ToTable("Avaliacoes", (string)null);
                 });
 
+            modelBuilder.Entity("Domus.Domain.Entity.Caracteristica", b =>
+                {
+                    b.Property<Guid>("Caracteristica_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletadoEm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.ComplexProperty<Dictionary<string, object>>("Nome", "Domus.Domain.Entity.Caracteristica.Nome#NomeCaracteristica", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Nome")
+                                .IsRequired()
+                                .HasMaxLength(70)
+                                .HasColumnType("nvarchar(70)")
+                                .HasColumnName("Nome");
+                        });
+
+                    b.HasKey("Caracteristica_ID");
+
+                    b.ToTable("Caracteristicas", (string)null);
+                });
+
+            modelBuilder.Entity("Domus.Domain.Entity.CaracteristicaImovel", b =>
+                {
+                    b.Property<Guid>("CaracteristicaImovel_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("Caracteristica_ID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletadoEm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Imovel_ID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CaracteristicaImovel_ID");
+
+                    b.HasIndex("Caracteristica_ID");
+
+                    b.HasIndex("Imovel_ID");
+
+                    b.ToTable("CaracteristicasImovel", (string)null);
+                });
+
             modelBuilder.Entity("Domus.Domain.Entity.Chat", b =>
                 {
                     b.Property<Guid>("Chat_ID")
@@ -716,6 +776,25 @@ namespace Domus.Infrastructure.Migrations
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("Domus.Domain.Entity.CaracteristicaImovel", b =>
+                {
+                    b.HasOne("Domus.Domain.Entity.Caracteristica", "Caracteristica")
+                        .WithMany("CaracteristicasImovel")
+                        .HasForeignKey("Caracteristica_ID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domus.Domain.Entity.Imovel", "Imovel")
+                        .WithMany("CaracteristicasImovel")
+                        .HasForeignKey("Imovel_ID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Caracteristica");
+
+                    b.Navigation("Imovel");
+                });
+
             modelBuilder.Entity("Domus.Domain.Entity.Chat", b =>
                 {
                     b.HasOne("Domus.Domain.Entity.Imovel", "Imovel")
@@ -1023,6 +1102,11 @@ namespace Domus.Infrastructure.Migrations
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("Domus.Domain.Entity.Caracteristica", b =>
+                {
+                    b.Navigation("CaracteristicasImovel");
+                });
+
             modelBuilder.Entity("Domus.Domain.Entity.Chat", b =>
                 {
                     b.Navigation("MensagensChat");
@@ -1043,6 +1127,8 @@ namespace Domus.Infrastructure.Migrations
             modelBuilder.Entity("Domus.Domain.Entity.Imovel", b =>
                 {
                     b.Navigation("Avaliacoes");
+
+                    b.Navigation("CaracteristicasImovel");
 
                     b.Navigation("Chats");
 

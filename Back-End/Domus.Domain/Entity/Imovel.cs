@@ -31,6 +31,8 @@ public class Imovel
 
     public ICollection<Chat> Chats { get; private set; } = new List<Chat>();
 
+    public ICollection<CaracteristicaImovel> CaracteristicasImovel { get; private set; } = new List<CaracteristicaImovel>();
+
     public Usuario Usuario { get; private set; }
     public Endereco Endereco { get; private set; }
 

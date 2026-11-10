@@ -13,10 +13,12 @@ public class Usuario
     public Celular? Celular { get; private set; } //
     public bool Ativo { get; private set; }
     public string SenhaHash { get; private set; }
+
     public Guid TokenConfirmaEmail { get; private set; }
     public DateTime TokenEmailExpire { get; private set; } = DateTime.UtcNow.AddHours(2);
     public Email EmailAConfirmar { get; private set; } //
     public bool EmailConfirmado { get; private set; } = false;
+
     public DateTime CriadoEm { get; private set; } = DateTime.UtcNow;
     public DateTime? ExcluidoEm { get; private set; }
 

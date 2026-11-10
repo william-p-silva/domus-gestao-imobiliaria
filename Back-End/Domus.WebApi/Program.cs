@@ -194,11 +194,13 @@ app.Run();
 // COMANDOS ÚTEIS PARA O TERMINAL:
 // 
 // Criar uma nova Migration:
-// dotnet ef migrations add AtualizandoUsuario --project ..\Infrastructure 
+// dotnet ef migrations add AdicionandoCaracteristicas --project ..\Domus.Infrastructure 
 //
 // Atualizar o banco manualmente (Caso não queira depender do auto-migrate):
-// dotnet ef database update --project ..\Infrastructure  
+// dotnet ef database update --project ..\Domus.Infrastructure  
 //
+// Remover Migration
+// dotnet ef migrations remove --project ..\Domus.Infrastructure
 //
 // Salvar Chaves de configuração sensíveis (ex: JWT) usando Secret Manager (Desenvolvimento local):
 // dotnet user-secrets list // Listar chaves e valores atuais
