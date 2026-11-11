@@ -15,6 +15,7 @@ public class CaracteristicaRepository(AppDbContext context) : ICaracteristicaRep
 
     public async Task<Caracteristica?> BuscarPorNome(string nome, CancellationToken cancellationToken = default)
     {
-        return await context.Caracteristicas.FirstOrDefaultAsync(x => x.Nome.Nome == nome, cancellationToken);
+        return await context.Caracteristicas.FirstOrDefaultAsync(x => 
+            x.Nome.Nome.Trim().ToLower() == nome.Trim().ToLower(), cancellationToken);
     }
 }

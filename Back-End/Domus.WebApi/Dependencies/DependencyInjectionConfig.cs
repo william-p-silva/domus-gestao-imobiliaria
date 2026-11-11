@@ -3,6 +3,7 @@ using Domus.Application.Interfaces.Notifications;
 using Domus.Application.Interfaces.Repositories;
 using Domus.Application.Interfaces.Security;
 using Domus.Application.UseCases.AvaliacaoUseCases;
+using Domus.Application.UseCases.CaracteristicaUseCase;
 using Domus.Application.UseCases.ChatUseCase;
 using Domus.Application.UseCases.ChatUseCase.Listar;
 using Domus.Application.UseCases.ContratoUseCase;
@@ -40,6 +41,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IContratoRepository, ContratoRepository>();
         services.AddScoped<IChatRepository, ChatRepository>();
         services.AddScoped<IUsuarioChatRepository, UsuarioChatRepository>();
+        services.AddScoped<ICaracteristicaRepository, CaracteristicaRepository>();
 
 
         //Segurança
@@ -91,6 +93,9 @@ public static class DependencyInjectionConfig
         services.AddScoped<AssinarContratoUseCase>();
         services.AddScoped<DisponibilizarParaAssinaturaUseCase>();
         services.AddScoped<BuscarContratoUseCase>();
+
+        //Característica
+        services.AddScoped<CadastrarCaracteristicaUseCase>();
 
         //SignalR
         services.AddSignalR();
