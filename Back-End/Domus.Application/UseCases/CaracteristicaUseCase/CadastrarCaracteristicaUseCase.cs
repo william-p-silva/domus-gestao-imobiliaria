@@ -3,6 +3,7 @@
 using Domus.Application.DTOs.Caracteristica.Request;
 using Domus.Application.DTOs.Caracteristica.Response;
 using Domus.Application.Interfaces.Repositories;
+using Domus.Application.Mappers.CaracteristicaMapper;
 using Domus.Domain.Entity;
 using Domus.Domain.Exceptions.Domain;
 
@@ -21,7 +22,12 @@ public class CadastrarCaracteristicaUseCase(
         var result = await caracteristicaRepository.BuscarPorNome(request.Nome);
 
         if (result is not null)
-            throw new BusinessRuleException("Característica já existe.");
+        {
+            if (result.Estado != Domain.Enums.Caracteristica.EstadoCaracteristica.Ativa)
+                result.Ativar();
+            else
+                throw new BusinessRuleException("Característica já cadastrada.");
+        }
 
         var caracteristica = new Caracteristica(request.Nome);
 
@@ -29,13 +35,6 @@ public class CadastrarCaracteristicaUseCase(
 
         await unitOfWork.CommitAsync(cancellationToken);
 
-        return new CaracteristicaResponse
-        {
-            Caracteristica_ID = caracteristica.Caracteristica_ID
-            ,CriadoEm = caracteristica.CriadoEm
-            ,DeletadoEm = caracteristica.DeletadoEm
-            ,Estado = caracteristica.Estado.ToString()
-            ,Nome = caracteristica.Nome.Nome
-        };
+        return caracteristica.ToResponse();
     }
 }

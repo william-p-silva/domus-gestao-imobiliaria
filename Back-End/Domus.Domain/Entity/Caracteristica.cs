@@ -30,4 +30,12 @@ public class Caracteristica
 
         Nome = NomeCaracteristica.Create(nome);
     }
+
+    public void Ativar()
+    {
+        if (Estado == EstadoCaracteristica.Ativa)
+            throw new ValidationException("Característica já está ativa.");
+
+        Estado = EstadoCaracteristica.Ativa;
+    }
 }
