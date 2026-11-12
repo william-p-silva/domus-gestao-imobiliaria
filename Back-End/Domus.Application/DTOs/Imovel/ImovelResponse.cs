@@ -17,6 +17,7 @@ public class ImovelResponse
     public decimal MetrosQuadrados { get; set; }
     public int Banheiros { get; set; }
     public string TipoDoImovel { get; set; } = string.Empty;
+    public List<CaracteristicaImovelResponse> Caracteristicas { get; set; } = new List<CaracteristicaImovelResponse>();
     public ResponseUsuarioImovel Locador { get; set; } = new ResponseUsuarioImovel();
     public EnderecoResponse Endereco { get; set; } = new EnderecoResponse();
     public ResponseContratoImovel? Contrato { get; set; } = new ResponseContratoImovel();

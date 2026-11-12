@@ -98,6 +98,21 @@ public class Imovel
         Usuario = usuario;
     }
 
+    public void AdicionarCaracteristicas(
+        List<Caracteristica> caracteristicas
+        )
+    {
+        if (caracteristicas is null || caracteristicas.Count <= 0)
+            throw new ValidationException("Características não podem ser nulas.");
+
+        foreach( var caracteristica in caracteristicas)
+        {
+            var caracteristicaImovel = new CaracteristicaImovel(imovel: this, caracteristica: caracteristica);
+
+            CaracteristicasImovel.Add(caracteristicaImovel);
+        }
+    }
+
 
     public void Avaliar(bool aprovado)
     {

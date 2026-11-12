@@ -11,13 +11,14 @@ namespace Domus.Application.UseCases.ImovelUseCase;
 public class CadastrarImovelUseCase(
     IImovelRepository imovelRepository, 
     IUsuarioRepository usuarioRepository, 
-    IUnitOfWork commit)
+    IUnitOfWork commit,
+    ICaracteristicaRepository caracteristicaRepository
+    )
 {
     private readonly IImovelRepository _imovelRepository = imovelRepository;
     private readonly IUsuarioRepository _usuarioRepository = usuarioRepository;
     private readonly IUnitOfWork _commit = commit;
-
-
+    private readonly ICaracteristicaRepository _caracteristicaRepository = caracteristicaRepository;
 
     /// <summary>
     /// Caso de Uso: Realiza o cadastramento e publicação de um novo imóvel no sistema, criando também o seu respectivo endereço.
@@ -34,6 +35,8 @@ public class CadastrarImovelUseCase(
     /// </exception>
     public async Task<ImovelResponse> Execute(ImovelRequest request, Guid user_id, CancellationToken cancellationToken)
     {
+        List<Caracteristica> caracteristicas = new List<Caracteristica>();
+
         var user = await _usuarioRepository.BuscarPorIdAsync(user_id, cancellationToken);
         if (user == null)
             throw new NotFoundException("Usuário não encontrado");
@@ -41,6 +44,16 @@ public class CadastrarImovelUseCase(
         if (!user.PossuiFuncao(FuncaoUser.Locador))
             throw new BusinessRuleException("Usuário não tem permissão para cadastrar um imóvel");
 
+        foreach (var id in request.Caracteristicas)
+        {
+            var caracteristica = await _caracteristicaRepository.BuscarPorId(
+                id, 
+                Domain.Enums.Caracteristica.EstadoCaracteristica.Ativa, 
+                cancellationToken) 
+                ?? throw new NotFoundException($"Característica não encontrada. Id: {id}");
+
+            caracteristicas.Add(caracteristica);
+        }
 
         var endereco = new Endereco(
             cep: request.Endereco.CEP,
@@ -66,6 +79,8 @@ public class CadastrarImovelUseCase(
             endereco: endereco,
             usuario: user
         );
+
+        imovel.AdicionarCaracteristicas(caracteristicas);
 
         await _imovelRepository.AddAsync(imovel, cancellationToken);
 

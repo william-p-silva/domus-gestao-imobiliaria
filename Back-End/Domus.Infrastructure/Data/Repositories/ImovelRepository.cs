@@ -22,6 +22,8 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
         var imovel = await context.Imoveis
             .Include(i => i.Endereco)
             .Include(i => i.Contratos)
+            .Include(i => i.CaracteristicasImovel)
+                .ThenInclude(ci => ci.Caracteristica)
             .Include(i => i.Usuario)
                 .ThenInclude(uf => uf.UsuarioFuncao)
                     .ThenInclude(f => f.Funcao)
@@ -34,6 +36,8 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
         return await context.Imoveis
             .Include(i => i.Endereco)
             .Include(i => i.Usuario)
+            .Include(i => i.CaracteristicasImovel)
+                .ThenInclude(ci => ci.Caracteristica)
             .AsNoTracking().ToListAsync(cancellationToken);
     }
 
@@ -47,6 +51,8 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
             .Include(i => i.Endereco)
             .Include(i => i.Contratos)
             .Include(i => i.Usuario)
+            .Include(i => i.CaracteristicasImovel)
+                .ThenInclude(ci => ci.Caracteristica)
             .Where(x => x.Status == StatusImovel.Disponivel && x.Aprovado)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
@@ -58,6 +64,8 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
         var query = context.Imoveis
             .Include(x => x.Endereco)
             .Include(i => i.Usuario)
+            .Include(i => i.CaracteristicasImovel)
+                .ThenInclude(ci => ci.Caracteristica)
             .AsNoTracking()
             .AsQueryable();
 
@@ -72,6 +80,8 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
         var query = context.Imoveis
             .Include(x => x.Endereco)
             .Include(i => i.Usuario)
+            .Include(i => i.CaracteristicasImovel)
+                .ThenInclude(ci => ci.Caracteristica)
             .Where(x => x.Status == StatusImovel.Disponivel && x.Aprovado)
             .AsNoTracking()
             .AsQueryable();
@@ -132,6 +142,8 @@ public class ImovelRepository(AppDbContext context) : IImovelRepository
             .Include(i => i.Endereco)
             .Include(i => i.Contratos)
             .Include(i => i.Usuario)
+            .Include(i => i.CaracteristicasImovel)
+                .ThenInclude(ci => ci.Caracteristica)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
         return imovesLocador;

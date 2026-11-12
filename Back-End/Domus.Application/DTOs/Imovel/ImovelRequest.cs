@@ -15,5 +15,6 @@ public sealed record ImovelRequest
     public StatusImovel Status { get; set; }
     public decimal ValorAluguel { get; set; }
     public TipoImovel TipoDoImovel { get; set; }
+    public List<Guid> Caracteristicas { get; set; } = new List<Guid>();
     public EnderecoRequest Endereco { get; set; } = new EnderecoRequest();
 }

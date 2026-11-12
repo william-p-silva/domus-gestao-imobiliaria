@@ -14,4 +14,10 @@ public interface ICaracteristicaRepository
     Task<List<Caracteristica>> Listar(
         EstadoCaracteristica estado = EstadoCaracteristica.Ativa, 
         CancellationToken cancellationToken = default);
+
+    Task<Caracteristica?> BuscarPorId(
+        Guid id,
+        EstadoCaracteristica? estado = EstadoCaracteristica.Ativa,
+        CancellationToken cancellationToken = default
+        );
 }

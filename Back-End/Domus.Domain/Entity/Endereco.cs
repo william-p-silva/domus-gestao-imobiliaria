@@ -1,4 +1,6 @@
 ﻿
+using Domus.Domain.Exceptions.Domain;
+
 namespace Domus.Domain.Entity;
 
 public class Endereco
@@ -26,6 +28,8 @@ public class Endereco
             throw new ArgumentException("O CEP é obrigatório.", nameof(cep));
         if (string.IsNullOrWhiteSpace(uf))
             throw new ArgumentException("A UF é obrigatória.", nameof(uf));
+        if (uf.Count() != 2)
+            throw new ValidationException("UF só deve conter exatamente dois caracteres");
         if (string.IsNullOrWhiteSpace(cidade))
             throw new ArgumentException("A cidade é obrigatória.", nameof(cidade));
         if (string.IsNullOrWhiteSpace(bairro))

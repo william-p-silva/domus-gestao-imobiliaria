@@ -53,7 +53,15 @@ public static class ImovelMapper
                 Tipo = contrato.Tipo,
                 Titulo = contrato.Titulo,
                 UrlContrato = contrato.UrlContrato
-            } : null
+            } : null,
+            Caracteristicas = imovel.CaracteristicasImovel.Select(c => new CaracteristicaImovelResponse
+            {
+                CaracteristicaImovel_ID = c.CaracteristicaImovel_ID,
+                Caracteristica_ID = c.Caracteristica_ID,
+                CriadoEm = c.CriadoEm,
+                DeletadoEm = c.DeletadoEm,
+                Nome = c.Caracteristica.Nome.Nome
+            }).ToList()
         };
     }
 
