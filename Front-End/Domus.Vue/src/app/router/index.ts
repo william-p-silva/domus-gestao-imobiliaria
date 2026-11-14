@@ -91,6 +91,17 @@ const router = createRouter({
           path: "dashboard",
           name: "LocadorDashboard",
           component: () => import("@/app/view/locador/HomeLocadorView.vue")
+        },
+        {
+          path: "imoveis",
+          name: "imoveisDoLocador",
+          children: [
+            {
+              path: "cadastrar",
+              name: "CadastrarImovelLocador",
+              component: () => import("@/app/view/locador/imoveis/CadastrarImovelView.vue")
+            }
+          ]
         }
       ],
     },

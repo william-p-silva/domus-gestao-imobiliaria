@@ -1,3 +1,5 @@
+import type { enderecoSchema } from "@/shared/schemas/endereco/enderecoScema";
+import type z from "zod";
 
 
 export interface EnderecoResponse {
@@ -10,3 +12,5 @@ export interface EnderecoResponse {
     numero: string,
     complemento?: string
 }
+
+export type EnderecoDTO = z.infer<typeof enderecoSchema>;
