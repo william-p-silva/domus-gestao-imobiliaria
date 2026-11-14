@@ -83,8 +83,8 @@ const router = createRouter({
     {
       path: "/locador",
       name: "Locador",
-      component: () => import("@/shared/layouts/appLayout.vue"),
-      meta: { requiresAuth: true, roles: ["Locador"] },
+      component: () => import("@/shared/layouts/masterLayout.vue"),
+      // meta: { requiresAuth: true, roles: ["Locador"] },
       redirect: "/locador/dashboard",
       children: [
         {

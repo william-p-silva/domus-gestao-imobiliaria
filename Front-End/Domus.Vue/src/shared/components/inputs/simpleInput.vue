@@ -13,27 +13,20 @@ const emit = defineEmits<{
 
 <template>
     <div class="flex flex-col" :class="label !== '' ? 'gap-1.5' : 'gap-0'">
-        <label
-            class="
+        <label class="
                 text-sm
                 font-medium
                 text-white/85
-            "
-        >
+            ">
             {{ label }}
         </label>
 
-        <input
-            :type="type ?? 'text'"
-            :placeholder="placeholder"
-            :value="modelValue"
-            @input="
-                emit(
-                    'update:modelValue',
-                    ($event.target as HTMLInputElement).value
-                )
-            "
-            class="
+        <input :type="type ?? 'text'" :placeholder="placeholder" :value="modelValue" @input="
+            emit(
+                'update:modelValue',
+                ($event.target as HTMLInputElement).value
+            )
+            " class="
                 w-full
                 rounded-xl
 
@@ -61,7 +54,6 @@ const emit = defineEmits<{
                 focus:bg-white/15
                 focus:ring-2
                 focus:ring-primary-light/20
-            "
-        />
+            " />
     </div>
 </template>
