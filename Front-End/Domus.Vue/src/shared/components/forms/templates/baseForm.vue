@@ -11,7 +11,7 @@ import type { VueElement } from 'vue';
 
 
 <template>
-    <section class="flex w-full rounded-2xl px-4 bg-white flex-col gap-4 py-1">
+    <section class="flex w-full rounded-2xl px-4 bg-white flex-col gap-4 pt-1 pb-3">
         <slot />
     </section>
 </template>

@@ -1,7 +1,8 @@
-import { ref, watch } from "vue";
+import { ref, watch, type Ref } from "vue";
 import { z } from "zod";
 import { type CadastrarImovelDTO } from "../types/cadastrarImovel";
 import { cadastrarImovelSchema } from "../schemas/cadastrarImovelSchema"; // ajuste o caminho
+import { enderecoSchema } from "@/shared/schemas/endereco/enderecoScema";
 
 
 export const DEFAULT_REQUEST: CadastrarImovelDTO = {
@@ -26,14 +27,20 @@ export const DEFAULT_REQUEST: CadastrarImovelDTO = {
 };
 
 
-type Erros = Partial<Record<keyof CadastrarImovelDTO, string>>;
+type Endereco = CadastrarImovelDTO["endereco"];
+
+// campos simples (exceto endereço) + erros do endereço aninhados
+export type Erros = Partial<
+    Record<Exclude<keyof CadastrarImovelDTO, "endereco">, string>
+> & {
+    endereco?: Partial<Record<keyof Endereco, string>>;
+};
 
 export const useCadastrarImovel = () => {
     const isLoading = ref<boolean>(false);
-    const error = ref<string>(""); // erro geral (ex.: falha na API)
-    const errors = ref<Erros>({}); // erro por campo
+    const error = ref<string>("");
+    const errors = ref<Erros>({});
 
-    // cópia, para não mutar a constante
     const requestCadastro = ref<CadastrarImovelDTO>(structuredClone(DEFAULT_REQUEST));
 
     let tentouEnviar = false;
@@ -46,15 +53,25 @@ export const useCadastrarImovel = () => {
             return result.data;
         }
 
-        const { fieldErrors } = z.flattenError(result.error);
-        errors.value = Object.fromEntries(
-            Object.entries(fieldErrors).map(([campo, msgs]) => [campo, msgs?.[0]])
-        ) as Erros;
+        const novosErros: Erros = {};
 
+        for (const issue of result.error.issues) {
+            const [campo, subcampo] = issue.path;
+
+            if (campo === "endereco" && typeof subcampo === "string") {
+                novosErros.endereco ??= {};
+                // guarda só a primeira mensagem de cada campo
+                novosErros.endereco[subcampo as keyof Endereco] ??= issue.message;
+            } else if (typeof campo === "string") {
+                const chave = campo as Exclude<keyof CadastrarImovelDTO, "endereco">;
+                novosErros[chave] ??= issue.message;
+            }
+        }
+
+        errors.value = novosErros;
         return null;
     }
 
-    // depois da primeira tentativa de envio, revalida enquanto o usuário corrige
     watch(
         requestCadastro,
         () => {
@@ -78,4 +95,12 @@ export const useCadastrarImovel = () => {
         requestCadastro,
         enviar,
     };
+};
+
+export type CadastrarImovelForm = {
+    isLoading: Ref<boolean>;
+    error: Ref<string>;
+    errors: Ref<Erros>;
+    requestCadastro: Ref<CadastrarImovelDTO>;
+    enviar: () => void;
 };

@@ -21,6 +21,6 @@ export const enderecoSchema = z.object({
     numero: z.string()
         .min(1, "Informe o número do imóvel"),
 
-    complemento: z.string().nullable().optional(),
+    complemento: z.string().optional(),
 });
 

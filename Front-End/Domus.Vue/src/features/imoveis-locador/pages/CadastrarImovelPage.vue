@@ -1,55 +1,44 @@
 <script setup lang="ts">
 import MainTitle from '@/shared/components/title/mainTitle.vue';
 import { useCadastrarImovel } from '../hook/useCadastrarImovel';
-import BaseForm from '@/shared/components/forms/templates/baseForm.vue';
-import HeaderForm from '@/shared/components/forms/templates/headerForm.vue';
-import { Building2 } from '@lucide/vue';
-import InputText from '@/shared/components/inputs/base/inputText.vue';
-import BaseTextArea from '@/shared/components/inputs/base/baseTextArea.vue';
-import BaseSelect from '@/shared/components/inputs/base/select/BaseSelect.vue';
-import { DEFAULT_STATUSOPTIONS_IMOVEIS, DEFAULT_TIPOS_IMOVEIS, DEFAULT_TITLE } from '../config/cadastrarImovelConfig';
+import { DEFAULT_TITLE } from '../config/cadastrarImovelConfig';
+import InfosImovelForm from '../components/forms/infosImovelForm.vue';
+import CaracteristicasImovelForm from '../components/forms/caracteristicasImovelForm.vue';
+import ComercilImovelForm from '../components/forms/comercilImovelForm.vue';
+import EnderecoImovelForm from '../components/forms/enderecoImovelForm.vue';
+import BaseButton from '@/shared/components/inputs/buttons/baseButton.vue';
+import { Bookmark, Check } from '@lucide/vue';
 
-const { 
-    errors, 
-    requestCadastro,
-    enviar
-} = useCadastrarImovel();
+const cadastro = useCadastrarImovel();
 
 </script>
 
 
 <template>
-    <MainTitle :title="DEFAULT_TITLE.title"
-        :subTitle="DEFAULT_TITLE.subTitle"
+    <MainTitle :title="DEFAULT_TITLE.title" :subTitle="DEFAULT_TITLE.subTitle"
         :modeIndicator="DEFAULT_TITLE.modeIndicator" />
-    <article class="px-4">
-        <BaseForm>
-            <HeaderForm title="1. Informações do imóvel"
-                description="Dados principais para identificação do anúncio nas buscas DOMUS" :icon="Building2" />
+    <article class="grid grid-cols-2  px-4 pb-4">
+        <div class="flex flex-col gap-4">
+            <InfosImovelForm v-bind="cadastro" />
+            <CaracteristicasImovelForm v-bind="cadastro" />
+            <ComercilImovelForm v-bind="cadastro" />
+            <EnderecoImovelForm v-bind="cadastro" />
 
-            <InputText v-model="requestCadastro.titulo" label="Título do imóvel" required :max-caracteres="200"
-                placeholder="Ex: Apartamento de alto padrão"
-                description="Destaque os principais atrativos: localização nobre, vista e padrão arquitetônico."
-                :error="errors.titulo" />
-
-            <BaseTextArea v-model="requestCadastro.descricao" label="Descrição do imóvel" required :min-height="100"
-                :max-caracteres="1000" placeholder="Excelente residência com iluminação natural abundante..."
-                description="Conte detalhes sobre ambientes, acabamento e diferenciais." :error="errors.descricao" />
-            <div class="flex justify-between gap-4">
-
-                <BaseSelect v-model="requestCadastro.tipoDoImovel" label="Tipo do imóvel" required
-                    description="Selecione o tipo do seu imóvel" :options="DEFAULT_TIPOS_IMOVEIS"
-                    placeholder="Selecione o tipo" :error="errors.tipoDoImovel" />
-
-                <BaseSelect v-model="requestCadastro.status" label="Status de disponibilidade" required
-                    description="Selecione a disponibilidade do imóvel" :options="DEFAULT_STATUSOPTIONS_IMOVEIS"
-                    :error="errors.status" />
+            <div class="flex justify-between border-t-2 border-text-muted/20 pt-4">
+                <BaseButton variant="outlined">
+                    <span class="flex gap-4 justify-center items-center">
+                        <Bookmark :size="20" /> Cadastrar
+                    </span>
+                </BaseButton>
+                <div class="flex gap-4">
+                    <BaseButton variant="outlined">Cancelar</BaseButton>
+                    <BaseButton variant="primary" type="button" :action="cadastro.enviar">
+                        <span class="flex gap-4 justify-center items-center">
+                            <Check /> Cadastrar
+                        </span>
+                    </BaseButton>
+                </div>
             </div>
-
-            <button v-on:click="enviar">
-                text-base
-            </button>
-        </BaseForm>
-
+        </div>
     </article>
 </template>
