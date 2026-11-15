@@ -3,7 +3,7 @@ import { Toilet } from '@lucide/vue';
 
 
 const props = withDefaults(defineProps<{
-    size: number
+    size?: number
 }>(),
     {size: 16}
 )

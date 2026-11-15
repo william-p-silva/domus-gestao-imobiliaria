@@ -9,7 +9,13 @@ const statusImovelEnum = z.enum([
     "Excluido",
 ]);
 
-const tipoImovelEnum = z.literal([0, 1, 2, 3, 4]);
+const tipoImovelEnum = z.enum([
+    "Casa",
+    "Apartamento",
+    "Studio",
+    "KitNet",
+    "Sobrado",
+]);
 
 export const cadastrarImovelSchema = z.object({
     titulo: z.string()
