@@ -43,6 +43,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IChatRepository, ChatRepository>();
         services.AddScoped<IUsuarioChatRepository, UsuarioChatRepository>();
         services.AddScoped<ICaracteristicaRepository, CaracteristicaRepository>();
+        services.AddScoped<IGrupoCaracteristicaRepository, GrupoCaracteristicaRepository>();
 
 
         //Segurança

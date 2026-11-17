@@ -84,6 +84,9 @@ namespace Domus.Infrastructure.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<Guid>("GrupoCaracteristica_ID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.ComplexProperty<Dictionary<string, object>>("Nome", "Domus.Domain.Entity.Caracteristica.Nome#NomeCaracteristica", b1 =>
                         {
                             b1.IsRequired();
@@ -96,6 +99,8 @@ namespace Domus.Infrastructure.Migrations
                         });
 
                     b.HasKey("Caracteristica_ID");
+
+                    b.HasIndex("GrupoCaracteristica_ID");
 
                     b.ToTable("Caracteristicas", (string)null);
                 });
@@ -305,6 +310,42 @@ namespace Domus.Infrastructure.Migrations
                             Funcao_ID = new Guid("33333333-3333-3333-3333-333333333333"),
                             Nome = "Locatario"
                         });
+                });
+
+            modelBuilder.Entity("Domus.Domain.Entity.GrupoCaracteristica", b =>
+                {
+                    b.Property<Guid>("GrupoCaracteristica_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("Codigo");
+
+                    b.Property<DateTime>("CriadoEm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletadoEm")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("GrupoCaracteristica_ID");
+
+                    b.HasIndex("Codigo")
+                        .IsUnique();
+
+                    b.ToTable("GruposCaracteristica", (string)null);
                 });
 
             modelBuilder.Entity("Domus.Domain.Entity.ImagemImovel", b =>
@@ -776,6 +817,17 @@ namespace Domus.Infrastructure.Migrations
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("Domus.Domain.Entity.Caracteristica", b =>
+                {
+                    b.HasOne("Domus.Domain.Entity.GrupoCaracteristica", "GrupoCaracteristica")
+                        .WithMany("Caracteristicas")
+                        .HasForeignKey("GrupoCaracteristica_ID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("GrupoCaracteristica");
+                });
+
             modelBuilder.Entity("Domus.Domain.Entity.CaracteristicaImovel", b =>
                 {
                     b.HasOne("Domus.Domain.Entity.Caracteristica", "Caracteristica")
@@ -1122,6 +1174,11 @@ namespace Domus.Infrastructure.Migrations
             modelBuilder.Entity("Domus.Domain.Entity.Funcao", b =>
                 {
                     b.Navigation("UsuarioFuncao");
+                });
+
+            modelBuilder.Entity("Domus.Domain.Entity.GrupoCaracteristica", b =>
+                {
+                    b.Navigation("Caracteristicas");
                 });
 
             modelBuilder.Entity("Domus.Domain.Entity.Imovel", b =>

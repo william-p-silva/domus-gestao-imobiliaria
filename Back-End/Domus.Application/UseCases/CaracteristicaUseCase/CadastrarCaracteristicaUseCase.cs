@@ -11,6 +11,7 @@ namespace Domus.Application.UseCases.CaracteristicaUseCase;
 
 public class CadastrarCaracteristicaUseCase(
     ICaracteristicaRepository caracteristicaRepository,
+    IGrupoCaracteristicaRepository grupoCaracteristica,
     IUnitOfWork unitOfWork
     )
 {
@@ -34,7 +35,13 @@ public class CadastrarCaracteristicaUseCase(
                 throw new BusinessRuleException("Característica já cadastrada.");
         }
 
-        var caracteristica = new Caracteristica(request.Nome);
+        var grupo = await grupoCaracteristica.BuscarPorId(
+            request.GrupoCaracteristica_ID,
+            Domain.Enums.Caracteristica.EstadoCaracteristica.Ativa,
+            cancellationToken
+            ) ?? throw new NotFoundException("Grupo de característica não encontrado.");
+
+        var caracteristica = new Caracteristica(request.Nome, grupo);
 
         await caracteristicaRepository.AddAsync(caracteristica, cancellationToken);
 

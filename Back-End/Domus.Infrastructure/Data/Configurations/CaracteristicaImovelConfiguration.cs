@@ -23,11 +23,13 @@ internal class CaracteristicaImovelConfiguration : IEntityTypeConfiguration<Cara
         builder.HasOne(ci => ci.Imovel)
             .WithMany(i => i.CaracteristicasImovel)
             .HasForeignKey(ci => ci.Imovel_ID)
+            .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(ci => ci.Caracteristica)
             .WithMany(c => c.CaracteristicasImovel)
             .HasForeignKey(ci => ci.Caracteristica_ID)
+            .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

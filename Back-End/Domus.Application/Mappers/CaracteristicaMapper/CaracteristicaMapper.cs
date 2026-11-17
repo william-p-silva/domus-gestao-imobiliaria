@@ -11,10 +11,20 @@ public static class CaracteristicaMapper
         return new CaracteristicaResponse
         {
             Caracteristica_ID = caracteristica.Caracteristica_ID,
+            Nome = caracteristica.Nome.Nome,
+            Estado = caracteristica.Estado.ToString(),
             CriadoEm = caracteristica.CriadoEm,
             DeletadoEm = caracteristica.DeletadoEm,
-            Estado = caracteristica.Estado.ToString(),
-            Nome = caracteristica.Nome.Nome
+
+            GrupoCaracteristica = new GrupoCaracteristicaResponse
+            {
+                GrupoCaracteristica_ID = caracteristica.GrupoCaracteristica.GrupoCaracteristica_ID,
+                Nome = caracteristica.GrupoCaracteristica.Nome,
+                Codigo = caracteristica.GrupoCaracteristica.Codigo.Value,
+                Estado = caracteristica.GrupoCaracteristica.Estado.ToString(),
+                CriadoEm = caracteristica.GrupoCaracteristica.CriadoEm,
+                DeletadoEm = caracteristica.GrupoCaracteristica.DeletadoEm
+            }
         };
     }
 }

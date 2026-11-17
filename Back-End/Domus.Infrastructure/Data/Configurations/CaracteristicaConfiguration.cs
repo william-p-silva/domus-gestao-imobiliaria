@@ -33,6 +33,12 @@ public class CaracteristicaConfiguration : IEntityTypeConfiguration<Caracteristi
         builder.Property(c => c.DeletadoEm)
             .IsRequired(false);
 
+        builder.HasOne(c => c.GrupoCaracteristica)
+            .WithMany(gc => gc.Caracteristicas)
+            .HasForeignKey(c => c.GrupoCaracteristica_ID)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
+
         builder.HasQueryFilter(c => c.Estado != EstadoCaracteristica.Inativa && c.DeletadoEm == null);
     }
 }

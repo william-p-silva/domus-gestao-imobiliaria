@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<Contrato> Contratos { get; set; }
     public DbSet<Endereco> Enderecos { get; set; }
     public DbSet<Funcao> Funcoes { get; set; }
+    public DbSet<GrupoCaracteristica> GruposCaracteristica { get; set; }
     public DbSet<ImagemImovel> ImagensImovel { get; set; }
     public DbSet<Imovel> Imoveis { get; set; }
     public DbSet<MensagemChat> MensagensChat { get; set; }

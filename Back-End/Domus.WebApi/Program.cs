@@ -194,7 +194,7 @@ app.Run();
 // COMANDOS ÚTEIS PARA O TERMINAL:
 // 
 // Criar uma nova Migration:
-// dotnet ef migrations add AdicionandoCaracteristicas --project ..\Domus.Infrastructure 
+// dotnet ef migrations add AddGrupoCaracteristica --project ..\Domus.Infrastructure 
 //
 // Atualizar o banco manualmente (Caso não queira depender do auto-migrate):
 // dotnet ef database update --project ..\Domus.Infrastructure  
