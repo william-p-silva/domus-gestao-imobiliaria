@@ -16,7 +16,7 @@ public class CadastrarCaracteristicaUseCase(
 {
     public async Task<CaracteristicaResponse> ExecuteAsync(
         CadastrarCaracteristicaRequest request
-        ,CancellationToken cancellationToken
+        , CancellationToken cancellationToken
         )
     {
         var result = await caracteristicaRepository.BuscarPorNome(request.Nome);
@@ -24,7 +24,12 @@ public class CadastrarCaracteristicaUseCase(
         if (result is not null)
         {
             if (result.Estado != Domain.Enums.Caracteristica.EstadoCaracteristica.Ativa)
+            {
                 result.Ativar();
+                await unitOfWork.CommitAsync(cancellationToken);
+
+                return result.ToResponse();
+            }
             else
                 throw new BusinessRuleException("Característica já cadastrada.");
         }
