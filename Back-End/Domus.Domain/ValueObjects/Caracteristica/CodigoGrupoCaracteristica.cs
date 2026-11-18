@@ -1,5 +1,7 @@
 ﻿
 using Domus.Domain.Exceptions.Domain;
+using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Domus.Domain.ValueObjects.Caracteristica;
@@ -38,6 +40,20 @@ public sealed record CodigoGrupoCaracteristica
     {
         value = value.Trim().ToUpperInvariant();
 
+        // Decompõe os caracteres acentuados.
+        value = value.Normalize(NormalizationForm.FormD);
+
+        // Remove os sinais diacríticos.
+        var caracteres = value
+            .Where(c => CharUnicodeInfo.GetUnicodeCategory(c)
+                != UnicodeCategory.NonSpacingMark);
+
+        value = new string(caracteres.ToArray());
+
+        // Retorna à forma Unicode composta.
+        value = value.Normalize(NormalizationForm.FormC);
+
+        // Substitui espaços por underline.
         value = Regex.Replace(value, @"\s+", "_");
 
         return value;

@@ -28,11 +28,22 @@ public class GrupoCaracteristica
     {
         if (string.IsNullOrWhiteSpace(nome))
             throw new ValidationException("O nome não pode estar vazio.");
+        if (nome.Length <= 3)
+            throw new ValidationException("O nome não pode ser inferior a 3 caracterres.");
 
         GrupoCaracteristica_ID = Guid.NewGuid();
         Nome = nome;
         Codigo = CodigoGrupoCaracteristica.Create(codigo);
         Estado = EstadoCaracteristica.Ativa;
         CriadoEm = DateTime.UtcNow;
+    }
+
+    public void Ativar()
+    {
+        if (Estado == EstadoCaracteristica.Ativa || DeletadoEm == null)
+            throw new ValidationException("Grupo de característica já está ativo");
+
+        Estado = EstadoCaracteristica.Ativa;
+        DeletadoEm = null;
     }
 }

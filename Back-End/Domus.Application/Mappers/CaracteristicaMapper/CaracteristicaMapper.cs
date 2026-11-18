@@ -16,15 +16,7 @@ public static class CaracteristicaMapper
             CriadoEm = caracteristica.CriadoEm,
             DeletadoEm = caracteristica.DeletadoEm,
 
-            GrupoCaracteristica = new GrupoCaracteristicaResponse
-            {
-                GrupoCaracteristica_ID = caracteristica.GrupoCaracteristica.GrupoCaracteristica_ID,
-                Nome = caracteristica.GrupoCaracteristica.Nome,
-                Codigo = caracteristica.GrupoCaracteristica.Codigo.Value,
-                Estado = caracteristica.GrupoCaracteristica.Estado.ToString(),
-                CriadoEm = caracteristica.GrupoCaracteristica.CriadoEm,
-                DeletadoEm = caracteristica.GrupoCaracteristica.DeletadoEm
-            }
+            GrupoCaracteristica = caracteristica.GrupoCaracteristica.ToResponse()
         };
     }
 }

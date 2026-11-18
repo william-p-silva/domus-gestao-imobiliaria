@@ -14,6 +14,7 @@ namespace Domus.WebApi.Controllers.CaracteristicaController;
 [Route("domus/[controller]")]
 public class CaracteristicaController(
     CadastrarCaracteristicaUseCase cadastrarCaracteristicaUseCase,
+    CadastrarGrupoCaracteristicasUseCase cadastrarGrupoCaracteristicasUseCase,
     ListarCaracteristicasUseCase listarCaracteristicasUseCase
     ) : ControllerBase
 {
@@ -34,7 +35,25 @@ public class CaracteristicaController(
         });
     }
 
+    [HttpPost("post/grupo-caracteristica")]
+    [Authorize(Roles = "Administrador")]
+    [ProducesResponseType<SuccessApiResponse<GrupoCaracteristicaResponse>>(StatusCodes.Status201Created)]
+    public async Task<IActionResult> PostGrupoCaracteristica(
+        [FromBody] RequestCadastrarGrupoCaracteristica request,
+        CancellationToken cancellationToken
+        )
+    {
+        var response = await cadastrarGrupoCaracteristicasUseCase.ExecuteAsync(request, cancellationToken);
+
+        return Ok(new SuccessApiResponse<GrupoCaracteristicaResponse>
+        {
+            Data = response,
+            Success = true
+        });
+    }
+
     [HttpGet("get/listar/{estado:int?}")]
+    [Authorize(Roles = "Administrador")]
     [ProducesResponseType<SuccessApiResponse<List<CaracteristicaResponse>>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAtivas(
         CancellationToken cancellationToken,

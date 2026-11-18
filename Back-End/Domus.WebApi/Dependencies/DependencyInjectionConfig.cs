@@ -98,6 +98,7 @@ public static class DependencyInjectionConfig
 
         //Característica
         services.AddScoped<CadastrarCaracteristicaUseCase>();
+        services.AddScoped<CadastrarGrupoCaracteristicasUseCase>();
         services.AddScoped<ListarCaracteristicasUseCase>();
 
         //SignalR
