@@ -1,4 +1,5 @@
-﻿using Domus.Domain.Entity;
+﻿using Domus.Application.DTOs.Caracteristica.Response;
+using Domus.Domain.Entity;
 using Domus.Domain.Enums.Caracteristica;
 
 namespace Domus.Application.Interfaces.Repositories;
@@ -20,4 +21,6 @@ public interface ICaracteristicaRepository
         EstadoCaracteristica? estado = EstadoCaracteristica.Ativa,
         CancellationToken cancellationToken = default
         );
+
+    Task<ResponseEstatisticasCaracteristicas> BuscarEstatisticas(CancellationToken cancellationToken = default);
 }

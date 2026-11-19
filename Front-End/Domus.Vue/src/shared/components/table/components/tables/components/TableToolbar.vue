@@ -1,3 +1,7 @@
+
+
+
+
 <template>
     <div class="flex w-full flex-col gap-3 rounded-2xl border border-slate-100 bg-white p-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:p-4">
         <div v-if="$slots.search" class="min-w-0 flex-1">

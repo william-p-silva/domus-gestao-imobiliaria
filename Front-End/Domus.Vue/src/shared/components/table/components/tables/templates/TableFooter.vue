@@ -28,7 +28,7 @@ const emit = defineEmits<{
         <nav class="flex items-center justify-end gap-1.5" aria-label="Paginação da tabela">
             <button
                 type="button"
-                class="rounded-md bg-blue-50 px-3 py-1.5 text-xs font-medium text-primary-dark transition-colors hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-40"
+                class="rounded-md cursor-pointer bg-blue-50 px-3 py-1.5 text-xs font-medium text-primary-dark transition-colors hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-40"
                 :disabled="page <= 1"
                 @click="emit('previous')"
             >
@@ -41,7 +41,7 @@ const emit = defineEmits<{
 
             <button
                 type="button"
-                class="rounded-md bg-blue-50 px-3 py-1.5 text-xs font-medium text-primary-dark transition-colors hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-40"
+                class="rounded-md cursor-pointer bg-blue-50 px-3 py-1.5 text-xs font-medium text-primary-dark transition-colors hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-40"
                 :disabled="page >= totalPages"
                 @click="emit('next')"
             >

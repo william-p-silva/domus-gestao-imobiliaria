@@ -36,7 +36,11 @@ const caracteristicas = ref<Caracteristica[]>([
 
 const activeStatus = ref<string | undefined>();
 const filterOptions: TableFilterOption[] = [
-    { value: 'Todas', label: 'Todas', count: caracteristicas.value.length },
+    { 
+        value: 'Todas', 
+        label: 'Todas', 
+        count: caracteristicas.value.length 
+    },
     { value: 'Ativa', label: 'Ativas', count: caracteristicas.value.filter((item) => item.status === 'Ativa').length },
     { value: 'Inativa', label: 'Inativas', count: caracteristicas.value.filter((item) => item.status === 'Inativa').length }
 ];

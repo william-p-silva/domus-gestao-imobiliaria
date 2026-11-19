@@ -1,9 +1,10 @@
 import { ref, computed, onMounted } from 'vue';
 import {
     EstadoCaracteristica,
-    type CaracteristicaResponse
+    type CaracteristicaResponse,
 } from '@/shared/types/caracteristica/caracteristicaTypes';
 import { CaracteristicasService } from '../services/caracteristicas.services';
+import type { EstatisticasCaracteristicas } from '../types/caracteristicas';
 
 export type FiltroEstadoCaracteristica =
     | EstadoCaracteristica
@@ -16,11 +17,15 @@ export function useCaracteristicas(
 
     // Dados
     const caracteristicas = ref<CaracteristicaResponse[]>([]);
+    const estatisticas = ref<EstatisticasCaracteristicas | null>(null);
 
     // Controle
     const filtroEstado = ref<FiltroEstadoCaracteristica>(filtroInicial);
     const carregando = ref(false);
+    const carregandoEstatisticas = ref(false);
+
     const erro = ref<string | null>(null);
+    const erroEstatisticas = ref<string | null>(null);
 
     // Controle de requisições concorrentes
     let requisicaoAtual = 0;
@@ -52,7 +57,6 @@ export function useCaracteristicas(
                 resultado = await service.GetCaracteristicas(filtro);
             }
 
-            // Ignora respostas de requisições antigas
             if (identificador !== requisicaoAtual) return;
 
             caracteristicas.value = resultado;
@@ -72,6 +76,26 @@ export function useCaracteristicas(
     }
 
     /**
+     * Busca as estatísticas das características.
+     */
+    async function carregarEstatisticas(): Promise<void> {
+        carregandoEstatisticas.value = true;
+        erroEstatisticas.value = null;
+
+        try {
+            estatisticas.value = await service.BuscarEstatisticas();
+
+        } catch (error: unknown) {
+            erroEstatisticas.value = error instanceof Error
+                ? error.message
+                : 'Não foi possível carregar as estatísticas.';
+
+        } finally {
+            carregandoEstatisticas.value = false;
+        }
+    }
+
+    /**
      * Atualiza o filtro e busca novamente.
      */
     function alterarFiltro(filtro: FiltroEstadoCaracteristica) {
@@ -79,10 +103,13 @@ export function useCaracteristicas(
     }
 
     /**
-     * Recarrega os dados utilizando o filtro atual.
+     * Recarrega a listagem e as estatísticas.
      */
-    function recarregar() {
-        return carregar();
+    async function recarregar(): Promise<void> {
+        await Promise.all([
+            carregar(),
+            carregarEstatisticas()
+        ]);
     }
 
     // Informações auxiliares
@@ -90,17 +117,27 @@ export function useCaracteristicas(
 
     // Carregamento inicial
     onMounted(() => {
-        void carregar();
+        void Promise.all([
+            carregar(),
+            carregarEstatisticas()
+        ]);
     });
 
     return {
         caracteristicas,
+        estatisticas,
+
         filtroEstado,
         carregando,
+        carregandoEstatisticas,
+
         erro,
+        erroEstatisticas,
+
         total,
 
         carregar,
+        carregarEstatisticas,
         alterarFiltro,
         recarregar
     };

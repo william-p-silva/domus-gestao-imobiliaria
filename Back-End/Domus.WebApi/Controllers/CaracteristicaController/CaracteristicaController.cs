@@ -3,6 +3,7 @@ using Domus.Application.DTOs.ApiResponse;
 using Domus.Application.DTOs.Caracteristica.Request;
 using Domus.Application.DTOs.Caracteristica.Response;
 using Domus.Application.UseCases.CaracteristicaUseCase;
+using Domus.Application.UseCases.CaracteristicaUseCase.Estatisticas;
 using Domus.Application.UseCases.CaracteristicaUseCase.Listar;
 using Domus.Domain.Enums.Caracteristica;
 using Microsoft.AspNetCore.Authorization;
@@ -15,7 +16,8 @@ namespace Domus.WebApi.Controllers.CaracteristicaController;
 public class CaracteristicaController(
     CadastrarCaracteristicaUseCase cadastrarCaracteristicaUseCase,
     CadastrarGrupoCaracteristicasUseCase cadastrarGrupoCaracteristicasUseCase,
-    ListarCaracteristicasUseCase listarCaracteristicasUseCase
+    ListarCaracteristicasUseCase listarCaracteristicasUseCase,
+    BuscarEstatisticasUseCase buscarEstatisticasUseCase
     ) : ControllerBase
 {
     [HttpPost("post")]
@@ -28,11 +30,7 @@ public class CaracteristicaController(
     {
         var response = await cadastrarCaracteristicaUseCase.ExecuteAsync(request, cancellationToken);
 
-        return Ok(new SuccessApiResponse<CaracteristicaResponse>
-        {
-            Data = response,
-            Success = true
-        });
+        return Ok(ApiResponse.Success(response));
     }
 
     [HttpPost("post/grupo-caracteristica")]
@@ -45,11 +43,7 @@ public class CaracteristicaController(
     {
         var response = await cadastrarGrupoCaracteristicasUseCase.ExecuteAsync(request, cancellationToken);
 
-        return Ok(new SuccessApiResponse<GrupoCaracteristicaResponse>
-        {
-            Data = response,
-            Success = true
-        });
+        return Ok(ApiResponse.Success(response));
     }
 
     [HttpGet("get/listar/{estado:int?}")]
@@ -63,10 +57,16 @@ public class CaracteristicaController(
         var response = await listarCaracteristicasUseCase.ExecuteAsync(
             cancellationToken: cancellationToken, estado: estado);
 
-        return Ok(new SuccessApiResponse<List<CaracteristicaResponse>>
-        {
-            Success = true,
-            Data = response
-        });
+        return Ok(ApiResponse.Success(response));
+    }
+
+    [HttpGet("get/buscar/estatisticas")]
+    [Authorize(Roles = "Administrador")]
+    [ProducesResponseType<SuccessApiResponse<ResponseEstatisticasCaracteristicas>>(StatusCodes.Status200OK)]
+    public async Task<IActionResult> BuscarEstatisticas(CancellationToken cancellationToken)
+    {
+        var response = await buscarEstatisticasUseCase.ExecuteAsync(cancellationToken);
+
+        return Ok(ApiResponse.Success(response));
     }
 }

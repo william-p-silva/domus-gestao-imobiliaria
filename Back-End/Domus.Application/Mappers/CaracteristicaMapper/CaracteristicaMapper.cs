@@ -15,6 +15,7 @@ public static class CaracteristicaMapper
             Estado = caracteristica.Estado.ToString(),
             CriadoEm = caracteristica.CriadoEm,
             DeletadoEm = caracteristica.DeletadoEm,
+            ImoveisTotais = caracteristica.CaracteristicasImovel.Count,
 
             GrupoCaracteristica = caracteristica.GrupoCaracteristica.ToResponse()
         };

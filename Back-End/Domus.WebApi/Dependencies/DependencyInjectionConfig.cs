@@ -4,6 +4,7 @@ using Domus.Application.Interfaces.Repositories;
 using Domus.Application.Interfaces.Security;
 using Domus.Application.UseCases.AvaliacaoUseCases;
 using Domus.Application.UseCases.CaracteristicaUseCase;
+using Domus.Application.UseCases.CaracteristicaUseCase.Estatisticas;
 using Domus.Application.UseCases.CaracteristicaUseCase.Listar;
 using Domus.Application.UseCases.ChatUseCase;
 using Domus.Application.UseCases.ChatUseCase.Listar;
@@ -100,6 +101,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<CadastrarCaracteristicaUseCase>();
         services.AddScoped<CadastrarGrupoCaracteristicasUseCase>();
         services.AddScoped<ListarCaracteristicasUseCase>();
+        services.AddScoped<BuscarEstatisticasUseCase>();
 
         //SignalR
         services.AddSignalR();

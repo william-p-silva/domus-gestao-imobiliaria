@@ -9,5 +9,6 @@ public sealed record CaracteristicaResponse
     public string Estado { get; set; } = string.Empty;
     public DateTime CriadoEm { get; set; }
     public DateTime? DeletadoEm { get; set; }
+    public int? ImoveisTotais { get; set; }
     public GrupoCaracteristicaResponse GrupoCaracteristica { get; set; } = new GrupoCaracteristicaResponse();
 }
