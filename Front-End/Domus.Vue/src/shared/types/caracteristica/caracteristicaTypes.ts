@@ -22,6 +22,7 @@ export interface CaracteristicaResponse {
     nome: string;
     estado: EstadoCaracteristicaType;
     criadoEm: string;
+    imoveisTotais?: number,
     deletadoEm?: string | null;
     grupoCaracteristica: GrupoCaracteristicaResponse;
 }

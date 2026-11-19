@@ -96,8 +96,8 @@ public class CaracteristicaRepository(AppDbContext context) : ICaracteristicaRep
         return await context.Caracteristicas
             .AsNoTracking()
             .IgnoreQueryFilters()
-            .Include(x => x.GrupoCaracteristica.Estado != EstadoCaracteristica.Inativa)
-            .Include(x => x.CaracteristicasImovel.Where(x => x.DeletadoEm != null))
+            .Include(x => x.GrupoCaracteristica)
+            .Include(x => x.CaracteristicasImovel.Where(x => x.DeletadoEm == null))
             .Where(x => x.Estado == estado)
             .ToListAsync();
     }

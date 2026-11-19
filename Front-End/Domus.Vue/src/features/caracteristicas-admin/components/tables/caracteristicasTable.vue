@@ -64,22 +64,23 @@ const columns: TableColumn<CaracteristicaResponse>[] = [
     {
         key: 'nome',
         label: 'Característica',
-        slot: 'nome', 
+        slot: 'nome',
         sortable: true
 
     },
     {
         key: 'grupo',
         label: 'Categoria de exibição',
-        slot: 'grupo', 
+        slot: 'grupo',
         sortable: true
 
     },
     {
         key: 'totalImoveis',
         label: 'Imóveis vinculados',
-        align: 'center', 
-        sortable: true, 
+        align: 'center',
+        slot: 'imoveis',
+        sortable: true,
         format: (value) => `${value ?? 0} imóveis`
 
     },
@@ -112,8 +113,8 @@ function onFilterChange(value: string | number | undefined) {
             </template>
 
             <template #filters>
-                <TableFilters :options="filterOptions" :model-value="activeStatus ?? 'Todas'" 
-                @update:model-value="onFilterChange" />
+                <TableFilters :options="filterOptions" :model-value="activeStatus ?? 'Todas'"
+                    @update:model-value="onFilterChange" />
             </template>
         </TableToolbar>
 
@@ -126,54 +127,60 @@ function onFilterChange(value: string | number | undefined) {
                 </template>
 
 
-                <TableRow
-                    v-for="item in table.itemsOnPage.value"
-                    :key="item.caracteristica_ID"
-                    :item="item"
-                    :columns="columns"
-                    :actions="actions"
-                >
+                <TableRow v-for="item in table.itemsOnPage.value" :key="item.caracteristica_ID" :item="item"
+                    :columns="columns" :actions="actions">
                     <template #cell-nome="{ item }">
                         <div class="flex min-w-0 items-center gap-3">
-                            <div class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">
-                                <span class="text-sm font-semibold">{{ item.nome.trim().slice(0, 1) }}</span>
+                            <div
+                                class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary-soft text-primary">
+                                <span class="text-sm font-semibold">
+                                    {{ item.nome.trim().slice(0, 1) }}
+                                </span>
                             </div>
                             <div class="min-w-0">
-                                <p class="truncate font-semibold text-primary-dark">{{ item.nome }}</p>
-                                <p class="truncate text-sm text-text-muted">{{ item.grupoCaracteristica.nome }}</p>
+                                <p class="truncate font-semibold text-primary-dark">
+                                    {{ item.nome }}
+                                </p>
+                                <p class="truncate text-sm text-text-muted">
+                                    {{ item.grupoCaracteristica.nome }}
+
+                                </p>
                             </div>
                         </div>
                     </template>
 
                     <template #cell-grupo="{ item }">
-                        <span class="inline-flex max-w-full rounded-full bg-blue-50 px-3 py-1.5 text-xs font-medium text-primary-dark">
+                        <span
+                            class="inline-flex max-w-full rounded-full bg-blue-50 px-3 py-1.5 text-xs font-medium text-primary-dark">
                             <span class="truncate">{{ item.grupoCaracteristica.nome }}</span>
                         </span>
                     </template>
 
+                    <template #cell-imoveis="{ item }">
+                        <div class="flex items-center justify-center gap-2">
+                           
+                            <span class="text-xs text-text-muted">
+                               {{ item.imoveisTotais ?? 0 }} {{ item.imoveisTotais === 1 ? 'imóvel' : 'imóveis' }}
+                            </span>
+                        </div>
+                    </template>
+
                     <template #cell-status="{ item }">
-                        <span
-                            :class="[
-                                'inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium',
-                                item.estado === 'Ativa' ? 'bg-blue-100 text-blue-900' : 'bg-slate-100 text-slate-600'
-                            ]"
-                        >
-                            <span class="size-1.5 rounded-full" :class="item.estado === 'Ativa' ? 'bg-blue-800' : 'bg-slate-400'" />
+                        <span :class="[
+                            'inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium',
+                            item.estado === 'Ativa' ? 'bg-blue-100 text-blue-900' : 'bg-slate-100 text-slate-600'
+                        ]">
+                            <span class="size-1.5 rounded-full"
+                                :class="item.estado === 'Ativa' ? 'bg-blue-800' : 'bg-slate-400'" />
                             {{ item.estado }} - {{ item.estado === 'Ativa' ? 'Disponível' : 'Oculta' }}
                         </span>
                     </template>
                 </TableRow>
             </TableBody>
 
-            <TableFooter
-                :showing="table.showing.value"
-                :total="table.total.value"
-                :page="table.page.value"
-                :total-pages="table.totalPages.value"
-                item-label="características cadastradas"
-                @previous="table.previous"
-                @next="table.next"
-            />
+            <TableFooter :showing="table.showing.value" :total="table.total.value" :page="table.page.value"
+                :total-pages="table.totalPages.value" item-label="características cadastradas"
+                @previous="table.previous" @next="table.next" />
         </BaseTable>
     </section>
 </template>

@@ -16,7 +16,7 @@ public static class GrupoCaracteristicaMapper
             Estado = grupo.Estado.ToString(),
             Codigo = grupo.Codigo.Value,
             CriadoEm = grupo.CriadoEm,
-            DeletadoEm = grupo.CriadoEm
+            DeletadoEm = grupo.DeletadoEm
         };
     }
 }
