@@ -46,6 +46,7 @@ public class CaracteristicaRepository(AppDbContext context) : ICaracteristicaRep
         return await context.Caracteristicas
             .AsNoTracking()
             .IgnoreQueryFilters()
+            .Include(x => x.GrupoCaracteristica)
             .Where(x => x.Estado == estado)
             .ToListAsync();
     }

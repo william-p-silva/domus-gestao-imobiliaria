@@ -120,6 +120,18 @@ const router = createRouter({
         }
       ]
     },
+    {
+      path: "/admin",
+      name: "Administrador",
+      component: () => import("@/shared/layouts/masterLayout.vue"),
+      children: [
+        {
+          path: "caracteristicas",
+          name: "CaracteristicasAdmin",
+          component: () => import("@/app/view/admin/caracteristicas/CaracteristicasView.vue")
+        }
+      ]
+    },
 
     {
       // Rota coringa para capturar URLs inexistentes (404)
